@@ -30,7 +30,7 @@ async def ping(ctx):
     """Pong! check if bot working"""
     em = discord.Embed()
     em.title = "Pong!"
-    em.description = "Bot is up and working."
+    em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
 if not os.environ.get('TOKEN'):
