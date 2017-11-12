@@ -16,6 +16,10 @@ developers = [
 async def on_ready():
     ctx.send("Bot Is Online")
     
+@bot.command()
+async def ping(ctx):
+    """Pong! check if bot working"""
+    await ctx.send("Pong! bot is up and working")
 
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
