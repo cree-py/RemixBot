@@ -4,7 +4,7 @@ import io
 import sys
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='c.',description="A Bot Made By AntonyJosph Free TNT And Sleedyak Under Work",owner_id=311970805342928896,292690616285134850,316586772349976586)
+bot = commands.Bot(command_prefix='c.',description="A Bot Made By AntonyJosph Free TNT And Sleedyak Under Work",owner_id=311970805342928896)
 
 @bot.event
 async def on_ready():
