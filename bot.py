@@ -24,7 +24,7 @@ async def help(ctx):
 @bot.command()
 async def ping(ctx):
     """Pong! check if bot working"""
-    em = discord.Embed(color=2ecc71)
+    em = discord.Embed(color="2ecc71")
     em.title = "Pong!"
     em.description = "Bot is up and working."
     await ctx.send(embed=em)
