@@ -18,10 +18,14 @@ async def on_ready():
 @bot.command()
 async def help(ctx):
         await ctx.send("```A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh.\n\n c.ping : Pong!```")
+
 @bot.command()
 async def ping(ctx):
     """Pong! check if bot working"""
-    await ctx.send("Pong! bot is up and working")
+    em = discord.Embed()
+    em.title = "Pong!"
+    em.description = "Bot is up and working."
+    em.color = 2ecc71
 
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
