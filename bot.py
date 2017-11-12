@@ -4,8 +4,8 @@ import io
 import sys
 from discord.ext import commands
 
-bot = commands.Bot(command_prefix='c.',description="A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh")
-
+bot = commands.Bot(command_prefix='c.')
+bot.remove_command('help')
 developers = [
         311970805342928896,
         316586772349976586,
@@ -15,7 +15,9 @@ developers = [
 @bot.event
 async def on_ready():
     ctx.send("Bot Is Online")
-    
+@bot.command()
+async def help(ctx):
+        await ctx.send("\n\nping : Pong!")
 @bot.command()
 async def ping(ctx):
     """Pong! check if bot working"""
