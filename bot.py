@@ -24,10 +24,9 @@ async def help(ctx):
 @bot.command()
 async def ping(ctx):
     """Pong! check if bot working"""
-    em = discord.Embed()
+    em = discord.Embed(color=2ecc71)
     em.title = "Pong!"
     em.description = "Bot is up and working."
-    color = "#2ecc71"
     await ctx.send(embed=em)
 
 if not os.environ.get('TOKEN'):
