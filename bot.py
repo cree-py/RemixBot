@@ -15,6 +15,8 @@ developers = [
 @bot.event
 async def on_ready():
     ctx.send("Bot Is Online")
+    await bot.change_presence(game=discord.Game(name="c.help"))
+        
 @bot.command()
 async def help(ctx):
         await ctx.send("```A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh.\n\n c.ping : Pong!```")
