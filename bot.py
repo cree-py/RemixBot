@@ -15,11 +15,15 @@ developers = [
 @bot.event
 async def on_ready():
     ctx.send("Bot Is Online")
-   
+    await bot.change_presence(game=discord.Game(name="c.help"))
         
 @bot.command()
 async def help(ctx):
-        await ctx.send("```A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh.\n\n c.ping : Pong!```")
+    em = discord.Embed()
+    em.title = "Help"
+    em.description = "A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh"
+    em.add_field(name="Ping", value="Pong! check if bot is working")
+    await ctx.send(embed=em)
 
 @bot.command()
 async def ping(ctx):
@@ -28,10 +32,6 @@ async def ping(ctx):
     em.title = "Pong!"
     em.description = "Bot is up and working."
     await ctx.send(embed=em)
-@bot.command()
-async def mainpresence(ctx):
-    await bot.change_presence(game=discord.Game(name="c.help"))
-    await ctx.send("Presence changed :white_check_mark:")
 
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
