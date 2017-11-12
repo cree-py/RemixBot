@@ -15,7 +15,6 @@ developers = [
 @bot.event
 async def on_ready():
     ctx.send("Bot Is Online")
-    await bot.change_presence(game=discord.Game(name="c.help"))
 @bot.command()
 async def help(ctx):
         await ctx.send("```A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh.\n\n c.ping : Pong!```")
@@ -26,7 +25,8 @@ async def ping(ctx):
     em = discord.Embed()
     em.title = "Pong!"
     em.description = "Bot is up and working."
-    em.color = (2ecc71)
+    em.color = "2ecc71"
+    await ctx.send(embed=em)
 
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
