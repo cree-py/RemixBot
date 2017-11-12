@@ -17,7 +17,7 @@ async def on_ready():
     ctx.send("Bot Is Online")
 @bot.command()
 async def help(ctx):
-        await ctx.send("\n\nping : Pong!")
+        await ctx.send("```A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh.\n\n c.ping : Pong!```")
 @bot.command()
 async def ping(ctx):
     """Pong! check if bot working"""
