@@ -15,7 +15,7 @@ developers = [
 @bot.event
 async def on_ready():
     ctx.send("Bot Is Online")
-    await bot.change_presence(game=discord.Game(name="c.help"))
+   
         
 @bot.command()
 async def help(ctx):
@@ -28,6 +28,10 @@ async def ping(ctx):
     em.title = "Pong!"
     em.description = "Bot is up and working."
     await ctx.send(embed=em)
+@bot.command()
+async def mainpresence(ctx):
+    await bot.change_presence(game=discord.Game(name="c.help"))
+    await ctx.send("Presence changed :white_check_mark:")
 
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
