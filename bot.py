@@ -40,6 +40,8 @@ async def help(ctx):
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
+    em.add_field(name="Ban", value="Ban someone from the server.")
+    em.add_field(name="Help", value="Shows this message.")
     # em.set_footer = (*, text="Requested by " + ctx.message.user.name) BROKEN
     # try:
     #     channel = ctx.message.user.DMChannel
@@ -61,7 +63,10 @@ async def help(ctx):
     # except:
     #     await ctx.send("line 58")
     await bot.get_user(ctx.message.author.id).send(embed=em)
-    await ctx.send("{}, I DMed you a list of commands.".format(ctx.message.author.mention))
+    if ctx.message.channel.guild:
+        await ctx.send("{}, I DMed you a list of commands.".format(ctx.message.author.mention))
+    else:
+        pass
 
 @bot.command()
 async def ping(ctx):
