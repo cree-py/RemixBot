@@ -8,8 +8,8 @@ from contextlib import redirect_stdout
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='c.')
-bot.remove_command('help')
 bot.load_extension("cogs.mod")    
+bot.remove_command('help')
 
 developers = [
     311970805342928896,
