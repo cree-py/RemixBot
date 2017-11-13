@@ -40,15 +40,15 @@ async def help(ctx):
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
-    em.set_footer = (*, text="Requested by " + ctx.message.user.name)
-    # channel = ctx.message.user.DMChannel
-    # if not channel:
-    #     create_DM(ctx.message.user)
-    # channel = ctx.message.user.DMChannel
-    # try: 
-    #     await ctx.message.user.send(content="", *, embed=em)
-    # except:
-    #     await ctx.send("here")
+    # em.set_footer = (*, text="Requested by " + ctx.message.user.name) BROKEN
+    channel = ctx.message.user.DMChannel
+    if not channel:
+        create_DM(ctx.message.user)
+    channel = ctx.message.user.DMChannel
+    try: 
+        await ctx.message.user.send(content="", *, embed=em)
+    except:
+        await ctx.send("here")
     await ctx.send(embed=em)
 
 @bot.command()
