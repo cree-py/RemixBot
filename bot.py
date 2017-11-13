@@ -43,6 +43,7 @@ async def help(ctx):
     # em.set_footer = (*, text="Requested by " + ctx.message.user.name) BROKEN
     try:
     #     channel = ctx.message.user.DMChannel
+        print("e")
     except:
         ctx.send("line 45")
     if not channel:
