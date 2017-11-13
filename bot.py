@@ -15,8 +15,8 @@ developers = [
 @bot.event
 async def on_ready():
    ctx.send("Bot Is Online")
-    await bot.change_presence(game=discord.Game(name="c.help"))
-        
+
+
 @bot.command()
 async def help(ctx):
     em = discord.Embed()
