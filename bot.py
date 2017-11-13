@@ -82,7 +82,7 @@ async def set(ctx, Type=None,*,thing=None):
       return
 
   if Type is None:
-    await ctx.send('Usage: `.presence [game/stream] [message]`')
+    await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
   else:
     if Type.lower() == 'stream':
       await bot.change_presence(game=discord.Game(name=thing,type=1,url='https://www.twitch.tv/a'),status='online')
@@ -90,11 +90,16 @@ async def set(ctx, Type=None,*,thing=None):
     elif Type.lower() == 'game':
       await bot.change_presence(game=discord.Game(name=thing))
       await ctx.send(f'Set presence to `Playing {thing}`')
+    elif Type.lower() == 'watch':
+      await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
+    elif Type.lower() == 'listen':
+      await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
     elif Type.lower() == 'clear':
       await bot.change_presence(game=None)
       await ctx.send('Cleared Presence')
     else:
-      await ctx.send('Usage: `.presence [game/stream] [message]`')
+      await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
+
 
 @bot.command(pass_context=True, hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
