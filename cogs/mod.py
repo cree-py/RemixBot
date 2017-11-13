@@ -31,7 +31,7 @@ class Mod:
 
     @commands.command()
     @commands.has_permissions(kick_members = True)
-    async def kick(self, ctx, user: discord.Member)
+    async def kick(self, ctx, user: discord.Member):
         try:
             await ctx.send(f"Kicked {user.name} from the server.)
             await user.kick()
