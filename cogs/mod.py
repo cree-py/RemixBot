@@ -37,7 +37,7 @@ class Mod:
             await ctx.guild.kick(user)
         except:
             discord.Forbidden()
-                await ctx.send("You don't have permissions to do this")
+            await ctx.send("You don't have permissions to do this")
             
             
 def setup(bot):
