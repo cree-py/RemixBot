@@ -46,7 +46,7 @@ async def help(ctx):
         create_DM(ctx.message.user)
     channel = ctx.message.user.DMChannel
     try: 
-        await channel.send("", embed=em)
+        await ctx.message.user.send("", embed=em)
     except:
         await ctx.send("here")
 
