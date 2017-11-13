@@ -7,6 +7,7 @@ import textwrap
 from contextlib import redirect_stdout
 from discord.ext import commands
 
+client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
 bot.load_extension("cogs.mod")    
 bot.remove_command('help')
@@ -14,7 +15,8 @@ bot.remove_command('help')
 developers = [
     311970805342928896,
     316586772349976586,
-    292690616285134850
+    292690616285134850,
+    307133814834987008
 ]
 
 def cleanup_code(content):
@@ -34,11 +36,12 @@ async def on_ready():
 async def help(ctx):
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh) \n"
+    em.description = "A bot under development by Antony, Sleedyak, Victini and Free TNT. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh) \n"
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
-    await ctx.send(embed=em)
+    em.footer = "Requested by " + ctx.message.user.name
+    await client.send_message(ctx.message.user, embed=em)
 
 @bot.command()
 async def ping(ctx):
