@@ -42,7 +42,7 @@ async def help(ctx):
     em.add_field(name="Kick", value="Kick someone from the server.")
     # em.set_footer = (*, text="Requested by " + ctx.message.user.name) BROKEN
     try:
-        channel = ctx.message.user.DMChannel
+    #     channel = ctx.message.user.DMChannel
     except:
         ctx.send("line 45")
     if not channel:
@@ -51,11 +51,11 @@ async def help(ctx):
         except:
             ctx.send("line 50")
     try:
-        channel = ctx.message.user.DMChannel
+    #     channel = ctx.message.user.DMChannel
     except:
         ctx.send("line 54")
     try: 
-        await ctx.message.user.send(embed=em)
+        await ctx.message.user.DMChannel.send(embed=em)
     except:
         await ctx.send("line 58")
     await ctx.send(embed=em)
@@ -64,7 +64,7 @@ async def help(ctx):
 async def ping(ctx):
     """Pong! Check if bot is working"""
     em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = "Pong!h"
+    em.title = "Pong!i"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
