@@ -17,9 +17,10 @@ async def on_ready():
    ctx.send("Bot Is Online")
 
 @bot.command(name='presence')
-@commands.is_owner()
 async def _set(ctx, Type=None,*,thing=None):
-  """Change the bot's discord game/stream!"""
+  if ctx.author not in developers:
+      return
+
   if Type is None:
     await ctx.send('Usage: `.presence [game/stream] [message]`')
   else:
