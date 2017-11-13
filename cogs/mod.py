@@ -54,7 +54,7 @@ class Mod:
             await ctx.channel.set_permissions(user, send_messages = False)
             await ctx.channel.send(user.mention + " Has been muted from this channel")
         except discord.Forbidden:
-            await ctx.channel.send("You don't have permissions to do this")
+            await ctx.send("You don't have permissions to do this")
             
             
 def setup(bot):
