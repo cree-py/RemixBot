@@ -35,6 +35,7 @@ async def help(ctx):
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh \n"
     em.add_field(name="Ping", value="Pong! check if bot is working")
+    en.add_field(name="Invite", value="Invite me to your server")
     await ctx.send(embed=em)
 
 @bot.command()
@@ -112,8 +113,13 @@ async def _eval(ctx, *, body: str):
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
 
+@bot.command()
+async def invite(ctx):
+    await ctx.send("Invite Me To Your Server: https://discordapp.com/oauth2/authorize?client_id=364372021422981120&scope=bot&permissions=66186303")
 
 
+
+ 
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
 bot.run(os.environ.get('TOKEN').strip('\"'))
