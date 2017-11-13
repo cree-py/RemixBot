@@ -35,7 +35,7 @@ class Mod:
         try:
             await ctx.send(f"Kicked {user.name} from the server.")
             await ctx.guild.kick(user)
-        except discord.Forbidden:
+        else:
             await ctx.send("You don't have permissions to do this")
             
             
