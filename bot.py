@@ -60,7 +60,8 @@ async def help(ctx):
     #     await ctx.message.user.DMChannel.send(embed=em)
     # except:
     #     await ctx.send("line 58")
-    await ctx.send(embed=em)
+    await bot.get_user(ctx.message.author.id).send(embed=em)
+    await ctx.send("{}, I DMed you a list of commands.".format(ctx.message.author.mention))
 
 @bot.command()
 async def ping(ctx):
