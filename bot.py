@@ -31,7 +31,7 @@ async def on_ready():
 
 @bot.command()
 async def help(ctx):
-    em = discord.Embed()
+    em = discord.Embed(color=discord.Color(value=2ecc71))
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at [here](https://discord.gg/qv9UcBh) \n"
     em.add_field(name="Ping", value="Pong! check if bot is working")
