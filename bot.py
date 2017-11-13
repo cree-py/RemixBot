@@ -40,11 +40,11 @@ async def help(ctx):
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
-    em.footer = "Requested by " + ctx.message.user.name
-    channel = ctx.message.user.DMChannel
-    if not channel:
-        create_DM(ctx.message.user)
-    channel = ctx.message.user.DMChannel
+    # em.footer = "Requested by " + ctx.message.user.name
+    # channel = ctx.message.user.DMChannel
+    # if not channel:
+    #     create_DM(ctx.message.user)
+    # channel = ctx.message.user.DMChannel
     try: 
         await ctx.message.user.send("", embed=em)
     except:
@@ -54,7 +54,7 @@ async def help(ctx):
 async def ping(ctx):
     """Pong! Check if bot is working"""
     em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = "Pong!"
+    em.title = "Pong!e"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
