@@ -40,7 +40,7 @@ class Mod:
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
-    async def ban(self, ctx, user; discord.Member):
+    async def ban(self, ctx, user: discord.Member):
        try:
            await ctx.guild.ban(user)
            await ctx.send(f"Banned {user.name} from the server")
