@@ -17,7 +17,7 @@ async def on_ready():
    ctx.send("Bot Is Online")
 
 @bot.command(name='presence')
-async def _set(ctx, Type=None,*,thing=None):
+async def set(ctx, Type=None,*,thing=None):
   if ctx.author not in developers:
       return
 
