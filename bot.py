@@ -7,11 +7,11 @@ from discord.ext import commands
 bot = commands.Bot(command_prefix='c.')
 bot.remove_command('help')
     
-    developers = [
-        311970805342928896,
-        316586772349976586,
-        292690616285134850
-    ]
+developers = [
+    311970805342928896,
+    316586772349976586,
+    292690616285134850
+]
 
 def cleanup_code(content):
     """Automatically removes code blocks from the code."""
