@@ -29,7 +29,7 @@ def cleanup_code(content):
 
 @bot.event
 async def on_ready():
-   ctx.send("Bot Is Online")
+   print("Bot Is Online")
 
 
 @bot.command()
@@ -41,25 +41,25 @@ async def help(ctx):
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
     # em.set_footer = (*, text="Requested by " + ctx.message.user.name) BROKEN
-    try:
+    # try:
     #     channel = ctx.message.user.DMChannel
-        print("e")
-    except:
-        ctx.send("line 45")
-    if not channel:
-        try:
-            create_DM(ctx.message.user)
-        except:
-            ctx.send("line 50")
-    try:
+    #     print("e")
+    # except:
+    #     ctx.send("line 45")
+    # if not channel:
+    #     try:
+    #         create_DM(ctx.message.user)
+    #     except:
+    #         ctx.send("line 50")
+    # try:
     #     channel = ctx.message.user.DMChannel
-        print("e")
-    except:
-        ctx.send("line 54")
-    try: 
-        await ctx.message.user.DMChannel.send(embed=em)
-    except:
-        await ctx.send("line 58")
+    #    print("e")
+    # except:
+    #     ctx.send("line 54")
+    # try: 
+    #     await ctx.message.user.DMChannel.send(embed=em)
+    # except:
+    #     await ctx.send("line 58")
     await ctx.send(embed=em)
 
 @bot.command()
