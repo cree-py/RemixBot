@@ -34,7 +34,7 @@ class Mod:
     async def kick(self, ctx, user: discord.Member):
             await ctx.send(f"Kicking {user.name}....")
             await ctx.guild.kick(user)
-    expect discord.Forbidden:
+    if discord.Forbidden:
             await ctx.send("You don't have permissions to do that.")
     
             
