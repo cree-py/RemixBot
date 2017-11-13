@@ -67,9 +67,8 @@ async def set(ctx, Type=None,*,thing=None):
 
 @bot.command(pass_context=True, hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
-    """Evalutes Py Code"""
     
-    if ctx.author.id not in developers: return
+        if ctx.author.id not in developers: return
 
         env = {
             'bot': bot,
