@@ -40,7 +40,7 @@ async def help(ctx):
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
-    # em.set_footer = (*, text="Requested by " + ctx.message.user.name)
+    em.set_footer = (*, text="Requested by " + ctx.message.user.name)
     # channel = ctx.message.user.DMChannel
     # if not channel:
     #     create_DM(ctx.message.user)
@@ -55,7 +55,7 @@ async def help(ctx):
 async def ping(ctx):
     """Pong! Check if bot is working"""
     em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = "Pong!f"
+    em.title = "Pong!g"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
