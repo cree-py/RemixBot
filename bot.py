@@ -35,8 +35,9 @@ async def help(ctx):
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh) \n"
-    em.add_field(name="Ping", value="Pong! check if bot is working")
+    em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server")
+    em.add_field(name="Kick", value="Kick someone from the server.")
     await ctx.send(embed=em)
 
 @bot.command()
