@@ -91,9 +91,11 @@ async def set(ctx, Type=None,*,thing=None):
       await bot.change_presence(game=discord.Game(name=thing))
       await ctx.send(f'Set presence to `Playing {thing}`')
     elif Type.lower() == 'watch':
-      await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
-    elif Type.lower() == 'listen':
       await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
+      await ctx.send(f'Set presence to `Watching {thing}`')
+    elif Type.lower() == 'listen':
+      await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
+      await ctx.send(f'Set presence to `Listening to {thing}`')
     elif Type.lower() == 'clear':
       await bot.change_presence(game=None)
       await ctx.send('Cleared Presence')
