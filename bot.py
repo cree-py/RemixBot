@@ -42,7 +42,6 @@ async def help(ctx):
     em.add_field(name="Kick", value="Kick someone from the server.")
     em.add_field(name="Ban", value="Ban someone from the server.")
     em.add_field(name="Help", value="Shows this message.")
-    em.set_footer = (text=f"Requested by {ctx.message.user.name}")
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send("{}, I DMed you a list of commands.".format(ctx.message.author.mention))
