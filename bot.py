@@ -2,6 +2,9 @@ import discord
 import os
 import io
 import sys
+import traceback
+import textwrap
+from contextlib import redirect_stdout
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix='c.')
