@@ -35,7 +35,7 @@ async def help(ctx):
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak and Free TNT. Feel free to drop into the server and help with development and for support at https://discord.gg/qv9UcBh \n"
     em.add_field(name="Ping", value="Pong! check if bot is working")
-    en.add_field(name="Invite", value="Invite me to your server")
+    em.add_field(name="Invite", value="Invite me to your server")
     await ctx.send(embed=em)
 
 @bot.command()
