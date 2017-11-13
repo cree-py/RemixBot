@@ -14,7 +14,7 @@ developers = [
 
 @bot.event
 async def on_ready():
-   await ctx.send("Bot Is Online")
+   ctx.send("Bot Is Online")
     await bot.change_presence(game=discord.Game(name="c.help"))
         
 @bot.command()
@@ -27,7 +27,7 @@ async def help(ctx):
 
 @bot.command()
 async def ping(ctx):
-    """Pong! check if bot working"""
+    """Pong! Check if bot is working"""
     em = discord.Embed()
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
