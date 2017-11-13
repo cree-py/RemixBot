@@ -53,6 +53,7 @@ async def help(ctx):
             ctx.send("line 50")
     try:
     #     channel = ctx.message.user.DMChannel
+        print("e")
     except:
         ctx.send("line 54")
     try: 
