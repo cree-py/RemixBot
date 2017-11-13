@@ -45,7 +45,10 @@ async def help(ctx):
     if not channel:
         create_DM(ctx.user)
     channel = ctx.user.DMChannel
-    await channel.send("", embed=em)
+    try: 
+        await channel.send("", embed=em)
+    except:
+        await ctx.send("here")
 
 @bot.command()
 async def ping(ctx):
