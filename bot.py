@@ -41,10 +41,10 @@ async def help(ctx):
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
     em.footer = "Requested by " + ctx.message.user.name
-    channel = ctx.user.DMChannel
+    channel = ctx.message.user.DMChannel
     if not channel:
-        create_DM(ctx.user)
-    channel = ctx.user.DMChannel
+        create_DM(ctx.message.user)
+    channel = ctx.message.user.DMChannel
     try: 
         await channel.send("", embed=em)
     except:
