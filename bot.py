@@ -9,7 +9,8 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix='c.')
 bot.remove_command('help')
-    
+bot.load_extension("cogs.mod")    
+
 developers = [
     311970805342928896,
     316586772349976586,
