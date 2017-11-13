@@ -44,7 +44,7 @@ async def ping(ctx):
 
 @bot.command(name='presence')
 async def set(ctx, Type=None,*,thing=None):
-  if ctx.author not in developers:
+  if ctx.author.id not in developers:
       return
 
   if Type is None:
@@ -63,9 +63,8 @@ async def set(ctx, Type=None,*,thing=None):
       await ctx.send('Usage: `.presence [game/stream] [message]`')
 
 @bot.command(pass_context=True, hidden=True, name='eval')
-@commands.is_owner()
 async def _eval(ctx, *, body: str):
-    if ctx.author not in developers:
+    if ctx.author.id not in developers:
         return
 
 
