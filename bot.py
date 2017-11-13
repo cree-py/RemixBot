@@ -40,7 +40,7 @@ async def help(ctx):
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
-    # em.footer = "Requested by " + ctx.message.user.name
+    em.set_footer = "Requested by " + ctx.message.user.name
     # channel = ctx.message.user.DMChannel
     # if not channel:
     #     create_DM(ctx.message.user)
