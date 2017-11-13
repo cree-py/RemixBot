@@ -42,26 +42,7 @@ async def help(ctx):
     em.add_field(name="Kick", value="Kick someone from the server.")
     em.add_field(name="Ban", value="Ban someone from the server.")
     em.add_field(name="Help", value="Shows this message.")
-    # em.set_footer = (*, text="Requested by " + ctx.message.user.name) BROKEN
-    # try:
-    #     channel = ctx.message.user.DMChannel
-    #     print("e")
-    # except:
-    #     ctx.send("line 45")
-    # if not channel:
-    #     try:
-    #         create_DM(ctx.message.user)
-    #     except:
-    #         ctx.send("line 50")
-    # try:
-    #     channel = ctx.message.user.DMChannel
-    #    print("e")
-    # except:
-    #     ctx.send("line 54")
-    # try: 
-    #     await ctx.message.user.DMChannel.send(embed=em)
-    # except:
-    #     await ctx.send("line 58")
+    em.set_footer = (text="Requested by " + ctx.message.user.name)
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send("{}, I DMed you a list of commands.".format(ctx.message.author.mention))
