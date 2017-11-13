@@ -34,9 +34,9 @@ class Mod:
     async def kick(self, ctx, user: discord.Member):
         try:
             await ctx.send(f"Kicked {user.name} from the server.")
-            await user.kick()
-          except:
-              await ctx.send("You don't have permissions to do this")
+            await ctx.guild.kick(user)
+        except:
+            await ctx.send("You don't have permissions to do this")
             
             
 def setup(bot):
