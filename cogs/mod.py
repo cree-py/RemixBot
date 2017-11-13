@@ -32,8 +32,11 @@ class Mod:
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member):
-            await ctx.send(f"Kicked {user.name} from the server.")
+            await ctx.send(f"Kicking {user.name}....")
             await ctx.guild.kick(user)
+    expect discord.Forbidden:
+            await ctx.send("You don't have permissions to do that.")
+    
             
             
 def setup(bot):
