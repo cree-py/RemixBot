@@ -14,7 +14,7 @@ developers = [
 
 @bot.event
 async def on_ready():
-    ctx.send("Bot Is Online")
+   await ctx.send("Bot Is Online")
     await bot.change_presence(game=discord.Game(name="c.help"))
         
 @bot.command()
