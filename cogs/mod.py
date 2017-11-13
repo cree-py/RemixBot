@@ -38,7 +38,15 @@ class Mod:
         except discord.Forbidden:
             await ctx.send("You don't have permissions to do that.")
     
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def ban(self, ctx, user; discord.Member):
+       try:
+           await ctx.guild.ban(user)
+           await ctx.send(f"Banned {user.name} from the server")
+       except discord.Forbidden:
+           await ctx.send("You don't have permissions to do this.")
             
-            
+
 def setup(bot):
         bot.add_cog(Mod(bot))
