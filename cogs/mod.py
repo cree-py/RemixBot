@@ -35,7 +35,7 @@ class Mod:
         try:
             await ctx.send(f"Kicked {user.name} from the server.")
             await user.kick()
-        except;
+        except:
             await ctx.send("You don't have permissions to do this")
             
             
