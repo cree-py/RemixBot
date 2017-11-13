@@ -32,9 +32,10 @@ class Mod:
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member):
-            await ctx.send(f"Kicking {user.name}....")
+        try: 
             await ctx.guild.kick(user)
-    if discord.Forbidden:
+            await ctx.send(f"Kicked {user.name} from the server")
+        except discord.Forbidden:
             await ctx.send("You don't have permissions to do that.")
     
             
