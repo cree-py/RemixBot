@@ -44,7 +44,7 @@ async def help(ctx):
     em.add_field(name="Mute", value="Mutes someone from a specified channel. Requires the ban members permission")
     em.add_field(name="Unmute",value="Unmute someone you previously muted. Requires the ban members permission")
     em.add_field(name="Say",value="Say something as the bot.") 
-    en.add_field(name="Warn", value="Warn a user by command + mention + reason")
+    em.add_field(name="Warn", value="Warn a user usage: c.warn @user reason here")
     em.add_field(name="Help", value="Shows this message.")
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
