@@ -149,4 +149,4 @@ if not os.environ.get('TOKEN'):
 bot.run(os.environ.get('TOKEN').strip('\"'))
 
 if __name__ == "__main__":
-    await bot.change_presence(game=discord.Game(name="c.help | Alpha 0.3.1", type=3), afk=True)
+    bot.change_presence(game=discord.Game(name="c.help | Alpha 0.3.1", type=3), afk=True)
