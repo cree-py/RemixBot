@@ -41,9 +41,10 @@ async def help(ctx):
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
     em.add_field(name="Ban", value="Ban someone from the server.")
-    em.add_field(name="Mute", value="Mutes someone from the channel requires ban member permission")
-    em.add_field(name="Unmute",value="Unmute someone from channel again you need ban member permission")
-    em.add_field(name="Help", value="Shows this message.")
+    em.add_field(name="Mute", value="Mutes someone from a specified channel. Requires the ban members permission")
+    em.add_field(name="Unmute",value="Unmute someone you previously muted. Requires the ban members permission")
+  em.add_field(name="Say",value="Say something as the bot
+em.add_field(name="Help", value="Shows this message.")
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send("{}, I DMed you a list of commands.".format(ctx.message.author.mention))
@@ -136,7 +137,10 @@ async def _eval(ctx, *, body: str):
 async def invite(ctx):
     await ctx.send("Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=364372021422981120&scope=bot&permissions=66186303")
 
-
+@bot.command()
+async def say(ctx, *, message:str):
+    """Say something as the bot"""
+    await ctx.send(message)
 
  
 if not os.environ.get('TOKEN'):
