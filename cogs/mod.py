@@ -58,6 +58,13 @@ class Mod:
     async def unmute(self, ctx, user: discord.Member):
         await ctx.channel.set_permissions(user, send_messages = True)
         await ctx.channel.send(user.mention + " Has been unmuted from this channel")
+        
+    @commands.command()
+    @commands.has_permissions(kick_members = True)
+    async def warn(self, ctx, user: discord.Member, *, reason:str):
+        warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}** for: {reason}"
+        await user.send(warning)
+        await ctx.send(f"**{user}** has been **warned**")
                        
             
 
