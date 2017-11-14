@@ -1,6 +1,6 @@
 '''
 MIT License
-Copyright (c) 2017 AntonyJoseph, Free TNT, Sleedyak
+Copyright (c) 2017 AntonyJoseph, Free TNT, Sleedyak, Victini
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -36,7 +36,7 @@ class Mod:
             await ctx.guild.kick(user)
             await ctx.send(f"Kicked {user.name} from the server")
         except discord.Forbidden:
-            await ctx.send("You don't have permissions to do that.")
+            await ctx.send("I do not have the Kick Members permission, or my role hierarchy is lower than the user you are trying to kick.")
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -45,7 +45,7 @@ class Mod:
            await ctx.guild.ban(user)
            await ctx.send(f"Banned {user.name} from the server")
        except discord.Forbidden:
-           await ctx.send("You don't have permissions to do this.")
+           await ctx.send("I do not have the Kick Members permission, or my role hierarchy is lower than the user you are trying to kick.")
             
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -63,6 +63,8 @@ class Mod:
     @commands.has_permissions(kick_members = True)
     async def warn(self, ctx, user: discord.Member, *, reason:str):
         warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}** for: {reason}"
+        if not reason:
+            warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}**"
         await user.send(warning)
         await ctx.send(f"**{user}** has been **warned**")
                        
