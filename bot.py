@@ -41,6 +41,8 @@ async def help(ctx):
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
     em.add_field(name="Ban", value="Ban someone from the server.")
+    em.add_field(name="Mute", value="Mutes someone from the channel requires ban member permission")
+    em.add_field(name="Unmute",value="Unmute someone from channel again you need ban member permission")
     em.add_field(name="Help", value="Shows this message.")
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
