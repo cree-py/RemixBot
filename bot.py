@@ -29,8 +29,9 @@ def cleanup_code(content):
 
 @bot.event
 async def on_ready():
-   print("Bot Is Online")
-   await bot.change_presence(game=discord.Game(name="c.help | Alpha 0.3.1", type=3), afk=True)
+    print("Bot Is Online")
+    guilds = len(bot.guilds)
+    await bot.change_presence(game=discord.Game(name="{} servers | c.help | Alpha 0.3.1".format(guilds), type=3), afk=True)
 
 
 @bot.command()
