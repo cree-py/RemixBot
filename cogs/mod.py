@@ -50,12 +50,16 @@ class Mod:
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def mute(self, ctx, user: discord.Member):
-        try:
-            await ctx.channel.set_permissions(user, send_messages = False)
-            await ctx.channel.send(user.mention + " Has been muted from this channel")
-        except discord.Forbidden:
-            await ctx.send("You don't have permissions to do this")
+        await ctx.channel.set_permissions(user, send_messages = False)
+        await ctx.channel.send(user.mention + " Has been muted from this channel")
+
+    @commands.command()
+    @commands.has_permissions(ban_members = True)
+    async def unmute(self, ctx, user: discord.Member):
+        await ctx.channel.set_permissions(user, send_messages = True)
+        await ctx.channel.send(user.mention + " Has been unmuted from this channel")
+                       
             
-            
+
 def setup(bot):
         bot.add_cog(Mod(bot))
