@@ -145,7 +145,13 @@ async def say(ctx, *, message:str):
     """Say something as the bot"""
     await ctx.send(message)
 
- 
+@bot.command()
+async def restart(ctx):
+    if ctx.author.id not in developers:
+        return
+    
+    await bot.logout()
+
 if not os.environ.get('TOKEN'):
   print("no token found REEEE!")
 bot.run(os.environ.get('TOKEN').strip('\"'))
