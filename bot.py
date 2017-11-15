@@ -150,6 +150,7 @@ async def restart(ctx):
     if ctx.author.id not in developers:
         return
     
+    await ctx.send("Restarting....")
     await bot.logout()
 
 if not os.environ.get('TOKEN'):
