@@ -50,6 +50,7 @@ class Mod:
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def mute(self, ctx, user: discord.Member):
+    try:
         await ctx.channel.set_permissions(user, send_messages = False)
         await ctx.channel.send(user.mention + " Has been muted from this channel")
     except discord.Forbidden:
