@@ -56,7 +56,7 @@ async def help(ctx):
 
 @bot.command()
 async def ping(ctx):
-    """Pong! Check if bot is working"""
+    '''Pong! Check if bot is working'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
@@ -64,6 +64,7 @@ async def ping(ctx):
 
 @bot.command(name='presence')
 async def set(ctx, Type=None,*,thing=None):
+  '''Devs can set the bot's presence'''
   if ctx.author.id not in developers:
       return
 
@@ -91,6 +92,7 @@ async def set(ctx, Type=None,*,thing=None):
 
 @bot.command(pass_context=True, hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
+    '''eval code in python'''
     
         if ctx.author.id not in developers: return
 
@@ -138,15 +140,17 @@ async def _eval(ctx, *, body: str):
 
 @bot.command()
 async def invite(ctx):
+    '''Server invite'''
     await ctx.send("Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=364372021422981120&scope=bot&permissions=66186303")
 
 @bot.command()
 async def say(ctx, *, message:str):
-    """Say something as the bot"""
+    '''Say something as the bot'''
     await ctx.send(message)
 
 @bot.command()
 async def restart(ctx):
+    '''Devs can restart the bot'''
     if ctx.author.id not in developers:
         return
     
