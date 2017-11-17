@@ -73,7 +73,7 @@ async def help(ctx):
 @bot.command()
 async def ping(ctx):
     """Pong! Check if bot is working"""
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em = discord.Embed(color=discord.Color(value=await ctx.random.color()))
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
