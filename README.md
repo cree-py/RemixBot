@@ -1,3 +1,3 @@
 # creepy.py
 A multifunctional Discord bot
-Made by aj, sleedyak and many others.
+Made by aj, sleedyak, victini, free tnt and many others.
