@@ -1,6 +1,6 @@
 '''
 MIT License
-Copyright (c) 2017 AntonyJoseph, Free TNT, Sleedyak, Victini
+Copyright (c) 2017 AntonyJoseph, Free TNT, Sleedyak, Victini, SharpBit
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -35,9 +35,9 @@ class Mod:
         '''Kick a member from the guild'''
         try: 
             await ctx.guild.kick(user)
-            await ctx.send(f"Kicked {user.name} from the server")
+            await ctx.send(f"Kicked {user.name} from the server.")
         except discord.Forbidden:
-            await ctx.send("I do not have the Kick Members permission, or my role hierarchy is lower than the user you are trying to kick.")
+            await ctx.send(f"You don't have the perms to kick {user.name} from the guild.")
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -45,9 +45,9 @@ class Mod:
        '''Ban a member from the guild'''
        try:
            await ctx.guild.ban(user)
-           await ctx.send(f"Banned {user.name} from the server")
+           await ctx.send(f"Banned {user.name} from the server.")
        except discord.Forbidden:
-           await ctx.send("I do not have the Kick Members permission, or my role hierarchy is lower than the user you are trying to kick.")
+           await ctx.send(f"You don't have the perms to ban {user.name} from the guild.")
             
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -55,22 +55,25 @@ class Mod:
         '''Mute a member in the channel'''
         try:
             await ctx.channel.set_permissions(user, send_messages = False)
-            await ctx.channel.send(user.mention + " Has been muted from this channel")
+            await ctx.channel.send(f"{user.mention} has been muted from this channel")
         except discord.Forbidden:
-            await ctx.send("You don't have permission to mute people, or my role is lower than the user you are trying to mute. Sorry!")
+            await ctx.send(f"You don't have the perms to mute {user.name}.")
 
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def unmute(self, ctx, user: discord.Member):
         '''Unmute a member from the channel'''
-        await ctx.channel.set_permissions(user, send_messages = True)
-        await ctx.channel.send(user.mention + " Has been unmuted from this channel")
+        try:
+            await ctx.channel.set_permissions(user, send_messages = True)
+            await ctx.channel.send(f"{user.mention} has been unmuted from this channel.")
+        except discord.Forbidden:
+            await ctx.send(f'You don\'t have the perms to unmute {user.name}.')
         
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def warn(self, ctx, user: discord.Member, *, reason:str):
         '''Warn a member via DMs'''
-        warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}** for: {reason}"
+        warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}** for {reason}"
         if not reason:
             warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}**"
         await user.send(warning)
