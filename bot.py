@@ -15,7 +15,7 @@ cogs = ['mod']
 for cog in cogs:
     try:
         bot.load_extension(f'{directory}{cog}')
-    except with Exception as e:
+    except Exception as e:
         print(f'LoadError:{cog}{e}')
 bot.remove_command('help')
 
