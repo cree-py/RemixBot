@@ -32,6 +32,7 @@ class Mod:
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member):
+        '''Kick a member from the guild'''
         try: 
             await ctx.guild.kick(user)
             await ctx.send(f"Kicked {user.name} from the server")
@@ -41,6 +42,7 @@ class Mod:
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def ban(self, ctx, user: discord.Member):
+       '''Ban a member from the guild'''
        try:
            await ctx.guild.ban(user)
            await ctx.send(f"Banned {user.name} from the server")
@@ -50,21 +52,24 @@ class Mod:
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def mute(self, ctx, user: discord.Member):
-    try:
-        await ctx.channel.set_permissions(user, send_messages = False)
-        await ctx.channel.send(user.mention + " Has been muted from this channel")
-    except discord.Forbidden:
-        await ctx.send("You don't have permission to mute people, or my role is lower than the user you are trying to mute. Sorry!")
+        '''Mute a member in the channel'''
+        try:
+            await ctx.channel.set_permissions(user, send_messages = False)
+            await ctx.channel.send(user.mention + " Has been muted from this channel")
+        except discord.Forbidden:
+            await ctx.send("You don't have permission to mute people, or my role is lower than the user you are trying to mute. Sorry!")
 
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def unmute(self, ctx, user: discord.Member):
+        '''Unmute a member from the channel'''
         await ctx.channel.set_permissions(user, send_messages = True)
         await ctx.channel.send(user.mention + " Has been unmuted from this channel")
         
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def warn(self, ctx, user: discord.Member, *, reason:str):
+        '''Warn a member via DMs'''
         warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}** for: {reason}"
         if not reason:
             warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}**"
