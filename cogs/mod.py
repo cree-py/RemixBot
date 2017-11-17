@@ -36,7 +36,7 @@ class Mod:
             await ctx.guild.kick(user)
             await ctx.send(f"Kicked {user.name} from the server")
         except discord.Forbidden:
-            await ctx.send("I do not have the Kick Members permission, or my role hierarchy is lower than the user you are trying to kick.")
+            await ctx.send("You don't have the perms to kick members.")
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -45,22 +45,22 @@ class Mod:
            await ctx.guild.ban(user)
            await ctx.send(f"Banned {user.name} from the server")
        except discord.Forbidden:
-           await ctx.send("I do not have the Kick Members permission, or my role hierarchy is lower than the user you are trying to kick.")
+           await ctx.send("You don't have the perms to ban member.")
             
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def mute(self, ctx, user: discord.Member):
     try:
         await ctx.channel.set_permissions(user, send_messages = False)
-        await ctx.channel.send(user.mention + " Has been muted from this channel")
+        await ctx.channel.send(user.mention + " has been muted from this channel")
     except discord.Forbidden:
-        await ctx.send("You don't have permission to mute people, or my role is lower than the user you are trying to mute. Sorry!")
+        await ctx.send("You don't have the perms to mute members")
 
     @commands.command()
     @commands.has_permissions(ban_members = True)
     async def unmute(self, ctx, user: discord.Member):
         await ctx.channel.set_permissions(user, send_messages = True)
-        await ctx.channel.send(user.mention + " Has been unmuted from this channel")
+        await ctx.channel.send(user.mention + " has been unmuted from this channel")
         
     @commands.command()
     @commands.has_permissions(kick_members = True)
@@ -69,7 +69,7 @@ class Mod:
         if not reason:
             warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}**"
         await user.send(warning)
-        await ctx.send(f"**{user}** has been **warned**")
+        await ctx.send(f"**{user}** has been **warned**.")
                        
             
 
