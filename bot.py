@@ -33,10 +33,10 @@ developers = [
 
 async def process_commands(message):
     '''Utilizes the CustomContext subclass of discord.Context'''
-    ctx = await get_context(message, cls=CustomContext)
+    ctx = await bot.get_context(message, cls=CustomContext)
     if ctx.command is None:
         return
-    await invoke(ctx)
+    await bot.invoke(ctx)
 
 
 def cleanup_code(content):
