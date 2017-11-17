@@ -28,6 +28,13 @@ developers = [
     307133814834987008
 ]
 
+async def process_commands(message):
+        '''Utilizes the CustomContext subclass of discord.Context'''
+        ctx = await get_context(message, cls=CustomContext)
+        if ctx.command is None:
+            return
+        await invoke(ctx)
+
 def cleanup_code(content):
     """Automatically removes code blocks from the code."""
     # remove ```py\n```
