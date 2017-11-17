@@ -6,6 +6,7 @@ import traceback
 import textwrap
 from contextlib import redirect_stdout
 from discord.ext import commands
+from ext.context import CustomContext
 
 client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
@@ -18,7 +19,7 @@ for cog in cogs:
     except Exception as e:
         print(f'LoadError:{cog}\n')
         print('{type(e).__name__}: {e}')
-        
+
 bot.remove_command('help')
 
 developers = [
@@ -29,12 +30,14 @@ developers = [
     281821029490229251
 ]
 
+
 async def process_commands(message):
-        '''Utilizes the CustomContext subclass of discord.Context'''
-        ctx = await get_context(message, cls=CustomContext)
-        if ctx.command is None:
-            return
-        await invoke(ctx)
+    '''Utilizes the CustomContext subclass of discord.Context'''
+    ctx = await get_context(message, cls=CustomContext)
+    if ctx.command is None:
+        return
+    await invoke(ctx)
+
 
 def cleanup_code(content):
     """Automatically removes code blocks from the code."""
@@ -43,6 +46,7 @@ def cleanup_code(content):
         return '\n'.join(content.split('\n')[1:-1])
 
     return content.strip('` \n')
+
 
 @bot.event
 async def on_ready():
@@ -59,9 +63,11 @@ async def help(ctx):
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
     em.add_field(name="Ban", value="Ban someone from the server.")
-    em.add_field(name="Mute", value="Mutes someone from a specified channel. Requires the ban members permission")
-    em.add_field(name="Unmute",value="Unmute someone you previously muted. Requires the ban members permission")
-    em.add_field(name="Say",value="Say something as the bot.") 
+    em.add_field(
+        name="Mute", value="Mutes someone from a specified channel. Requires the ban members permission")
+    em.add_field(
+        name="Unmute", value="Unmute someone you previously muted. Requires the ban members permission")
+    em.add_field(name="Say", value="Say something as the bot.")
     em.add_field(name="Warn", value="Warn a user. Usage : c.warn @user <reason>")
     em.add_field(name="Help", value="Shows this message.")
     await bot.get_user(ctx.message.author.id).send(embed=em)
@@ -69,6 +75,7 @@ async def help(ctx):
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
     else:
         pass
+
 
 @bot.command()
 async def ping(ctx):
@@ -78,100 +85,104 @@ async def ping(ctx):
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
-@bot.command(name='presence')
-async def set(ctx, Type=None,*,thing=None):
-  if ctx.author.id not in developers:
-      return
 
-  if Type is None:
-    await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
-  else:
-    if Type.lower() == 'stream':
-      await bot.change_presence(game=discord.Game(name=thing,type=1,url='https://www.twitch.tv/a'),status='online')
-      await ctx.send(f'Set presence to. `Streaming {thing}`')
-    elif Type.lower() == 'game':
-      await bot.change_presence(game=discord.Game(name=thing))
-      await ctx.send(f'Set presence to `Playing {thing}`')
-    elif Type.lower() == 'watch':
-      await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
-      await ctx.send(f'Set presence to `Watching {thing}`')
-    elif Type.lower() == 'listen':
-      await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
-      await ctx.send(f'Set presence to `Listening to {thing}`')
-    elif Type.lower() == 'clear':
-      await bot.change_presence(game=None)
-      await ctx.send('Cleared Presence')
+@bot.command(name='presence')
+async def set(ctx, Type=None, *, thing=None):
+    if ctx.author.id not in developers:
+        return
+
+    if Type is None:
+        await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
     else:
-      await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
+        if Type.lower() == 'stream':
+            await bot.change_presence(game=discord.Game(name=thing, type=1, url='https://www.twitch.tv/a'), status='online')
+            await ctx.send(f'Set presence to. `Streaming {thing}`')
+        elif Type.lower() == 'game':
+            await bot.change_presence(game=discord.Game(name=thing))
+            await ctx.send(f'Set presence to `Playing {thing}`')
+        elif Type.lower() == 'watch':
+            await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
+            await ctx.send(f'Set presence to `Watching {thing}`')
+        elif Type.lower() == 'listen':
+            await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
+            await ctx.send(f'Set presence to `Listening to {thing}`')
+        elif Type.lower() == 'clear':
+            await bot.change_presence(game=None)
+            await ctx.send('Cleared Presence')
+        else:
+            await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
 
 @bot.command(pass_context=True, hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
-    
-        if ctx.author.id not in developers: return
 
-        env = {
-            'bot': bot,
-            'ctx': ctx,
-            'channel': ctx.channel,
-            'author': ctx.author,
-            'guild': ctx.guild,
-            'message': ctx.message,
-        }
+    if ctx.author.id not in developers:
+        return
 
-        env.update(globals())
+    env = {
+        'bot': bot,
+        'ctx': ctx,
+        'channel': ctx.channel,
+        'author': ctx.author,
+        'guild': ctx.guild,
+        'message': ctx.message,
+    }
 
-        body = cleanup_code(body)
-        stdout = io.StringIO()
+    env.update(globals())
 
-        to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
+    body = cleanup_code(body)
+    stdout = io.StringIO()
 
+    to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
+
+    try:
+        exec(to_compile, env)
+    except Exception as e:
+        return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+
+    func = env['func']
+    try:
+        with redirect_stdout(stdout):
+            ret = await func()
+    except Exception as e:
+        value = stdout.getvalue()
+        await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+    else:
+        value = stdout.getvalue()
         try:
-            exec(to_compile, env)
-        except Exception as e:
-            return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+            await ctx.message.add_reaction('\u2705')
+        except:
+            pass
 
-        func = env['func']
-        try:
-            with redirect_stdout(stdout):
-                ret = await func()
-        except Exception as e:
-            value = stdout.getvalue()
-            await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+        if ret is None:
+            if value:
+                await ctx.send(f'```py\n{value}\n```')
         else:
-            value = stdout.getvalue()
-            try:
-                await ctx.message.add_reaction('\u2705')
-            except:
-                pass
-
-            if ret is None:
-                if value:
-                    await ctx.send(f'```py\n{value}\n```')
-            else:
-                await ctx.send(f'```py\n{value}{ret}\n```')
+            await ctx.send(f'```py\n{value}{ret}\n```')
 
 
 @bot.command()
 async def invite(ctx):
     await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=66186303")
 
+
 @bot.command()
-async def say(ctx, *, message:str):
+async def say(ctx, *, message: str):
     """Say something as the bot"""
     await ctx.message.delete()
     await ctx.send(message)
+
 
 @bot.command()
 async def restart(ctx):
     if ctx.author.id not in developers:
         return
-    
+
     await ctx.send("Restarting....")
     await bot.logout()
 
 if not os.environ.get('TOKEN'):
-  print("no token found REEEE!")
+    print("no token found REEEE!")
 bot.run(os.environ.get('TOKEN').strip('\"'))
 
 if __name__ == "__main__":
