@@ -52,28 +52,63 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | Alpha 0.3.1", type=3), afk=True)
 
 
-@bot.command()
-async def help(ctx):
-    '''SHows this message'''
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)"
-    em.add_field(name="Ping", value="Pong!")
-    em.add_field(name="Invite", value="Invite me to your server.")
-    em.add_field(name="Kick", value="Kick someone from the server.")
-    em.add_field(name="Ban", value="Ban someone from the server.")
-    em.add_field(
-        name="Mute", value="Mutes someone from a specified channel. Requires the ban members permission")
-    em.add_field(
-        name="Unmute", value="Unmute someone you previously muted. Requires the ban members permission")
-    em.add_field(name="Say", value="Say something as the bot.")
-    em.add_field(name="Warn", value="Warn a user. Usage : c.warn @user <reason>")
-    em.add_field(name="Help", value="Shows this message.")
-    await bot.get_user(ctx.message.author.id).send(embed=em)
-    if ctx.message.channel.guild:
-        await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
+@bot.command(name='help')
+async def new_help_command(ctx, *commands: str):
+    '''Shows this message'''
+    destination = ctx.message.author if bot.pm_help else ctx.message.channel
+
+    def repl(obj):
+        return bot._mentions_transforms.get(obj.group(0), '')
+
+    # help by itself just lists our own commands.
+    if len(commands) == 0:
+        pages = await bot.formatter.format_help_for(ctx, bot)
+    elif len(commands) == 1:
+        # try to see if it is a cog name
+        name = bot._mention_pattern.sub(repl, commands[0])
+        command = None
+        if name in bot.cogs:
+            command = bot.cogs[name]
+        else:
+            command = bot.all_commands.get(name)
+            if command is None:
+                await destination.send(bot.command_not_found.format(name))
+                return
+
+        pages = await bot.formatter.format_help_for(ctx, command)
     else:
-        pass
+        name = bot._mention_pattern.sub(repl, commands[0])
+        command = bot.all_commands.get(name)
+        if command is None:
+            await destination.send(bot.command_not_found.format(name))
+            return
+
+        for key in commands[1:]:
+            try:
+                key = bot._mention_pattern.sub(repl, key)
+                command = command.all_commands.get(key)
+                if command is None:
+                    await destination.send(bot.command_not_found.format(key))
+                    return
+            except AttributeError:
+                await destination.send(bot.command_has_no_subcommands.format(command, key))
+                return
+
+    pages = await bot.formatter.format_help_for(ctx, command)
+
+    if bot.pm_help is None:
+        characters = sum(map(lambda l: len(l), pages))
+        # modify destination based on length of pages.
+        if characters > 1000:
+            destination = ctx.message.author
+
+    color = discord.Color(value=0x00ff00)
+    for embed in pages:
+        em = discord.Embed(title='Command Help', color=color)  # create embed object
+        embed = embed.strip('```')  # remove the codeblock
+        em.description = embed  # set the string from default help message as the description
+        try:
+            await ctx.send(embed=em)  # sends the embed
 
 
 @bot.command()
