@@ -25,9 +25,17 @@ class Fun:
             em = discord.Embed(color=discord.Color(value=0xff0000))
             
         response = responses[num]
-        em.title = question
-        em.description = response
-        await ctx.send(embed=em)
+        
+        if "?" not in response:
+            await ctx.send("That doesn't look like a question.")
+        else:
+            em.title = "🎱" + question
+            em.description = response
+            await ctx.send(embed=em)
+        
+    @commands.command()
+    async def randomnumber(self, ctx):
+        await ctx.send('Your random number is: {}'.format(random.randint(0, 100)))
         
 def setup(bot):
         bot.add_cog(Fun(bot))
