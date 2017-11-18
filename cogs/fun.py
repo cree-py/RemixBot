@@ -21,3 +21,6 @@ class Fun:
         em.title = question
         em.description = response
         await ctx.send(embed=em)
+        
+def setup(bot):
+        bot.add_cog(Fun(bot))
