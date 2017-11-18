@@ -9,6 +9,10 @@ class Fun:
 
     @commands.command(aliases=['8ball'])
     async def eightball(self, ctx, *, question: str):
+        '''Ask the 8 ball a question'''
+        if not question.endswith('?'):
+            await ctx.send('Please ask a question')
+
         responses = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely",
                      "You may rely on it", "As I see it, yes", "Most likely", "Outlook good",
                      "Yes", "Signs point to yes", "Reply hazy try again", "Ask again later",
@@ -30,7 +34,7 @@ class Fun:
         em.description = response
         await ctx.send(embed=em)
 
-    @commands.command(aliases=['randnum', 'randomnum', 'randnumber'])
+    @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
     async def randomnumber(self, ctx):
         await ctx.send('Your random number is: {random.randint(101)}')
 
@@ -48,7 +52,7 @@ class Fun:
         '''Rolls a certain number of dice'''
         if number == 1:
             number = 20
-            
+
         fmt = ''
         for i in range(1, number + 1):
             fmt += f'`Dice {i}: {random.randint(1, 6)}`\n'
@@ -57,7 +61,7 @@ class Fun:
                            title='Roll a certain number of dice', description=fmt)
         await ctx.send(embed=em)
 
-    @commands.command(aliases = ['randquote', 'quote'])
+    @commands.command(aliases=['randquote', 'quote'])
     async def randomquote(self, ctx):
         num = random.randint(0, 12)
         quotes = ["*You can do anything, but not everything.*\n—David Allen",
@@ -75,7 +79,7 @@ class Fun:
                   "*People often say that motivation doesn’t last. Well, neither does bathing – that’s why we recommend it daily.*\n—Zig Ziglar"]
         quote = quotes[num]
         await ctx.send(quote)
-        
-    
+
+
 def setup(bot):
     bot.add_cog(Fun(bot))
