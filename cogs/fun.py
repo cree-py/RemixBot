@@ -17,8 +17,14 @@ class Fun:
                  "Very doubtful"]
 
         num = random.randint(0, 20)
+        if num < 10:
+            em = discord.Embed(color=discord.Color(value=0x00ff00))
+        elif num < 15:
+            em = discord.Embed(color=discord.Color(value=0xffff00))
+        else:
+            em = discord.Embed(color=discord.Color(value=0xff0000))
+            
         response = responses[num]
-        em = discord.Embed(color=discord.Color(value=0xff0000))
         em.title = question
         em.description = response
         await ctx.send(embed=em)
