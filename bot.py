@@ -37,6 +37,10 @@ async def process_commands(message):
     if ctx.command is None:
         return
     await bot.invoke(ctx)
+    
+async def on_command(self, ctx):
+    cmd = ctx.command.qualified_name.replace(' ', '_')
+    self.commands_used[cmd] += 1
 
 
 def cleanup_code(content):
@@ -80,35 +84,35 @@ async def help(ctx):
 @bot.command()
 async def ping(ctx):
     """Pong! Check if bot is working"""
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em = discord.Embed(color=await ctx.random_color)
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
 
 @bot.command(name='presence')
-async def set(ctx, Type=None, *, thing=None):
+async def set(ctx, type=None, *, game=None):
     if ctx.author.id not in developers:
         return
 
-    if Type is None:
+    if type is None:
         await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
     else:
-        if Type.lower() == 'stream':
-            await bot.change_presence(game=discord.Game(name=thing, type=1, url='https://www.twitch.tv/a'), status='online')
-            await ctx.send(f'Set presence to. `Streaming {thing}`')
-        elif Type.lower() == 'game':
-            await bot.change_presence(game=discord.Game(name=thing))
-            await ctx.send(f'Set presence to `Playing {thing}`')
-        elif Type.lower() == 'watch':
-            await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
-            await ctx.send(f'Set presence to `Watching {thing}`')
-        elif Type.lower() == 'listen':
-            await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
-            await ctx.send(f'Set presence to `Listening to {thing}`')
-        elif Type.lower() == 'clear':
+        if type.lower() == 'stream':
+            await bot.change_presence(game=discord.Game(name=game, type=1, url='https://www.twitch.tv/a'), status='online')
+            await ctx.send(f'Set presence to. `Streaming {game}`')
+        elif type.lower() == 'game':
+            await bot.change_presence(game=discord.Game(name=game))
+            await ctx.send(f'Set presence to `Playing {game}`')
+        elif type.lower() == 'watch':
+            await bot.change_presence(game=discord.Game(name=game, type=3), afk=True)
+            await ctx.send(f'Set presence to `Watching {game}`')
+        elif type.lower() == 'listen':
+            await bot.change_presence(game=discord.Game(name=game, type=2), afk=True)
+            await ctx.send(f'Set presence to `Listening to {game}`')
+        elif type.lower() == 'clear':
             await bot.change_presence(game=None)
-            await ctx.send('Cleared Presence')
+            await ctx.send('Cleared Presence.')
         else:
             await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
@@ -177,13 +181,10 @@ async def say(ctx, *, message: str):
 async def restart(ctx):
     if ctx.author.id not in developers:
         return
-
     await ctx.send("Restarting....")
     await bot.logout()
 
-if not os.environ.get('TOKEN'):
-    print("no token found REEEE!")
-bot.run(os.environ.get('TOKEN').strip('\"'))
-
 if __name__ == "__main__":
-    print("e")
+    if not os.environ.get('TOKEN'):
+        print('No token found.')
+    bot.run(os.environ.get('TOKEN').strip('\"'
