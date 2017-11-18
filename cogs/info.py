@@ -45,7 +45,7 @@ class Info:
         if 'color' not in locals():
             color = 0
 
-        rolenames = ', '.join([r.name for r in user.roles if r != '@everyone']) or 'None'
+        rolenames = ', '.join([r.name for r in roles if r != '@everyone']) or 'None'
         time = ctx.message.created_at
         desc = f'{user.name} is chilling in {user.status} mode.'
         member_number = sorted(guild.members,  key=lambda m: m.joined_at).index(user) + 1
@@ -55,7 +55,7 @@ class Info:
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y')),
         em.add_field(name='Join Date', value=user.joined_at.__format__('%A, %B %d, %Y')),
         em.add_field(name='Roles', value=rolenames)
-        em.set_thumbnail(url=None or avi)
+        em.set_thumbnail(url=avi or None)
         await ctx.send(embed=em)
 
 
