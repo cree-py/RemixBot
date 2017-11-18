@@ -9,9 +9,20 @@ from discord.ext import commands
 client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
 
+# Somebody fix this monstrosity pls
+
 try:
     bot.load_extension("cogs.mod")
+except:
+    pass
+
+try:
     bot.load_extension("cogs.info")
+except:
+    pass
+
+try:
+    bot.load_extension("cogs.fun")
 except:
     pass
 
