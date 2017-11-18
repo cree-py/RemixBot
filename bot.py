@@ -48,7 +48,7 @@ async def on_ready():
 
 @bot.command()
 async def help(ctx):
-    '''SHows this message'''
+    '''Shows this message'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)"
@@ -62,6 +62,11 @@ async def help(ctx):
         name="Unmute", value="Unmute someone you previously muted. Requires the ban members permission")
     em.add_field(name="Say", value="Say something as the bot.")
     em.add_field(name="Warn", value="Warn a user. Usage : c.warn @user <reason>")
+    em.add_field(name="Randomnumber", value="Returns a number between 1 and 100")
+    em.add_field(name="8ball", value="Ask 8ball a question")
+    em.add_field(name="Quote", value="Inspirational quotes")
+    em.add_field(name="Dice", value="Roll some dice")
+    em.add_field(name="Coin", value="Flip a coin")
     em.add_field(name="Help", value="Shows this message.")
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
