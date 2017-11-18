@@ -1,12 +1,10 @@
 import discord
 import os
 import io
-import sys
 import traceback
 import textwrap
 from contextlib import redirect_stdout
 from discord.ext import commands
-from ext.context import CustomContext
 
 client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
@@ -18,7 +16,7 @@ for cog in cogs:
         bot.load_extension(f'{directory}{cog}')
     except Exception as e:
         print(f'LoadError:{cog}\n')
-        print('{type(e).__name__}: {e}')
+        print(f'{type(e).__name__}: {e}')
 
 bot.remove_command('help')
 
@@ -31,20 +29,8 @@ developers = [
 ]
 
 
-async def process_commands(message):
-    '''Utilizes the CustomContext subclass of discord.Context'''
-    ctx = await bot.get_context(message, cls=CustomContext)
-    if ctx.command is None:
-        return
-    await bot.invoke(ctx)
-    
-async def on_command(self, ctx):
-    cmd = ctx.command.qualified_name.replace(' ', '_')
-    self.commands_used[cmd] += 1
-
-
 def cleanup_code(content):
-    """Automatically removes code blocks from the code."""
+    '''Automatically removes code blocks from the code.'''
     # remove ```py\n```
     if content.startswith('```') and content.endswith('```'):
         return '\n'.join(content.split('\n')[1:-1])
@@ -60,9 +46,10 @@ async def on_ready():
 
 @bot.command()
 async def help(ctx):
+    '''SHows this message'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak, Victini and Free TNT. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)"
+    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)"
     em.add_field(name="Ping", value="Pong!")
     em.add_field(name="Invite", value="Invite me to your server.")
     em.add_field(name="Kick", value="Kick someone from the server.")
@@ -83,41 +70,41 @@ async def help(ctx):
 
 @bot.command()
 async def ping(ctx):
-    """Pong! Check if bot is working"""
-    em = discord.Embed(color=await ctx.random_color)
+    '''Pong! Check if bot is working'''
+    em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
 
 @bot.command(name='presence')
-async def set(ctx, type=None, *, game=None):
+async def _presence(ctx, Type=None, *, thing=None):
     if ctx.author.id not in developers:
         return
 
-    if type is None:
+    if Type is None:
         await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
     else:
-        if type.lower() == 'stream':
-            await bot.change_presence(game=discord.Game(name=game, type=1, url='https://www.twitch.tv/a'), status='online')
-            await ctx.send(f'Set presence to. `Streaming {game}`')
-        elif type.lower() == 'game':
-            await bot.change_presence(game=discord.Game(name=game))
-            await ctx.send(f'Set presence to `Playing {game}`')
-        elif type.lower() == 'watch':
-            await bot.change_presence(game=discord.Game(name=game, type=3), afk=True)
-            await ctx.send(f'Set presence to `Watching {game}`')
-        elif type.lower() == 'listen':
-            await bot.change_presence(game=discord.Game(name=game, type=2), afk=True)
-            await ctx.send(f'Set presence to `Listening to {game}`')
-        elif type.lower() == 'clear':
+        if Type.lower() == 'stream':
+            await bot.change_presence(game=discord.Game(name=thing, type=1, url='https://www.twitch.tv/a'), status='online')
+            await ctx.send(f'Set presence to. `Streaming {thing}`')
+        elif Type.lower() == 'game':
+            await bot.change_presence(game=discord.Game(name=thing))
+            await ctx.send(f'Set presence to `Playing {thing}`')
+        elif Type.lower() == 'watch':
+            await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
+            await ctx.send(f'Set presence to `Watching {thing}`')
+        elif Type.lower() == 'listen':
+            await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
+            await ctx.send(f'Set presence to `Listening to {thing}`')
+        elif Type.lower() == 'clear':
             await bot.change_presence(game=None)
-            await ctx.send('Cleared Presence.')
+            await ctx.send('Cleared Presence')
         else:
             await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
 
-@bot.command(pass_context=True, hidden=True, name='eval')
+@bot.command(hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
 
     if ctx.author.id not in developers:
@@ -172,7 +159,7 @@ async def invite(ctx):
 
 @bot.command()
 async def say(ctx, *, message: str):
-    """Say something as the bot"""
+    '''Say something as the bot'''
     await ctx.message.delete()
     await ctx.send(message)
 
@@ -181,10 +168,11 @@ async def say(ctx, *, message: str):
 async def restart(ctx):
     if ctx.author.id not in developers:
         return
+
     await ctx.send("Restarting....")
     await bot.logout()
 
 if __name__ == "__main__":
     if not os.environ.get('TOKEN'):
-        print('No token found.')
-    bot.run(os.environ.get('TOKEN').strip('\"'
+        print("No token found REEEE!")
+    bot.run(os.environ.get('TOKEN').strip('\"'))
