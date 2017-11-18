@@ -14,7 +14,7 @@ class Info:
         '''Get server info'''
         guild = ctx.guild
         guild_age = (ctx.message.created_at - guild.created_at).days
-        created_at = f'Server created on %b %d %Y at %H:%M. That\'s over {guild_age} days ago!'
+        created_at = f"Server created on {guild.created_at.strftime('%b %d %Y at %H:%M')}. That\'s over {guild_age} days ago!"
         color = discord.Color(value=0x00ff00)
 
         em = discord.Embed(description=created_at, color=color)
@@ -55,7 +55,7 @@ class Info:
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y')),
         em.add_field(name='Join Date', value=user.joined_at.__format__('%A, %B %d, %Y')),
         em.add_field(name='Roles', value=rolenames)
-        # em.set_thumbnail(avi) broken
+        em.set_thumbnail(None or avi)
         await ctx.send(embed=em)
 
 
