@@ -107,8 +107,7 @@ async def new_help_command(ctx, *commands: str):
         em = discord.Embed(title='Command Help', color=color)  # create embed object
         embed = embed.strip('```')  # remove the codeblock
         em.description = embed  # set the string from default help message as the description
-        try:
-            await ctx.send(embed=em)  # sends the embed
+        await ctx.send(embed=em)  # sends the embed
 
 
 @bot.command()
