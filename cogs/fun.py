@@ -26,12 +26,10 @@ class Fun:
             
         response = responses[num]
         
-        if "?" not in response:
-            await ctx.send("That doesn't look like a question.")
-        else:
-            em.title = "🎱" + question
-            em.description = response
-            await ctx.send(embed=em)
+        
+        em.title = "🎱" + question
+        em.description = response
+        await ctx.send(embed=em)
         
     @commands.command()
     async def randomnumber(self, ctx):
