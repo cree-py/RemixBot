@@ -11,7 +11,7 @@ class Fun:
     async def eightball(self, ctx, *, question: str):
         '''Ask the 8 ball a question'''
         if not question.endswith('?'):
-            await ctx.send('Please ask a question')
+            return await ctx.send('Please ask a question')
 
         responses = ["It is certain", "It is decidedly so", "Without a doubt", "Yes definitely",
                      "You may rely on it", "As I see it, yes", "Most likely", "Outlook good",
