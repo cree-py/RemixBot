@@ -87,7 +87,7 @@ class Mod:
         
     @commands.command()
     @commands.has_permissions(manage_messages = True)
-    async def purge(self, ctx, messages:integer):
+    async def purge(self, ctx, messages:int):
         '''Delete messages'''
         if messages > 99:
             messages == 99
