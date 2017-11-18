@@ -55,7 +55,7 @@ class Info:
         em.add_field(name='Account Created', value=user.created_at.__format__('%A, %B %d, %Y')),
         em.add_field(name='Join Date', value=user.joined_at.__format__('%A, %B %d, %Y')),
         em.add_field(name='Roles', value=rolenames)
-        em.set_thumbnail(None or avi)
+        em.set_thumbnail(url=None or avi)
         await ctx.send(embed=em)
 
 
