@@ -46,7 +46,7 @@ class Fun:
     @commands.command()
     async def dice(self, ctx, number=1):
         '''Rolls a certain number of dice'''
-        if number == 1:
+        if number > 20:
             number = 20
             
         fmt = ''
