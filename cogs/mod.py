@@ -29,6 +29,12 @@ class Mod:
         self.bot = bot
         
 
+    # DO NOT change the error messages again
+    # The @commands check eliminates user perms
+    # So the only possible way is for the bot to
+    # not have perms.
+    # The old error message is inaccurate.
+    
     @commands.command()
     @commands.has_permissions(kick_members = True)
     async def kick(self, ctx, user: discord.Member):
@@ -37,7 +43,7 @@ class Mod:
             await ctx.guild.kick(user)
             await ctx.send(f"Kicked {user.name} from the server.")
         except discord.Forbidden:
-            await ctx.send(f"You don't have the perms to kick {user.name} from the guild.")
+            await ctx.send("I could not kick the user. Make sure I have the kick members permission.")
     
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -47,7 +53,7 @@ class Mod:
            await ctx.guild.ban(user)
            await ctx.send(f"Banned {user.name} from the server.")
        except discord.Forbidden:
-           await ctx.send(f"You don't have the perms to ban {user.name} from the guild.")
+           await ctx.send("I could not ban the user. Make sure I have the ban members permission.")
             
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -57,7 +63,7 @@ class Mod:
             await ctx.channel.set_permissions(user, send_messages = False)
             await ctx.channel.send(f"{user.mention} has been muted from this channel")
         except discord.Forbidden:
-            await ctx.send(f"You don't have the perms to mute {user.name}.")
+            await ctx.send("I could not unmute the user. Make sure I have the manage channels permission.")
 
     @commands.command()
     @commands.has_permissions(ban_members = True)
@@ -67,7 +73,7 @@ class Mod:
             await ctx.channel.set_permissions(user, send_messages = True)
             await ctx.channel.send(f"{user.mention} has been unmuted from this channel.")
         except discord.Forbidden:
-            await ctx.send(f'You don\'t have the perms to unmute {user.name}.')
+            await ctx.send("I could not unmute the user. Make sure I have the manage channels permission.")
         
     @commands.command()
     @commands.has_permissions(kick_members = True)
@@ -78,6 +84,18 @@ class Mod:
             warning = f"You have been warned in **{ctx.message.guild}** by **{ctx.message.author}**"
         await user.send(warning)
         await ctx.send(f"**{user}** has been **warned**")
+        
+    @commands.command()
+    @commands.has_permissions(manage_messages = True)
+    async def purge(self, ctx, messages:integer):
+        '''Delete messages'''
+        if messages > 99:
+            messages == 99
+        
+        try:
+            ctx.delete_messages(messages)
+        except:
+            await ctx.send("I cannot delete the messages. Make sure I have the manage messages permission.")
                        
             
 
