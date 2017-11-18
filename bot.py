@@ -9,14 +9,8 @@ from discord.ext import commands
 client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
 
-directory = 'cog.'
-cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
-for cog in cogs:
-    try:
-        bot.load_extension(f'{directory}{cog}')
-    except Exception as e:
-        print(f'LoadError:{cog}\n')
-        print(f'{type(e).__name__}: {e}')
+bot.load_extension(cogs.mod)
+bot.load_extension(cogs.info)
 
 bot.remove_command('help')
 
