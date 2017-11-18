@@ -9,22 +9,16 @@ from discord.ext import commands
 client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
 
-# Somebody fix this monstrosity pls
+directory = 'cogs.'
+cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
-try:
-    bot.load_extension("cogs.mod")
-except:
-    pass
+for cog in cogs:
+    try:
+        bot.load_extension(f'{directory}{cog}')
+    except Exception as e:
+        print(f'LoadError: {cog}\n'
+              f'{type(e).__name__}: {e}')
 
-try:
-    bot.load_extension("cogs.info")
-except:
-    pass
-
-try:
-    bot.load_extension("cogs.fun")
-except:
-    pass
 
 bot.remove_command('help')
 
@@ -86,26 +80,26 @@ async def ping(ctx):
 
 
 @bot.command(name='presence')
-async def _presence(ctx, Type=None, *, thing=None):
+async def _presence(ctx, type=None, *, game=None):
     if ctx.author.id not in developers:
         return
 
-    if Type is None:
+    if type is None:
         await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
     else:
-        if Type.lower() == 'stream':
-            await bot.change_presence(game=discord.Game(name=thing, type=1, url='https://www.twitch.tv/a'), status='online')
-            await ctx.send(f'Set presence to. `Streaming {thing}`')
-        elif Type.lower() == 'game':
-            await bot.change_presence(game=discord.Game(name=thing))
-            await ctx.send(f'Set presence to `Playing {thing}`')
-        elif Type.lower() == 'watch':
-            await bot.change_presence(game=discord.Game(name=thing, type=3), afk=True)
-            await ctx.send(f'Set presence to `Watching {thing}`')
-        elif Type.lower() == 'listen':
-            await bot.change_presence(game=discord.Game(name=thing, type=2), afk=True)
-            await ctx.send(f'Set presence to `Listening to {thing}`')
-        elif Type.lower() == 'clear':
+        if type.lower() == 'stream':
+            await bot.change_presence(game=discord.Game(name=game, type=1, url='https://www.twitch.tv/a'), status='online')
+            await ctx.send(f'Set presence to. `Streaming {game}`')
+        elif type.lower() == 'game':
+            await bot.change_presence(game=discord.Game(name=game))
+            await ctx.send(f'Set presence to `Playing {game}`')
+        elif type.lower() == 'watch':
+            await bot.change_presence(game=discord.Game(name=game, type=3), afk=True)
+            await ctx.send(f'Set presence to `Watching {game}`')
+        elif type.lower() == 'listen':
+            await bot.change_presence(game=discord.Game(name=game, type=2), afk=True)
+            await ctx.send(f'Set presence to `Listening to {game}`')
+        elif type.lower() == 'clear':
             await bot.change_presence(game=None)
             await ctx.send('Cleared Presence')
         else:
