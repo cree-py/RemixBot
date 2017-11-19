@@ -86,7 +86,7 @@ async def help(ctx):
     em.add_field(name="Fun", value=f"`{ctx.prefix}dice` Roll a number of dice. Default = 1.\n"
                                    f"`{ctx.prefix}eightball` Ask the 8 ball a question.\n"
                                    f"`{ctx.prefix}flipcoin` Flip a two-sided coin.\n"
-                                   f"`{ctx.prefix}randomnumber` Get a random number between 0 and 100.\n"
+                                   f"`{ctx.prefix}randomnumber` Get a random number between a minimum and maximum number (or 1 and 100).\n"
                                    f"`{ctx.prefix}randomquote` Get a random quote.")
     em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
                                     f"`{ctx.prefix}userinfo` Get user info for a user.")
