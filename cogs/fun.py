@@ -87,7 +87,7 @@ class Fun:
 
     @commands.command(aliases=['randquote', 'quote'])
     async def randomquote(self, ctx):
-        num = random.randint(0, 12)
+        num = random.randint(0, 13)
         quotes = ["*You can do anything, but not everything.*\n—David Allen",
                   "*Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.*\n—Antoine de Saint-Exupéry",
                   "*You miss 100 percent of the shots you never take.*\n—Wayne Gretzky",
