@@ -63,4 +63,4 @@ class Bsboxsim:
         await ctx.send(result)
         
 def setup(bot):
-   bot.add_cog(Fun(bot))
+   bot.add_cog(Bsboxsim(bot))
