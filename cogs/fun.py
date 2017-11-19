@@ -100,7 +100,8 @@ class Fun:
                   "*Everyone is a genius at least once a year. The real geniuses simply have their bright ideas closer together.*\n—Georg Christoph Lichtenberg",
                   "*The real voyage of discovery consists not in seeking new lands but seeing with new eyes.*\n—Marcel Proust",
                   "*Even if you’re on the right track, you’ll get run over if you just sit there.*\n—Will Rogers",
-                  "*People often say that motivation doesn’t last. Well, neither does bathing – that’s why we recommend it daily.*\n—Zig Ziglar"]
+                  "*People often say that motivation doesn’t last. Well, neither does bathing – that’s why we recommend it daily.*\n—Zig Ziglar",
+                  "*I am cool.*\n-Victini"]
         quote = quotes[num]
         await ctx.send(quote)
 
