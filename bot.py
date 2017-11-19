@@ -30,8 +30,6 @@ import textwrap
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-
-client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
 
 directory = 'cogs.'
