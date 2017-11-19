@@ -73,8 +73,8 @@ class Bsboxsim:
         await ctx.send(result)
         try:
             await ctx.send(file=discord.File(f'{result}.png'))
-        except:
-            pass
+        except Exception as e:
+            print(e)
         
         
 def setup(bot):
