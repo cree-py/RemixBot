@@ -75,7 +75,7 @@ async def help(ctx):
     '''Shows this message'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)"
+    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)."
     em.add_field(name="Bot", value=f"`{ctx.prefix}eval` Evaluate python code. Developer Command.\n"
                                    f"`{ctx.prefix}help` Shows this message.\n"
                                    f"`{ctx.prefix}invite` Get the invite link for the bot!\n"
@@ -86,7 +86,7 @@ async def help(ctx):
     em.add_field(name="Fun", value=f"`{ctx.prefix}dice` Roll a number of dice. Default = 1.\n"
                                    f"`{ctx.prefix}eightball` Ask the 8 ball a question.\n"
                                    f"`{ctx.prefix}flipcoin` Flip a two-sided coin.\n"
-                                   f"`{ctx.prefix}randomnumber` Get a random number between a minimum and maximum number (or 1 and 100).\n"
+                                   f"`{ctx.prefix}randomnumber` Get a random number between a minimum and maximum number.\n"
                                    f"`{ctx.prefix}randomquote` Get a random quote.")
     em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
                                     f"`{ctx.prefix}userinfo` Get user info for a user.")
