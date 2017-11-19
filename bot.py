@@ -29,6 +29,7 @@ import traceback
 import textwrap
 from contextlib import redirect_stdout
 from discord.ext import commands
+import json
 
 client = discord.Client()
 bot = commands.Bot(command_prefix='c.')
@@ -46,13 +47,14 @@ for cog in cogs:
 
 bot.remove_command('help')
 
-developers = [
-    311970805342928896,
-    316586772349976586,
-    292690616285134850,
-    307133814834987008,
-    281821029490229251
-]
+
+def dev_check(id):
+    with open('data/devs.json') as f:
+        devs = json.load(f)
+    if id in devs:
+        return True
+    else:
+        return False
 
 
 def cleanup_code(content):
@@ -114,7 +116,7 @@ async def ping(ctx):
 
 @bot.command(name='presence')
 async def _presence(ctx, type=None, *, game=None):
-    if ctx.author.id not in developers:
+    if not dev_check(ctx.author.id):
         return
 
     if type is None:
@@ -142,7 +144,7 @@ async def _presence(ctx, type=None, *, game=None):
 @bot.command(hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
 
-    if ctx.author.id not in developers:
+    if not dev_check(ctx.author.id):
         return
 
     env = {
@@ -201,7 +203,7 @@ async def say(ctx, *, message: str):
 
 @bot.command()
 async def restart(ctx):
-    if ctx.author.id not in developers:
+    if not dev_check(ctx.author.id):
         return
 
     await ctx.send("Restarting....")
