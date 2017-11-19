@@ -1,8 +1,8 @@
-# Creeper Boat
+# CreeperBot
 A multifunctional Discord bot in development that allows you to easily control your discord server
 
 ### Developers:
-- AJ (CreeperSlayer)
+- AJ
 - Victini
 - SharpBit
 - Free TNT
