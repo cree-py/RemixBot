@@ -30,6 +30,13 @@ class Bsboxsim:
         
     @commands.command(aliases=['open', 'box'])
     async def boxsim(self, ctx):
+        common = ["Shelly", "El Primo", "Colt", "Nita", "Dynamike"]
+        rare = ["Bull", "Brock", "Barley", "Jessie"]
+        superrare = ["Poco", "Ricochet", "Bo"]
+        epic = ["Pam", "Piper"]
+        mythic = ["Mortis", "Tara"]
+        legendary = ["Spike", "Crow"]
+        
         num = random.randint(0, 100)
         if num < 35:
             result = "1 Elixir"
@@ -44,20 +51,32 @@ class Bsboxsim:
         elif num < 50:
             result = "10 Elixir"
         elif num < 85:
-            result = "Common Brawler"
+            rand = random.randint(0, 4)
+            result = common[rand]
         elif num < 85:
-            result = "Rare Brawler"
+            rand = random.randint(0, 3)
+            result = rare[rand]
         elif num < 94:
-            result = "Super Rare Brawler"
+            rand = random.randint(0, 2)
+            result = superrare[rand]
         elif num < 97:
-            result = "Epic Brawler"
+            rand = random.randint(0, 1)
+            result = epic[rand]
         elif num < 99:
-            result = "Mythic Brawler"
+            rand = random.randint(0, 1)
+            result = mythic[rand]
         else:
-            result = "Legendary Brawler"
+            rand = random.randint(0, 1)
+            result = legendary[rand]
         
         await ctx.send("Tap! Tap!")
         await ctx.send(result)
+        result = result.replace(" ", "-")
+        try:
+            await ctx.send(file=discord.File(f'./data/img/{result.lower()}.png'))
+        except Exception as e:
+            print(e)
+        
         
 def setup(bot):
    bot.add_cog(Bsboxsim(bot))
