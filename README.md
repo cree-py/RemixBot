@@ -1,3 +1,11 @@
+```
+_ __    _  _  
+__       _ _    ___     ___    | '_ \  | || |
+/ _|     | '_|  / -_)   / -_)   | .__/   \_, |
+\__|_   _|_|_   \___|   \___|   |_|__   _|__/  
+_|"""""|_|"""""|_|"""""|_|"""""|_|"""""|_| """"|
+"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'"`-0-0-'
+```
 # CreeperBot
 A multifunctional Discord bot in development that allows you to easily control your discord server
 
