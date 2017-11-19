@@ -26,38 +26,35 @@ class Bsboxsim:
     def __init__(self, bot):
         self.bot = bot
         
-    def getResult():
-        num = random.randint(0, 100)
         
-        if num < 35:
-            return "1 Elixir"
-        elif num < 40:
-            return "2 Elixir"
-        elif num < 44:
-            return "3 Elixir"
-        elif num < 47:
-            return "5 Elixir"
-        elif num < 49:
-            return "7 Elixir"
-        elif num < 50:
-            return "10 Elixir"
-        elif num < 85:
-            return "Common Brawler"
-        elif num < 85:
-            return "Rare Brawler"
-        elif num < 94:
-            return "Super Rare Brawler"
-        elif num < 97:
-            return "Epic Brawler"
-        elif num < 99:
-            return "Mythic Brawler"
-        else:
-            return "Legendary Brawler"
         
     @commands.command(aliases=['open', 'box'])
     async def boxsim(self, ctx):
-        
-        result = getResult()
+        num = random.randint(0, 100)
+        if num < 35:
+            result = "1 Elixir"
+        elif num < 40:
+            result = "2 Elixir"
+        elif num < 44:
+            result = "3 Elixir"
+        elif num < 47:
+            result = "5 Elixir"
+        elif num < 49:
+            result = "7 Elixir"
+        elif num < 50:
+            result = "10 Elixir"
+        elif num < 85:
+            result = "Common Brawler"
+        elif num < 85:
+            result = "Rare Brawler"
+        elif num < 94:
+            result = "Super Rare Brawler"
+        elif num < 97:
+            result = "Epic Brawler"
+        elif num < 99:
+            result = "Mythic Brawler"
+        else:
+            result = "Legendary Brawler"
         
         await ctx.send("Tap! Tap!")
         await ctx.send(result)
