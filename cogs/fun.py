@@ -60,7 +60,7 @@ class Fun:
 
     @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
     async def randomnumber(self, ctx, min=1, max=100):
-        await ctx.send(f'Your random number is: {random.randint(min, max)}')
+        await ctx.send(f'Your random number is: {random.randint(min, (max+1))}')
 
     @commands.command(aliases=['coin'])
     async def flipcoin(self, ctx):
