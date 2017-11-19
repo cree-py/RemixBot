@@ -62,5 +62,5 @@ class Bsboxsim:
         await ctx.send("Tap! Tap!")
         await ctx.send(result)
         
- def setup(bot):
-    bot.add_cog(Fun(bot))
+def setup(bot):
+   bot.add_cog(Fun(bot))
