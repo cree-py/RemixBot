@@ -52,22 +52,26 @@ async def help(ctx):
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/qv9UcBh)"
-    em.add_field(name="Ping", value="Pong!")
-    em.add_field(name="Invite", value="Invite me to your server.")
-    em.add_field(name="Kick", value="Kick someone from the server.")
-    em.add_field(name="Ban", value="Ban someone from the server.")
-    em.add_field(
-        name="Mute", value="Mutes someone from a specified channel. Requires the ban members permission")
-    em.add_field(
-        name="Unmute", value="Unmute someone you previously muted. Requires the ban members permission")
-    em.add_field(name="Say", value="Say something as the bot.")
-    em.add_field(name="Warn", value="Warn a user. Usage : c.warn @user <reason>")
-    em.add_field(name="Randomnumber", value="Returns a number between 1 and 100")
-    em.add_field(name="8ball", value="Ask 8ball a question")
-    em.add_field(name="Quote", value="Inspirational quotes")
-    em.add_field(name="Dice", value="Roll some dice")
-    em.add_field(name="Coin", value="Flip a coin")
-    em.add_field(name="Help", value="Shows this message.")
+    em.add_field(name="Bot", value=f"`{ctx.prefix}eval` Evaluate python code. Developer Command.\n"
+                                   f"`{ctx.prefix}help` Shows this message.\n"
+                                   f"`{ctx.prefix}invite` Get the invite link for the bot!\n"
+                                   f"`{ctx.prefix}ping` Pong! Check the bot's response time.\n"
+                                   f"`{ctx.prefix}presence` Change the bot's presence. Developer Command.\n"
+                                   f"`{ctx.prefix}restart` Restart the bot. Developer Command.\n"
+                                   f"`{ctx.prefix}say` Say something as the bot.")
+    em.add_field(name="Fun", value=f"`{ctx.prefix}dice` Roll a number of dice. Default = 1.\n"
+                                   f"`{ctx.prefix}eightball` Ask the 8 ball a question.\n"
+                                   f"`{ctx.prefix}flipcoin` Flip a two-sided coin.\n"
+                                   f"`{ctx.prefix}randomnumber` Get a random number between 0 and 100.\n"
+                                   f"`{ctx.prefix}randomquote` Get a random quote.")
+    em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
+                                    f"`{ctx.prefix}userinfo` Get user info for a user.")
+    em.add_field(name="Mod", value=f"`{ctx.prefix}ban` Ban a user from the guild.\n"
+                                   f"`{ctx.prefix}kick` Kick a user from the guild.\n"
+                                   f"`{ctx.prefix}mute` Mute someone in a channel.\n"
+                                   f"`{ctx.prefix}purge` Delete a number of messages from a guild.\n"
+                                   f"`{ctx.prefix}unmute` Unmute someone in a channel where you previously muted them.\n"
+                                   f"`{ctx.prefix}warn` Warn someone in a guild through DMs.")
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
