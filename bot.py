@@ -31,7 +31,7 @@ from contextlib import redirect_stdout
 from discord.ext import commands
 
 client = discord.Client()
-bot = commands.Bot(command_prefix='c.')
+bot = commands.Bot(command_prefix='t.')
 
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
