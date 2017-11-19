@@ -71,6 +71,10 @@ class Bsboxsim:
         
         await ctx.send("Tap! Tap!")
         await ctx.send(result)
+        try:
+            await ctx.send(file=discord.File(f'{result}.png'))
+        except:
+            pass
         
 def setup(bot):
    bot.add_cog(Bsboxsim(bot))
