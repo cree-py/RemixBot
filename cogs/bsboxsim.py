@@ -54,7 +54,7 @@ class Bsboxsim:
         else:
             return "Legendary Brawler"
         
-    @commands.command(aliases=['open', 'box']
+    @commands.command(aliases=['open', 'box'])
     async def boxsim(self, ctx):
         
         result = getResult()
