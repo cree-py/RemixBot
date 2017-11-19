@@ -71,8 +71,9 @@ class Bsboxsim:
         
         await ctx.send("Tap! Tap!")
         await ctx.send(result)
+        result = result.replace(" ", "-")
         try:
-            await ctx.send(file=discord.File(f'/img/{result}.png'))
+            await ctx.send(file=discord.File(f'/img/{result.lower}.png'))
         except Exception as e:
             print(e)
         
