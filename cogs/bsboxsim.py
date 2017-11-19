@@ -76,5 +76,6 @@ class Bsboxsim:
         except:
             pass
         
+        
 def setup(bot):
    bot.add_cog(Bsboxsim(bot))
