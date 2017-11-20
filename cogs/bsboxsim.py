@@ -73,7 +73,7 @@ class Bsboxsim:
             rand = random.randint(0, 1)
             result = legendary[rand]
 
-        await ctx.send("Tap! Tap!")
+        await ctx.send("**Tap! Tap!**")
         await ctx.send(result)
         result = result.replace(" ", "-")
         try:
