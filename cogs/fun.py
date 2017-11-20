@@ -114,7 +114,7 @@ class Fun:
             numbers.append(random.randint(1, 5))
 
         split = guesses.split(' ')
-        if len(guesses) == 1:
+        if len(guesses) != 3:
             return await ctx.send('Please separate your numbers with a space, and make sure your numbers are between 0 and 5.')
 
         string_numbers = [str(i) for i in numbers]
