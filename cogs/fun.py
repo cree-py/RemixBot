@@ -89,7 +89,7 @@ class Fun:
     @commands.command(aliases=['randquote', 'quote'])
     async def randomquote(self, ctx):
         '''Get a random inspirational quote!'''
-        num = random.randint(0, 13)
+
         quotes = ["*You can do anything, but not everything.*\n—David Allen",
                   "*Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.*\n—Antoine de Saint-Exupéry",
                   "*You miss 100 percent of the shots you never take.*\n—Wayne Gretzky",
@@ -104,6 +104,8 @@ class Fun:
                   "*Even if you’re on the right track, you’ll get run over if you just sit there.*\n—Will Rogers",
                   "*People often say that motivation doesn’t last. Well, neither does bathing – that’s why we recommend it daily.*\n—Zig Ziglar",
                   "*I am cool.*\n—Victini"]
+
+        num = random.randint(0, (len(quotes) - 1))
         quote = quotes[num]
         await ctx.send(quote)
 
