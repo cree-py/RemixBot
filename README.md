@@ -1,6 +1,6 @@
 ```
-   )\.-.     /`-.   )\.---.   )\.---.     /`-.  )\    /( 
- ,' ,-,_)  ,' _  \ (   ,-._( (   ,-._(  ,' _  \ \ (_.' / 
+   )\.-.     /`-.   )\.---.   )\.---.     /`-.  )\    /(
+ ,' ,-,_)  ,' _  \ (   ,-._( (   ,-._(  ,' _  \ \ (_.' /
 (  .   _  (  '-' (  \  '-,    \  '-,   (  '-' (  )  _.'  
  ) '..' )  ) ,_ .'   ) ,-`     ) ,-`    ) ,._.'  / /     
 (  ,   (  (  ' ) \  (  ``-.   (  ``-.  (  '     (  \     
@@ -27,8 +27,9 @@ If you need support with the bot or would like to *contribute to CreeperBot*, jo
 - [x] Moderator commands
 - [x] Fun commands (8ball, Roll dice, etc.)
 - [ ] Basic CR Stats
+- [x] Brawl Stars Box Simulator
 - [ ] Utility (Embed, Urban Dictionary, Wikipedia)
 - [ ] Mod-log
 
-### ALPHA
+### BETA
 This bot is under development. If you would like to contribute, join [the discord server](https://discord.gg/hEPxEX6). If you need help with any of the commands, just hop in the server and ask the developers there!
