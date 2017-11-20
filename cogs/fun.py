@@ -103,7 +103,11 @@ class Fun:
                   "*The real voyage of discovery consists not in seeking new lands but seeing with new eyes.*\n—Marcel Proust",
                   "*Even if you’re on the right track, you’ll get run over if you just sit there.*\n—Will Rogers",
                   "*People often say that motivation doesn’t last. Well, neither does bathing – that’s why we recommend it daily.*\n—Zig Ziglar",
-                  "*I am cool.*\n—Victini"]
+                  "*I am cool.*\n—Victini",
+                  "*The way to get started is to quit talking and begin doing.*\n—Walt Disney",
+                  "*Don't let yesterday take up too much of today.*\n—Will Rogers",
+                  "*Do. Or do not. There is no try.*\n—Yoda",
+                  "*It's not about ideas. It's about making ideas happen.*\n—Scott Belsky"]
 
         num = random.randint(0, (len(quotes) - 1))
         quote = quotes[num]
