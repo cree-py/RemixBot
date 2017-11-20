@@ -1,14 +1,18 @@
 '''
 MIT License
+
 Copyright (c) 2017 Cree-Py
+
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
+
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
+
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -22,12 +26,11 @@ import discord
 from discord.ext import commands
 import random
 
+
 class Bsboxsim:
     def __init__(self, bot):
         self.bot = bot
-        
-        
-        
+
     @commands.command(aliases=['open', 'box'])
     async def boxsim(self, ctx):
         common = ["Shelly", "El Primo", "Colt", "Nita", "Dynamike"]
@@ -36,7 +39,7 @@ class Bsboxsim:
         epic = ["Pam", "Piper"]
         mythic = ["Mortis", "Tara"]
         legendary = ["Spike", "Crow"]
-        
+
         num = random.randint(0, 100)
         if num < 35:
             result = "1 Elixir"
@@ -68,7 +71,7 @@ class Bsboxsim:
         else:
             rand = random.randint(0, 1)
             result = legendary[rand]
-        
+
         await ctx.send("Tap! Tap!")
         await ctx.send(result)
         result = result.replace(" ", "-")
@@ -76,7 +79,7 @@ class Bsboxsim:
             await ctx.send(file=discord.File(f'./data/img/{result.lower()}.png'))
         except Exception as e:
             print(e)
-        
-        
+
+
 def setup(bot):
-   bot.add_cog(Bsboxsim(bot))
+    bot.add_cog(Bsboxsim(bot))

@@ -51,8 +51,7 @@ def dev_check(id):
         devs = json.load(f)
     if id in devs:
         return True
-    else:
-        return False
+    return False
 
 
 def cleanup_code(content):

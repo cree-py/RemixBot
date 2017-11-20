@@ -32,8 +32,7 @@ class Mod:
 
     # DO NOT change the error messages again
     # The @commands check eliminates user perms
-    # So the only possible way is for the bot to
-    # not have perms.
+    # So the only possible way is for the bot to not have perms.
     # The old error message is inaccurate.
 
     @commands.command()

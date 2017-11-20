@@ -60,7 +60,7 @@ class Fun:
 
     @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
     async def randomnumber(self, ctx, min=1, max=100):
-        await ctx.send(f'Your random number is: {random.randint(min, (max+1))}')
+        await ctx.send(f'Your random number is: {random.randint(min, max)}')
 
     @commands.command(aliases=['coin'])
     async def flipcoin(self, ctx):
@@ -104,6 +104,24 @@ class Fun:
                   "*I am cool.*\n—Victini"]
         quote = quotes[num]
         await ctx.send(quote)
+
+    @commands.command(aliases=['lotto'])
+    async def lottery(self, ctx, numbers):
+        '''Enter the lottery and see if you win'''
+        author = ctx.author
+        numbers = []
+        for x in range(3):
+            numbers.append(random.randint(1, 5))
+
+        guesses = numbers.split(' ')
+        if len(guesses) == 1:
+            return await ctx.send('Please separate your numbers with a space.')
+
+        string_numbers = [str(i) for i in numbers]
+        if guesses[0] in string_numbers and guesses[1] in string_numbers and guesses[2] in string_numbers:
+            await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
+        else:
+            await ctx.send(f"{author.mention} Too bad... You were the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
 
 
 def setup(bot):
