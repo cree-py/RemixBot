@@ -76,7 +76,7 @@ class Bsboxsim:
         await ctx.send(result)
         result = result.replace(" ", "-")
         try:
-            await ctx.send(file=discord.File(f'./data/img/{result.lower()}.png'))
+            await ctx.send(file=discord.File(f'./data/brawlers/{result.lower()}.png'))
         except Exception as e:
             print(e)
 
