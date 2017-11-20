@@ -115,13 +115,13 @@ class Fun:
 
         guesses = numbers.split(' ')
         if len(guesses) == 1:
-            return await ctx.send('Please separate your numbers with a space.')
+            return await ctx.send('Please separate your numbers with a space, and make sure your numbers are between 0 and 5.')
 
         string_numbers = [str(i) for i in numbers]
         if guesses[0] in string_numbers and guesses[1] in string_numbers and guesses[2] in string_numbers:
             await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
         else:
-            await ctx.send(f"{author.mention} Too bad... You were the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
+            await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
 
 
 def setup(bot):
