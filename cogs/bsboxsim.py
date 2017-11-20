@@ -76,7 +76,7 @@ class Bsboxsim:
         await ctx.send("**Tap! Tap!**")
         await ctx.send(result)
         result = result.replace(" ", "-")
-        if num < 50:
+        if num >= 50:
             try:
                 await ctx.send(file=discord.File(f'./data/img/{result.lower()}.png'))
             except Exception as e:
