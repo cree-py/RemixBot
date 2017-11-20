@@ -106,14 +106,14 @@ class Fun:
         await ctx.send(quote)
 
     @commands.command(aliases=['lotto'])
-    async def lottery(self, ctx, numbers):
+    async def lottery(self, ctx, guesses):
         '''Enter the lottery and see if you win'''
         author = ctx.author
         numbers = []
         for x in range(3):
             numbers.append(random.randint(1, 5))
 
-        guesses = numbers.split(' ')
+        guesses = guesses.split(' ')
         if len(guesses) == 1:
             return await ctx.send('Please separate your numbers with a space, and make sure your numbers are between 0 and 5.')
 
