@@ -33,6 +33,7 @@ class Bsboxsim:
 
     @commands.command(aliases=['open', 'box'])
     async def boxsim(self, ctx):
+        '''Simulate a box opening in Brawl Stars'''
         common = ["Shelly", "El Primo", "Colt", "Nita", "Dynamike"]
         rare = ["Bull", "Brock", "Barley", "Jessie"]
         superrare = ["Poco", "Ricochet", "Bo"]

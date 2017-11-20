@@ -107,7 +107,7 @@ async def help(ctx):
 
 @bot.command()
 async def ping(ctx):
-    '''Pong! Check if bot is working'''
+    '''Pong! Get the bot's response time'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
@@ -116,6 +116,7 @@ async def ping(ctx):
 
 @bot.command(name='presence')
 async def _presence(ctx, type=None, *, game=None):
+    '''Change the bot's presence'''
     if not dev_check(ctx.author.id):
         return
 
@@ -143,6 +144,7 @@ async def _presence(ctx, type=None, *, game=None):
 
 @bot.command(hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
+    '''Evaluate python code'''
 
     if not dev_check(ctx.author.id):
         return
@@ -191,6 +193,7 @@ async def _eval(ctx, *, body: str):
 
 @bot.command()
 async def invite(ctx):
+    '''Invite the bot to your server''''
     await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=66186303")
 
 
@@ -203,6 +206,7 @@ async def say(ctx, *, message: str):
 
 @bot.command()
 async def restart(ctx):
+    '''Restart the bot'''
     if not dev_check(ctx.author.id):
         return
 

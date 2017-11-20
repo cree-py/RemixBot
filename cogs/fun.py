@@ -60,6 +60,7 @@ class Fun:
 
     @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
     async def randomnumber(self, ctx, min=1, max=100):
+        '''Get a random number between two numbers, or 1 and 100'''
         await ctx.send(f'Your random number is: {random.randint(min, max)}')
 
     @commands.command(aliases=['coin'])
@@ -87,6 +88,7 @@ class Fun:
 
     @commands.command(aliases=['randquote', 'quote'])
     async def randomquote(self, ctx):
+        '''Get a random inspirational quote!'''
         num = random.randint(0, 13)
         quotes = ["*You can do anything, but not everything.*\n—David Allen",
                   "*Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.*\n—Antoine de Saint-Exupéry",
