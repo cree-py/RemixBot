@@ -30,7 +30,7 @@ import textwrap
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-bot = commands.Bot(command_prefix='t.')
+bot = commands.Bot(command_prefix='c.')
 
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
@@ -66,7 +66,7 @@ def cleanup_code(content):
 @bot.event
 async def on_ready():
     print("Bot Is Online.")
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | t.help | Beta 1.0.0", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | Beta 1.0.0", type=3), afk=True)
 
 
 @bot.command()
