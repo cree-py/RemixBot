@@ -35,7 +35,7 @@ class ClashRoyale:
         em = discord.Embed(title="Profile")
         if tag == None:
             em.description("Please enter a clash royale tag i.e c.profile #22UP0G0YU")
-                return await ctx.send(embed=em)
+            return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O' ,'0')
         try:
             profile = self.client.get_profile(tag)
