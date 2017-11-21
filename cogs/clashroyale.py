@@ -35,7 +35,7 @@ class ClashRoyale:
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O' ,'0')
         try:
-            profile = self.client.get_profile(tag)
+            profile = await self.client.get_profile(tag)
         except:
             em.description("Either the API is down or you entered a wrong tag please try again in a few seconds.")
             return await ctx.send(embed=em)
