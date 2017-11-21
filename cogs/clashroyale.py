@@ -31,14 +31,13 @@ class ClashRoyale:
         '''Fetch a Clash Royale Profile by tag'''
         em = discord.Embed(title="Profile")
         if tag == None:
-            em.description("Please enter a clash royale tag i.e c.profile #22UP0G0YU")
+            em.description = "Please enter a clash royale tag i.e c.profile #22UP0G0YU"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O' ,'0')
         try:
             profile = await self.client.get_profile(tag)
-        except:
-            em.description("Either the API is down or you entered a wrong tag please try again in a few seconds.")
-            return await ctx.send(embed=em)
+        except Exception as e:
+            await ctx.send(f'`{e}`')
         
         
         
