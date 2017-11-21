@@ -1,6 +1,6 @@
 '''
 MIT License
-Copyright (c) 2017 Free TNT 
+Copyright (c) 2017 Cree-Py
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -18,9 +18,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 import discord
-import sys
-import os
-import io
 from discord.ext import commands
 import crasync
 
@@ -57,7 +54,7 @@ class ClashRoyale:
         em.add_field(name="Global Rank", value=f"{profile.global_rank}")
         em.add_field(name="Wins/Losses/Draws", value=f"{profile.wins}/{profile.losses}/{profile.draws}")
         em.add_field(name="Win Streak", value=f"{profile.win_streak}")
-        em.add_field(name="Win Rate", value=f"{profile.wins / profile.total_games * 100}%")
+        em.add_field(name="Win Rate", value=f"{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%")
         em.add_field(name="Clan Info", value=f"{profile.clan_name}\n{profile.clan_role}\n#{profile.clan_tag}")
         em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         try:
