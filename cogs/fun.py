@@ -127,7 +127,7 @@ class Fun:
 
         string_numbers = [str(i) for i in numbers]
         if split[0] in string_numbers and split[1] in string_numbers and split[2] in string_numbers:
-            await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery! Numbers: `{','.join(string_numbers)}`')
+            await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery! Numbers `{string_numbers}`')
         else:
             await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
 
