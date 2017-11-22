@@ -104,6 +104,11 @@ async def help(ctx):
     else:
         pass
 
+@bot.event
+async def on_member_join(ctx):
+    theserver = bot.get_channel(379363572876181518)
+    await theserver.send(f"Welcome {member.mention} to {guild} if you need help ping an online admin or creator have fun")
+
 
 @bot.command()
 async def ping(ctx):
