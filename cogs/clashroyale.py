@@ -73,8 +73,8 @@ class ClashRoyale:
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O', '0')
         try:
-            profile = await client.get_profile(tag)
-            clan = await client.profile.get_clan()
+            profile = await self.client.get_profile(tag)
+            clan = await profile.get_clan()
         except:
             em.description = "Either the API is down or you entered an invalid tag try again in a few seconds or maybe your not in a clan."
             return await ctx.send(embed=em)        
