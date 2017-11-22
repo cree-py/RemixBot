@@ -64,6 +64,36 @@ class ClashRoyale:
        
         await ctx.send(embed=em)
         
+    @commands.command()
+    async def clan(self, ctx, tag):
+        '''Gets Clan info by player tag.'''
+        em = discord.Embed()
+        if tag == None:
+            em.description = "Please enter a tag, example: c.clan #22UP0G0YU"
+                return await ctx.send(embed=em)
+        tag = tag.strip('#').replace('O', '0')
+        try:
+            profile = await client.get_profile(tag)
+            clan = await client.profile.get_clan()
+        except:
+            em.description = "Either the API is down or you entered an invalid tag try again in a few seconds or maybe your not in a clan."
+            return await ctx.send(embed=em)        
+        
+        em.set_author(name=f"{clan.tag}")
+        em.title(f"{clan.name}")
+        em.set_thumbnail(url=clan.badge_url)
+        em.description(f"{clan.description}")
+        em.add_field(name="Clan Name", value=f"{clan.name}")
+        em.add_field(name="Clan Trophies", value=f"{clan.score}")
+        em.add_field(name="Clan Members", value=f"{len(clan.members)}/50")
+        em.add_field(name="Type:", value=f"{clan.type_name}")
+        em.add_field(name="Location", value=f"{clan.region}")
+        em.add_field(name="Rank", value=f"{clan.rank}")
+        em.add_field(name="Donations", value=f"{clan.donations}")
+        em.add_field(name="Required Trophies", value=f"{clan.required_trophies}")
+        em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
+        await ctx.send(embed=em)
+
 def setup(bot):
     bot.add_cog(ClashRoyale(bot))
     
