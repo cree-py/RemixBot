@@ -106,9 +106,8 @@ async def help(ctx):
 
 @bot.event
 async def on_member_join(ctx):
-    member = ctx.author
     theserver = bot.get_channel(379363572876181518)
-    await theserver.send(f"Welcome {member.mention} to {guild} if you need help ping an online admin or creator have fun")
+    await theserver.send(f"Welcome {ctx.author.mention} to {guild} if you need help ping an online admin or creator have fun")
 
 
 @bot.command()
