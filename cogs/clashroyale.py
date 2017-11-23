@@ -24,6 +24,7 @@ SOFTWARE.
 import discord
 from discord.ext import commands
 import crasync
+import json
 
 
 class ClashRoyale:
@@ -74,13 +75,18 @@ class ClashRoyale:
         '''Gets Clan info by clan tag.'''
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag is None:
-            em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282`"
+            em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
             return await ctx.send(embed=em)
-        tag = tag.strip('#').replace('O', '0')
-        try:
-            clan = await self.client.get_clan(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+        with open('./data/clans.json') as f:
+            clans = json.load(f)
+        if tag.lower() in clans:
+            tag = clans[tag.lower()]
+        else:
+            tag = tag.strip('#').replace('O', '0')
+            try:
+                clan = await self.client.get_clan(tag)
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title(f"{clan.name} (#{clan.tag})")
