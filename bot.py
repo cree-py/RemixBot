@@ -84,6 +84,8 @@ async def help(ctx):
                                    f"`{ctx.prefix}say` Say something as the bot.")
     em.add_field(name='BS Box Sim',
                  value=f"`{ctx.prefix}boxsim` Simulate a box opening in Brawl Stars.")
+    em.add_field(name='Clash Royale', value=f"`{ctx.prefix}profile` Get your Clash Royale Profile.\n"
+                                            f"`{ctx.prefix}clan'` Get the info for a clan in Clash Royale.")
     em.add_field(name="Fun", value=f"`{ctx.prefix}dice` Roll a number of dice. Default = 1.\n"
                                    f"`{ctx.prefix}eightball` Ask the 8 ball a question.\n"
                                    f"`{ctx.prefix}flipcoin` Flip a two-sided coin.\n"
