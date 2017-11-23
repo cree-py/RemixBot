@@ -31,13 +31,13 @@ class ClashRoyale:
         '''Fetch a Clash Royale Profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag == None:
-            em.description = "Please enter a clash royale tag i.e c.profile #22UP0G0YU"
+            em.description = "Please enter a clash royale tag.\nExample: `c.profile #22UP0G0YU`"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O' ,'0')
         try:
             profile = await self.client.get_profile(tag)
         except Exception as e:
-            await ctx.send(f'`{e}`')
+            return await ctx.send(f'`{e}`')
         
         
         
@@ -54,7 +54,10 @@ class ClashRoyale:
         em.add_field(name="Wins/Losses/Draws", value=f"{profile.wins}/{profile.losses}/{profile.draws}")
         em.add_field(name="Win Streak", value=f"{profile.win_streak}")
         em.add_field(name="Win Rate", value=f"{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%")
-        em.add_field(name="Clan Info", value=f"{profile.clan_name}\n{profile.clan_role}\n#{profile.clan_tag}")
+        try:
+            em.add_field(name="Clan Info", value=f"{profile.clan_name}\n{profile.clan_role}\n#{profile.clan_tag}")
+        except ValueError:
+            em.add_field(name='Clan Info', value='No clan')
         em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         try:
             em.set_author(name="Profile", icon_url=profile.clan_badge_url)
@@ -65,22 +68,21 @@ class ClashRoyale:
         await ctx.send(embed=em)
         
     @commands.command()
-    async def clan(self, ctx, tag):
-        '''Gets Clan info by player tag.'''
-        em = discord.Embed()
+    async def clan(self, ctx, tag=None):
+        '''Gets Clan info by clan tag.'''
+        em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag == None:
-            em.description = "Please enter a tag, example: c.clan #22UP0G0YU"
+            em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282`"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O', '0')
         try:
-            profile = await self.client.get_profile(tag)
-            clan = await profile.get_clan()
-        except:
-            em.description = "Either the API is down or you entered an invalid tag try again in a few seconds or maybe your not in a clan."
-            return await ctx.send(embed=em)        
+            clan = await self.client.get_clan(tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
+            return await ctx.send(embed=em)
         
-        em.set_author(name=f"{clan.tag}")
-        em.title(f"{clan.name}")
+        em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
+        em.title(f"{clan.name} (#{clan.tag})")
         em.set_thumbnail(url=clan.badge_url)
         em.description(f"{clan.description}")
         em.add_field(name="Clan Name", value=f"{clan.name}")
