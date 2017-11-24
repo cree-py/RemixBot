@@ -27,9 +27,12 @@ import os
 import io
 import traceback
 import textwrap
+import inspect
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
+
+
 bot = commands.Bot(command_prefix='c.')
 
 directory = 'cogs.'
@@ -106,13 +109,14 @@ async def help(ctx):
     else:
         pass
 
+
 @bot.event
 async def on_member_join(member):
     realserver = bot.get_guild(379363572876181515)
     theserver = bot.get_channel(379363572876181518)
     if member.guild.id != 379363572876181515:
         return
-    
+
     await theserver.send(f"Welcome {member.mention} to {realserver.name} if you need help ping an online admin or creator have fun")
 
 
@@ -125,6 +129,23 @@ async def ping(ctx):
     await ctx.send(embed=em)
 
 
+@bot.command()
+async def source(self, ctx, *, command):
+    '''See the source code for any command.'''
+    if not dev_check(ctx.author.id):
+        return
+
+    source = str(inspect.getsource(bot.get_command(command).callback))
+    fmt = '```py\n' + source.replace('`', '\u200b`') + '\n```'
+    if len(fmt) > 2000:
+        async with ctx.session.post("https://hastebin.com/documents", data=source) as resp:
+            data = await resp.json()
+        key = data['key']
+        return await ctx.send(f'Command source: <https://hastebin.com/{key}.py>')
+    else:
+        return await ctx.send(fmt)
+
+
 @bot.command(name='presence')
 async def _presence(ctx, type=None, *, game=None):
     '''Change the bot's presence'''
@@ -132,7 +153,7 @@ async def _presence(ctx, type=None, *, game=None):
         return
 
     if type is None:
-        await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
+        await ctx.send(f'Usage: `{ctx.prefix}presence [game/stream/watch/listen] [message]`')
     else:
         if type.lower() == 'stream':
             await bot.change_presence(game=discord.Game(name=game, type=1, url='https://www.twitch.tv/a'), status='online')
