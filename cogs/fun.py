@@ -126,8 +126,8 @@ class Fun:
             return await ctx.send('Please separate your numbers with a space, and make sure your numbers are between 0 and 5.')
 
         string_numbers = [str(i) for i in numbers]
-        if split[0] in string_numbers and split[1] in string_numbers and split[2] in string_numbers:
-            await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery! Numbers `{string_numbers}`')
+        if split[0] == string_numbers[0] and split[1] == string_numbers[1] and split[2] == string_numbers[2]:
+            await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
         else:
             await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
 
