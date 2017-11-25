@@ -94,7 +94,7 @@ class Mod:
 
         try:
             await ctx.delete_messages(messages)
-        except exception as e:
+        except Exception as e:
             await ctx.send(e)
             await ctx.send("I cannot delete the messages. Make sure I have the manage messages permission.")
 
