@@ -96,8 +96,8 @@ async def help(ctx):
                                    f"`{ctx.prefix}randomnumber` Get a random number between a minimum and maximum number.\n"
                                    f"`{ctx.prefix}randomquote` Get a random quote.")
     em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
-                                    f"`{ctx.prefix}userinfo` Get user info for a user.")
-                                    f"`{ctx.prefix}suggest` Sends an idea to support server "
+                                    f"`{ctx.prefix}userinfo` Get user info for a user.\n"
+                                    f"`{ctx.prefix}suggest` Sends an idea to support server ")
     em.add_field(name="Mod", value=f"`{ctx.prefix}ban` Ban a user from the guild.\n"
                                    f"`{ctx.prefix}kick` Kick a user from the guild.\n"
                                    f"`{ctx.prefix}mute` Mute someone in a channel.\n"
