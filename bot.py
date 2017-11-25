@@ -113,9 +113,9 @@ async def help(ctx):
 
 @bot.event
 async def on_member_join(member):
-    realserver = bot.get_guild(384102150109659137)
-    theserver = bot.get_channel(384102150567100419)
-    if member.guild.id != 384102150109659137:
+    realserver = bot.get_guild(379363572876181515)
+    theserver = bot.get_channel(379363572876181518)
+    if member.guild.id != 379363572876181515:
         return
 
     await theserver.send(f"Welcome {member.mention} to {realserver.name} if you need help ping an online admin or creator have fun")
@@ -178,7 +178,7 @@ async def _presence(ctx, type=None, *, game=None):
 @bot.command()
 async def suggest(ctx, *, idea: str):
     """Suggest an idea, idea will be sent to developer server"""
-    creepy = bot.get_channel(383755171399991296)
+    creepy = bot.get_channel(384111952798154752)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = f"{ctx.message.author}"
     em.description = f"{idea}"
