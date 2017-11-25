@@ -174,6 +174,18 @@ async def _presence(ctx, type=None, *, game=None):
             await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
 
+@bot.command()
+async def suggest(ctx, *, idea: str):
+    """Suggest an idea, idea will be sent to developer server"""
+    creepy = bot.get_channel(383755171399991296)
+    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em.title = f"{ctx.message.author}"
+    em.description = f"{idea}"
+    em.set_footer(text=f"From {ctx.author.guild}", icon_url=f"{ctx.guild.icon_url}")
+    await creepy.send(embed=em)
+
+
+
 @bot.command(hidden=True, name='eval')
 async def _eval(ctx, *, body: str):
     '''Evaluate python code'''
