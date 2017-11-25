@@ -183,6 +183,7 @@ async def suggest(ctx, *, idea: str):
     em.description = f"{idea}"
     em.set_footer(text=f"From {ctx.author.guild}", icon_url=f"{ctx.guild.icon_url}")
     await creepy.send(embed=em)
+    await ctx.send("Your idea has been succesfully sent to support server, Thank you")
 
 
 
