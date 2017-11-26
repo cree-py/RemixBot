@@ -107,7 +107,8 @@ class Fun:
                   "*The way to get started is to quit talking and begin doing.*\n—Walt Disney",
                   "*Don't let yesterday take up too much of today.*\n—Will Rogers",
                   "*Do. Or do not. There is no try.*\n—Yoda",
-                  "*It's not about ideas. It's about making ideas happen.*\n—Scott Belsky"]
+                  "*It's not about ideas. It's about making ideas happen.*\n—Scott Belsky",
+                  "*The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.*\n—Helen Keller"]
 
         num = random.randint(0, (len(quotes) - 1))
         quote = quotes[num]

@@ -35,6 +35,7 @@ import json
 
 bot = commands.Bot(command_prefix='c.')
 
+
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
@@ -97,7 +98,7 @@ async def help(ctx):
                                    f"`{ctx.prefix}randomquote` Get a random quote.")
     em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
                                     f"`{ctx.prefix}userinfo` Get user info for a user.\n"
-                                    f"`{ctx.prefix}suggest` Sends an idea to support server ")
+                                    f"`{ctx.prefix}suggest` Sends an idea to support server.")
     em.add_field(name="Mod", value=f"`{ctx.prefix}ban` Ban a user from the guild.\n"
                                    f"`{ctx.prefix}kick` Kick a user from the guild.\n"
                                    f"`{ctx.prefix}mute` Mute someone in a channel.\n"
@@ -113,12 +114,13 @@ async def help(ctx):
 
 @bot.event
 async def on_member_join(member):
-    realserver = bot.get_guild(384102150109659137)
-    theserver = bot.get_channel(384102150567100419)
-    if member.guild.id != 384102150567100419:
+    '''Welcome message'''
+    server = bot.get_guild(384102150109659137)
+    general_channel = bot.get_channel(384102150567100419)
+    if member.guild.id != server:
         return
 
-    await theserver.send(f"Welcome {member.mention} to {realserver.name} if you need help ping an online admin or creator have fun")
+    await general_channel.send(f"{member.mention}, welcome to {server.name}! If you need help ping an online admin or creator.")
 
 
 @bot.command()
@@ -178,14 +180,13 @@ async def _presence(ctx, type=None, *, game=None):
 @bot.command()
 async def suggest(ctx, *, idea: str):
     """Suggest an idea, idea will be sent to developer server"""
-    creepy = bot.get_channel(384111952798154752)
+    suggest = bot.get_channel(384111952798154752)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = f"{ctx.message.author}"
-    em.description = f"{idea}"
-    em.set_footer(text=f"From {ctx.author.guild}", icon_url=f"{ctx.guild.icon_url}")
-    await creepy.send(embed=em)
-    await ctx.send("Your idea has been succesfully sent to support server, Thank you")
-
+    em.title = ctx.message.author
+    em.description = idea
+    em.set_footer(text=f"Guild: {ctx.author.guild}", icon_url=f"{ctx.guild.icon_url}")
+    await suggest.send(embed=em)
+    await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
 
 @bot.command(hidden=True, name='eval')
