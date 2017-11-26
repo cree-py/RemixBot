@@ -78,33 +78,10 @@ async def help(ctx):
     '''Shows this message'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f)."
-    em.add_field(name="Bot", value=f"`{ctx.prefix}eval` Evaluate python code. Developer Command.\n"
-                                   f"`{ctx.prefix}help` Shows this message.\n"
-                                   f"`{ctx.prefix}invite` Get the invite link for the bot!\n"
-                                   f"`{ctx.prefix}ping` Pong! Check the bot's response time.\n"
-                                   f"`{ctx.prefix}presence` Change the bot's presence. Developer Command.\n"
-                                   f"`{ctx.prefix}restart` Restart the bot. Developer Command.\n"
-                                   f"`{ctx.prefix}say` Say something as the bot.\n"
-                                   f"`{ctx.prefix}suggest` Send an idea to the support server.")
-    em.add_field(name='BS Box Sim',
-                 value=f"`{ctx.prefix}boxsim` Simulate a box opening in Brawl Stars.")
-    em.add_field(name='Clash Royale', value=f"`{ctx.prefix}profile` Get your Clash Royale Profile.\n"
-                                            f"`{ctx.prefix}clan'` Get the info for a clan in Clash Royale.")
-    em.add_field(name="Fun", value=f"`{ctx.prefix}dice` Roll a number of dice. Default = 1.\n"
-                                   f"`{ctx.prefix}eightball` Ask the 8 ball a question.\n"
-                                   f"`{ctx.prefix}flipcoin` Flip a two-sided coin.\n"
-                                   f"`{ctx.prefix}lottery` Type 3 numbers between 0 and 5 and try your luck!\n"
-                                   f"`{ctx.prefix}randomnumber` Get a random number between a minimum and maximum number.\n"
-                                   f"`{ctx.prefix}randomquote` Get a random quote.")
-    em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
-                                    f"`{ctx.prefix}userinfo` Get user info for a user.")
-    em.add_field(name="Mod", value=f"`{ctx.prefix}ban` Ban a user from the guild.\n"
-                                   f"`{ctx.prefix}kick` Kick a user from the guild.\n"
-                                   f"`{ctx.prefix}mute` Mute someone in a channel.\n"
-                                   f"`{ctx.prefix}purge` Delete a number of messages from a guild.\n"
-                                   f"`{ctx.prefix}unmute` Unmute someone in a channel where you previously muted them.\n"
-                                   f"`{ctx.prefix}warn` Warn someone in a guild through DMs.")
+    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n"
+    commands = sorted(bot.commands, key=lambda x: x.name)
+    for command in commands:
+        em.descripion += f'{command.name}: {command.short_doc}.\n'
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
