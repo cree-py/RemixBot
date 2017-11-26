@@ -117,10 +117,10 @@ async def on_member_join(member):
     '''Welcome message'''
     server = bot.get_guild(384102150109659137)
     general_channel = bot.get_channel(384102150567100419)
-    if member.guild.id != server:
+    if member.guild.id != 384102150109659137:
         return
 
-    await general_channel.send(f"{member.mention}, welcome to {server.name}! If you need help ping an online admin or creator.")
+    await ctx.send(f"{member.mention}, welcome to {server.name}! If you need help ping an online admin or creator.")
 
 
 @bot.command()
