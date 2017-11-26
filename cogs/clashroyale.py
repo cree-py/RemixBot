@@ -43,30 +43,85 @@ class ClashRoyale:
         try:
             profile = await self.client.get_profile(tag)
         except Exception as e:
-            return await ctx.send(f'`{e}`')
+            return await ctx.send(f'`{e}`')\
+
+        try:
+            clan = await profile.get_clan()
+        except ValueError:
+            pass
+
+        if profile.global_rank is not None:
+            global_rank = str(profile.global_rank)
+        else:
+            global_rank = 'Unranked'
+
+        experience = f'{profile.experience[0]}/{profile.experience[1]}'
+        record = f'{profile.wins}-{profile.draws}-{profile.losses}'
+        av = profile.clan_badge_url or 'https://i.imgur.com/Y3uXsgj.png'
+
+        chests = self.get_chests(ctx, profile)[0]
+        cycle = profile.chest_cycle
+        pos = cycle.position
+        special = ''
+
+        s = None
+        if profile.seasons:
+            s = profile.seasons[0]
+            global_r = s.end_global
+            season = f"Highest: {s.highest} trophies\n" \
+                     f"Finish: {s.ending} trophies\n" \
+                     f"Global Rank: {global_r}"
+        else:
+            season = None
+
+        special = self.get_chests(ctx, profile)[1]
+        shop_offers = ''
+        if profile.shop_offers.legendary:
+            shop_offers += f"Legendary Chest: {profile.shop_offers.legendary} days\n"
+        if profile.shop_offers.epic:
+            shop_offers += f"Epic Chest: {profile.shop_offers.epic} days\n"
+        if profile.shop_offers.arena:
+            shop_offers += f"Arena: {profile.shop_offers.arena} days\n"
+
+        deck = ''
+        for card in profile.deck:
+            deck += f'{card.name}: Lvl {card.level}\n'
 
         em.title = profile.name
-        em.set_thumbnail(url=profile.arena.image_url)
-        em.description = f"#{tag}"
-        em.url = f"http://cr-api.com/profile/{tag}"
-        em.add_field(name="Current Trophies", value=f"{profile.current_trophies}")
-        em.add_field(name="Highest Trophies", value=f"{profile.highest_trophies}")
-        em.add_field(name="Legend Trophies", value=f"{profile.legend_trophies}")
-        em.add_field(name="Level", value=f"{profile.level}")
-        em.add_field(name="Experience", value=f"{profile.experience[0]}/{profile.experience[1]}")
-        em.add_field(name="Global Rank", value=f"{profile.global_rank}")
-        em.add_field(name="Wins/Losses/Draws", value=f"{profile.wins}/{profile.losses}/{profile.draws}")
-        em.add_field(name="Win Streak", value=f"{profile.win_streak}")
-        em.add_field(name="Win Rate", value=f"{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%")
-        try:
-            em.add_field(name="Clan Info", value=f"{profile.clan_name}\n{profile.clan_role}\n#{profile.clan_tag}")
-        except ValueError:
+        em.description = f'#{tag}'
+        em.url = f'http://cr-api.com/profile/{tag}'
+        em.set_author(name='Profile', icon_url=av)
+
+        em.add_field(name='Level', value=f'{profile.level} ({experience})')
+        em.add_field(name='Arena', value=profile.arena.name)
+        em.add_field(
+            name='Trophies', value=f'{profile.current_trophies}/{profile.highest_trophies}(PB)/{profile.legend_trophies} Legend')
+        em.add_field(name='Global Rank', value=global_rank)
+        em.add_field(name='Total Donations', value=f'{profile.total_donations}')
+        em.add_field(name='Win Percentage',
+                     value=f'{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%')
+        em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins}')
+        em.add_field(name='Favorite Card', value=profile.favourite_card.replace('_', ' '))
+        em.add_field(name='Game Record (Win Streak)', value=f'{record} ({profile.win_streak})')
+        if profile.clan_role:
+            em.add_field(name='Clan Info', value=f'{clan.name}\n#{clan.tag}\n{profile.clan_role}')
+        else:
             em.add_field(name='Clan Info', value='No clan')
-        em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
-        try:
-            em.set_author(name="Profile", icon_url=profile.clan_badge_url)
-        except:
-            em.set_author(name="Profile")
+
+        em.add_field(name='Tournament Cards Won', value=str(profile.tournament_cards_won))
+        em.add_field(name='Challenge Cards Won', value=str(profile.challenge_cards_won))
+        em.add_field(name='Battle Deck', value=deck)
+        em.add_field(name=f'Chests (Total {pos} opened)', value=chests)
+        em.add_field(name='Chests Until', value=special)
+        em.add_field(name='Shop Offers', value=shop_offers)
+        if s:
+            em.add_field(name=f'Previous Season Results (Season {s.number})', value=season)
+        else:
+            pass
+
+        em.set_thumbnail(url=profile.arena.image_url)
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
+                      icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         await ctx.send(embed=em)
 
