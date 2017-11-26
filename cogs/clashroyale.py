@@ -32,6 +32,24 @@ class ClashRoyale:
         self.bot = bot
         self.client = crasync.Client()
 
+    def cdir(self, obj):
+        return [x for x in dir(obj) if not x.startswith('_')]
+
+    def get_chests(self, ctx, p):
+        cycle = p.chest_cycle
+        pos = cycle.position
+        chests = p.get_chest(0).title() + '\n'
+        chests += '\n'.join([p.get_chest(x).title() for x in range(1, 8)])
+        special = ''
+        for i, attr in enumerate(self.cdir(cycle)):
+            if attr != 'position':
+                e = attr.replace('_', '')
+                if getattr(cycle, attr):
+                    c_pos = int(getattr(cycle, attr))
+                    until = c_pos - pos
+                    special += f'{e.title()}: +{until} '
+                    return (chests, special)
+
     @commands.command()
     async def profile(self, ctx, tag=None):
         '''Fetch a Clash Royale Profile by tag'''
