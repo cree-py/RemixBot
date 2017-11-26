@@ -78,10 +78,10 @@ async def help(ctx):
     '''Shows this message'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n"
+    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n\n"
     commands = sorted(bot.commands, key=lambda x: x.name)
     for command in commands:
-        em.description += f'`{ctx.prefix}{command.name}`: {command.short_doc}.\n'
+        em.description += f'`{ctx.prefix}{command.name}`:\t{command.short_doc}.\n'
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
