@@ -55,7 +55,7 @@ class ClashRoyale:
         '''Fetch a Clash Royale Profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
-            em.description = "Please enter a clash royale tag.\nExample: `c.profile #22UP0G0YU`"
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O', '0')
         try:
