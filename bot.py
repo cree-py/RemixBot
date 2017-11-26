@@ -85,7 +85,8 @@ async def help(ctx):
                                    f"`{ctx.prefix}ping` Pong! Check the bot's response time.\n"
                                    f"`{ctx.prefix}presence` Change the bot's presence. Developer Command.\n"
                                    f"`{ctx.prefix}restart` Restart the bot. Developer Command.\n"
-                                   f"`{ctx.prefix}say` Say something as the bot.")
+                                   f"`{ctx.prefix}say` Say something as the bot.\n"
+                                   f"`{ctx.prefix}suggest` Send an idea to the support server.")
     em.add_field(name='BS Box Sim',
                  value=f"`{ctx.prefix}boxsim` Simulate a box opening in Brawl Stars.")
     em.add_field(name='Clash Royale', value=f"`{ctx.prefix}profile` Get your Clash Royale Profile.\n"
@@ -97,8 +98,7 @@ async def help(ctx):
                                    f"`{ctx.prefix}randomnumber` Get a random number between a minimum and maximum number.\n"
                                    f"`{ctx.prefix}randomquote` Get a random quote.")
     em.add_field(name="Info", value=f"`{ctx.prefix}serverinfo` See server info.\n"
-                                    f"`{ctx.prefix}userinfo` Get user info for a user.\n"
-                                    f"`{ctx.prefix}suggest` Sends an idea to support server.")
+                                    f"`{ctx.prefix}userinfo` Get user info for a user.")
     em.add_field(name="Mod", value=f"`{ctx.prefix}ban` Ban a user from the guild.\n"
                                    f"`{ctx.prefix}kick` Kick a user from the guild.\n"
                                    f"`{ctx.prefix}mute` Mute someone in a channel.\n"
