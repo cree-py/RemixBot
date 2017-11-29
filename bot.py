@@ -156,13 +156,13 @@ async def _presence(ctx, type=None, *, game=None):
 
 @bot.command()
 async def suggest(ctx, *, idea: str):
-    """Suggest an idea, idea will be sent to developer server"""
-    server = bot.get_channel(384111952798154752)
+    """Suggest an idea. The idea will be sent to developer server"""
+    suggest = bot.get_channel(384111952798154752)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = f"{ctx.message.author}"
     em.description = f"{idea}"
     em.set_footer(text=f"From {ctx.author.guild}", icon_url=f"{ctx.guild.icon_url}")
-    await server.send(embed=em)
+    await suggest.send(embed=em)
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
 
