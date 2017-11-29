@@ -63,7 +63,7 @@ class Utility:
         self.bot = bot
         
     @commands.command()
-    async def embedsay(self, ctx, *body: str):
+    async def embedsay(self, ctx, *, body: str):
         '''Send a simple embed'''
         em = discord.Embed(description=body, color=random_color())
         await ctx.send(embed=em)
