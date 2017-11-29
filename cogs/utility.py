@@ -61,6 +61,12 @@ def random_color():
 class Utility:
     def __init__(self, bot):
         self.bot = bot
+        
+    @commands.command()
+    async def embedsay(self, ctx, *body: str):
+        '''Send a simple embed'''
+        em = discord.Embed(description=body, color=random_color())
+        await ctx.send(embed=em)
 
     @commands.command()
     async def tinyurl(self, ctx, *, link: str):
