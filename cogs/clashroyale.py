@@ -156,10 +156,10 @@ class ClashRoyale:
             tag = clans[tag.lower()]
         except KeyError:
             tag = tag.strip('#').replace('O', '0')
-            try:
-                clan = await self.client.get_clan(tag)
-            except Exception as e:
-                return await ctx.send(f'`{e}`')
+        try:
+            clan = await self.client.get_clan(tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
 
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title(f"{clan.name} (#{clan.tag})")
