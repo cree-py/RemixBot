@@ -109,7 +109,7 @@ class Utility:
             hour = now.hour
             is = "AM"
 
-        await ctx.send(f'It is now {hour}:{now.minute} {is}.'        
+        await ctx.send(f'It is now {hour}:{now.minute} {is}.')        
         
 
 def setup(bot):
