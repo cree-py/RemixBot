@@ -97,6 +97,19 @@ class Utility:
         """Get today's date."""
         now = datetime.datetime.now()
         await ctx.send(f'The current date is {now.month}/{now.day}/{now.year}.')
+
+    @commands.command()
+    async def time(self, ctx):
+        """Get the current time."""
+        now = datetime.datetime.now()
+        if now.hour > 12:
+            is = "PM"
+            hour = now.hour - 12
+        else:
+            hour = now.hour
+            is = "AM"
+
+        await ctx.send(f'It is now {hour}:{now.minute} {is}.'        
         
 
 def setup(bot):
