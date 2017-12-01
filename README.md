@@ -26,7 +26,7 @@ If you need support with the bot or would like to *contribute to CreeperBot*, jo
 - [x] Embed help command
 - [x] Moderator commands
 - [x] Fun commands (8ball, Roll dice, etc.)
-- [ ] Basic CR Stats
+- [x] Clash Royale Stats
 - [x] Brawl Stars Box Simulator
 - [ ] Utility (Embed, Urban Dictionary, Wikipedia)
 - [ ] Mod-log
