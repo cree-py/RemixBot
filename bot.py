@@ -35,7 +35,6 @@ import json
 
 bot = commands.Bot(command_prefix='c.')
 
-
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
@@ -159,9 +158,9 @@ async def suggest(ctx, *, idea: str):
     """Suggest an idea. The idea will be sent to developer server"""
     suggest = bot.get_channel(384111952798154752)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = f"{ctx.message.author}"
-    em.description = f"{idea}"
-    em.set_footer(text=f"From {ctx.author.guild}", icon_url=f"{ctx.guild.icon_url}")
+    em.title = f"{ctx.author} | User ID: {ctx.author.id}"
+    em.description = idea
+    em.set_footer(text=f"From {ctx.author.guild} | Server ID: {ctx.author.guild.id}", icon_url=ctx.guild.icon_url)
     await suggest.send(embed=em)
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
