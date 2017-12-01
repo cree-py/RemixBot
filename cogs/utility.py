@@ -96,7 +96,7 @@ class Utility:
     async def date(self, ctx):
         """Get today's date."""
         now = datetime.datetime.now()
-        await ctx.send(f'The current date is {now.month}/{now.date}/{now.year}.')
+        await ctx.send(f'The current date is {now.month}/{now.day}/{now.year}.')
         
 
 def setup(bot):
