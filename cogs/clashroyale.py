@@ -152,7 +152,7 @@ class ClashRoyale:
             return await ctx.send(embed=em)
         with open('./data/clans.json') as f:
             clans = json.load(f)
-        if tag.lower() in clans:
+        if clans[tag.lower()]:
             tag = clans[tag.lower()]
         else:
             tag = tag.strip('#').replace('O', '0')
