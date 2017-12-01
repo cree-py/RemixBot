@@ -32,6 +32,8 @@ import random
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
+import datetime
+
 
 
 def dev_check(id):
@@ -78,7 +80,7 @@ class Utility:
         emb = discord.Embed(color=random_color())
         emb.add_field(name="Original Link", value=link, inline=False)
         emb.add_field(name="Shortened Link", value=new, inline=False)
-        emb.set_footer(text='Selfbot made by SharpBit | Powered by cr-api',
+        emb.set_footer(text='Powered by tinyurl.com',
                        icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         await ctx.send(embed=emb)
 
@@ -90,6 +92,12 @@ class Utility:
             key = data['key']
         await ctx.message.edit(content=f"Hastebin-ified! <https://hastebin.com/{key}.py>")
 
+    @commands.command()
+    async def date(self, ctx):
+        """Get today's date."""
+        now = datetime.datetime.now()
+        await ctx.send(f'The current date is {now.month}/{now.date}/{now.year}.')
+        
 
 def setup(bot):
     bot.add_cog(Utility(bot))
