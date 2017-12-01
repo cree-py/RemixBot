@@ -152,9 +152,9 @@ class ClashRoyale:
             return await ctx.send(embed=em)
         with open('./data/clans.json') as f:
             clans = json.load(f)
-        if clans[tag.lower()]:
+        try:
             tag = clans[tag.lower()]
-        else:
+        except KeyError:
             tag = tag.strip('#').replace('O', '0')
             try:
                 clan = await self.client.get_clan(tag)
