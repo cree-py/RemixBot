@@ -166,16 +166,18 @@ class ClashRoyale:
         else:
             rank = str(rank)
 
+        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required)} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%)'
+
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title = f"{clan.name} (#{clan.tag})"
         em.set_thumbnail(url=clan.badge_url)
         em.description = f"{clan.description}"
-        em.add_field(name="Clan Name", value=f"{clan.name}")
-        em.add_field(name="Clan Trophies", value=f"{clan.score}")
-        em.add_field(name="Clan Members", value=f"{len(clan.members)}/50")
-        em.add_field(name="Type:", value=f"{clan.type_name}")
-        em.add_field(name="Location", value=f"{clan.region}")
-        em.add_field(name="Rank", value=rank)
+        em.add_field(name="Score", value=f"{clan.score}")
+        em.add_field(name="Members", value=f"{len(clan.members)}/50")
+        em.add_field(name="Type", value=f"{clan.type_name}")
+        em.add_field(name="Region", value=f"{clan.region}")
+        em.add_field(name="Global Rank", value=rank)
+        em.add_field(name="Chest Progress", value=chest)
         em.add_field(name="Donations", value=f"{clan.donations}")
         em.add_field(name="Required Trophies", value=f"{clan.required_trophies}")
         em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
