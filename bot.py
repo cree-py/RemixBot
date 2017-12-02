@@ -49,20 +49,6 @@ for cog in cogs:
 bot.remove_command('help')
 
 
-emoji_servers = [
-    379363572876181515
-]
-
-
-def get_game_emojis():
-    emojis = []
-    for id in emoji_servers:
-        g = bot.get_guild(id)
-        for e in g.emojis:
-            emojis.append(e)
-    return emojis
-
-
 def dev_check(id):
     with open('data/devs.json') as f:
         devs = json.load(f)

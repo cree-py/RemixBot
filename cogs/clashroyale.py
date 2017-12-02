@@ -32,6 +32,18 @@ class ClashRoyale:
         self.bot = bot
         self.client = crasync.Client()
 
+    emoji_servers = [
+        379363572876181515
+    ]
+
+    def get_game_emojis(self):
+        emojis = []
+        for id in self.emoji_servers:
+            g = self.bot.get_guild(id)
+            for e in g.emojis:
+                emojis.append(e)
+        return emojis
+
     def cdir(self, obj):
         return [x for x in dir(obj) if not x.startswith('_')]
 
@@ -53,7 +65,7 @@ class ClashRoyale:
         name = name.replace('.', '').lower().replace(' ', '').replace('_', '').replace('-', '')
         if name == 'chestmagic':
             name = 'chestmagical'
-        e = discord.utils.get(ctx.bot.game_emojis, name=name)
+        e = discord.utils.get(self.game_emojis, name=name)
         return e
 
     @commands.command()
