@@ -32,7 +32,7 @@ import random
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-import datetime
+from datetime import datetime
 
 
 
@@ -95,13 +95,13 @@ class Utility:
     @commands.command()
     async def date(self, ctx):
         """Get today's date."""
-        now = datetime.datetime.now()
+        now = datetime.now()
         await ctx.send(f'The current date is {now.month}/{now.day}/{now.year}.')
 
     @commands.command()
     async def time(self, ctx):
         """Get the current time."""
-        now = datetime.datetime.now()
+        now = datetime.now()
         if now.hour > 12:
             await ctx.send(f'It is now {now.hour - 12}:{now.minute} PM.')
         else:
