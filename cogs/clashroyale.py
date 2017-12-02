@@ -198,6 +198,107 @@ class ClashRoyale:
         em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await ctx.send(embed=em)
 
+    @commands.group(invoke_without_command=True)
+    async def members(self, ctx):
+        '''A command group that finds the worst and best members in a clan'''
+        await ctx.send(f'Proper usage: `{ctx.prefix}members <best|worst>`')
+
+    @members.command()
+    async def worst(self, ctx, clan=None):
+        '''Find the worst members in a clan'''
+        em = discord.Embed(title='Least Valuable Members')
+        em.color = random_color()
+
+        if clan is None:
+            tag = self.tag
+            if tag is None:
+                em.description = 'Please add `TAG` to your config.'
+                return await ctx.send(embed=em)
+            try:
+                profile = await self.client.get_profile(tag)
+            except Exception as e:
+                em.description = f'`{e}`'
+                return await ctx.send(embed=em)
+        else:
+            clan_tag = clan.strip('#').replace('O', '0')
+            clan = await self.client.get_clan(clan_tag)
+
+        try:
+            clan = await profile.get_clan()
+        except ValueError:
+            em.description = 'You are not in a clan'
+            return await ctx.send(embed=em)
+        except Exception as e:
+            pass
+
+        if len(clan.members) < 4:
+            return await ctx.send('Clan must have more than 4 players for stats.')
+        else:
+            for m in clan.members:
+                m.score = ((m.donations / 5) + (m.crowns * 10) + (m.trophies / 7)) / 3
+
+            to_kick = sorted(clan.members, key=lambda m: m.score)[:4]
+
+            em.description = 'Here are the least valuable members of the clan currently.'
+            em.set_author(name=clan)
+            em.set_thumbnail(url=clan.badge_url)
+            em.set_footer(text='Selfbot made by SharpBit | Powered by cr-api.com',
+                          icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+
+            for m in reversed(to_kick):
+                em.add_field(name=f'{m.name}, Role: {m.role_name}',
+                             value=f"#{m.tag}\n{m.trophies} trophies\n{m.crowns} crowns\n{m.donations} donations")
+
+            await ctx.send(embed=em)
+
+    @members.command()
+    async def best(self, ctx, clan=None):
+        '''Find the best members in a clan'''
+        em = discord.Embed(title='Most Valuable Members')
+        em.color = random_color()
+
+        if clan is None:
+            tag = self.tag
+            if tag is None:
+                em.description - 'Please add `TAG` to your config.'
+                return await ctx.send(embed=em)
+            try:
+                profile = await self.client.get_profile(tag)
+            except Exception as e:
+                em.description = f'`{e}`'
+                return await ctx.send(embed=em)
+        else:
+            clan_tag = clan.strip('#').replace('O', '0')
+            clan = await self.client.get_clan(clan_tag)
+
+        try:
+            clan = await profile.get_clan()
+        except ValueError:
+            em.description = 'You are not in a clan'
+            return await ctx.send(embed=em)
+        except Exception as e:
+            pass
+
+        if len(clan.members) < 4:
+            return await ctx.send('Clan must have more than 4 players for stats.')
+        else:
+            for m in clan.members:
+                m.score = ((m.donations / 5) + (m.crowns * 10) + (m.trophies / 7)) / 3
+
+        best = sorted(clan.members, key=lambda m: m.score, reverse=True)[:4]
+
+        em.description = 'Here are the most valuable members of the clan currently.'
+        em.set_author(name=clan)
+        em.set_thumbnail(url=clan.badge_url)
+        em.set_footer(text='Selfbot made by SharpBit | Powered by cr-api.com',
+                      icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+
+        for m in reversed(best):
+            em.add_field(name=f'{m.name}, Role: {m.role_name}',
+                         value=f"#{m.tag}\n{m.trophies} trophies\n{m.crowns} crowns\n{m.donations} donations")
+
+        await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(ClashRoyale(bot))
