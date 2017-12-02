@@ -207,7 +207,7 @@ class ClashRoyale:
     async def worst(self, ctx, tag=None):
         '''Find the worst members in a clan'''
         em = discord.Embed(title='Least Valuable Members')
-        em.color = random_color()
+        em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
             em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
@@ -247,7 +247,7 @@ class ClashRoyale:
     async def best(self, ctx, tag=None):
         '''Find the best members in a clan'''
         em = discord.Embed(title='Most Valuable Members')
-        em.color = random_color()
+        em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
             em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
