@@ -166,7 +166,7 @@ class ClashRoyale:
         else:
             rank = str(rank)
 
-        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required)} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%)'
+        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%)'
 
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title = f"{clan.name} (#{clan.tag})"
