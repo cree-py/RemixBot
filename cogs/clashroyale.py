@@ -48,7 +48,7 @@ class ClashRoyale:
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
                     special += f'{e.title()}: +{until} '
-                    return (chests, special)
+        return (chests, special)
 
     @commands.command()
     async def profile(self, ctx, tag=None):
@@ -140,6 +140,31 @@ class ClashRoyale:
         em.set_thumbnail(url=profile.arena.image_url)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def chests(self, ctx, tag=None):
+        '''Get your CR chest cycle'''
+        em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
+        if tag is None:
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.chests #22UP0G0YU`"
+            return await ctx.send(embed=em)
+        tag = tag.strip('#').replace('O', '0')
+        try:
+            profile = await self.client.get_profile(tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
+
+        chests = self.get_chests(ctx, profile)[0]
+        pos = cycle.position
+        special = self.get_chests(ctx, profile)[1]
+
+        em.description = f'{profile.name} has opened {pos} chests.'
+        em.add_field(name='Upcoming_chests', value=chests)
+        em.add_field(name='Chests Until', value=special)
+        em.set_footer(text='Stats made by Cree-Py', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        em.set_author(name=profile.name)
 
         await ctx.send(embed=em)
 
