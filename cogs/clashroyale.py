@@ -35,11 +35,9 @@ class ClashRoyale:
 
     def get_game_emojis(self):
         emojis = []
-        emoji_servers = [379363572876181515]
-        for id in emoji_servers:
-            g = self.bot.get_guild(id)
-            for e in g.emojis:
-                emojis.append(e)
+        g = self.bot.get_guild(379363572876181515)
+        for e in g.emojis:
+            emojis.append(e)
         return emojis
 
     def cdir(self, obj):
