@@ -165,7 +165,7 @@ class ClashRoyale:
         em.url = f'http://cr-api/profile/{tag}'
         em.add_field(name='Upcoming', value=chests)
         em.add_field(name='Chests Until', value=special)
-        em.set_footer(text='Stats made by Cree-Py', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         em.set_author(name=profile.name)
 
         await ctx.send(embed=em)
