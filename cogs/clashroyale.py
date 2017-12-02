@@ -168,6 +168,19 @@ class ClashRoyale:
 
         chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%)'
 
+        pushers = []
+        if len(clan.members) >= 3:
+            for i in range(3):
+                pushers.append(
+                    f"**{clan.members[i].name}**\n{clan.members[i].trophies} trophies\n#{clan.members[i].tag}")
+        contributors = list(reversed(sorted(clan.members, key=lambda x: x.crowns)))
+
+        ccc = []
+        if len(clan.members) >= 3:
+            for i in range(3):
+                ccc.append(
+                    f"**{contributors[i].name}**\n{contributors[i].crowns} crowns\n#{contributors[i].tag}")
+
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title = f"{clan.name} (#{clan.tag})"
         em.set_thumbnail(url=clan.badge_url)
@@ -180,6 +193,8 @@ class ClashRoyale:
         em.add_field(name="Chest Progress", value=chest)
         em.add_field(name="Donations", value=f"{clan.donations}")
         em.add_field(name="Required Trophies", value=f"{clan.required_trophies}")
+        em.add_field(name='Top Players', value='\n\n'.join(pushers))
+        em.add_field(name='Top Contributors', value='\n\n'.join(ccc))
         em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await ctx.send(embed=em)
 
