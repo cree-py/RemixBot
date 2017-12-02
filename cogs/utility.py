@@ -103,13 +103,11 @@ class Utility:
         """Get the current time."""
         now = datetime.datetime.now()
         if now.hour > 12:
-            is = 'PM'
-            hour = now.hour - 12
+            await ctx.send(f'It is now {now.hour - 12}:{now.minute} PM.')
         else:
-            hour = now.hour
-            is = 'AM'
+            await ctx.send(f'It is now {now.hour}:{now.minute} AM.')
 
-        await ctx.send(f'It is now {hour}:{now.minute} {is}.')        
+                
         
 
 def setup(bot):
