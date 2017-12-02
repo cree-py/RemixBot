@@ -217,7 +217,7 @@ async def _eval(ctx, *, body: str):
 @bot.command()
 async def invite(ctx):
     '''Invite the bot to your server'''
-    await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=66186303")
+    await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542")
 
 
 @bot.command()
