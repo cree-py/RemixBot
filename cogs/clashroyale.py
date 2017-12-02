@@ -43,11 +43,11 @@ class ClashRoyale:
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
-                e = attr.replace('_', '')
+                e = attr.replace('_', ' ')
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{e.title()}: +{until} '
+                    special += f'{e.title()}: +{until}\n'
         return (chests, special)
 
     @commands.command()
