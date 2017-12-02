@@ -31,14 +31,6 @@ class ClashRoyale:
     def __init__(self, bot):
         self.bot = bot
         self.client = crasync.Client()
-        self.game_emojis = self.get_game_emojis()
-
-    def get_game_emojis(self):
-        emojis = []
-        g = self.bot.get_guild(379363572876181515)
-        for e in g.emojis:
-            emojis.append(e)
-        return emojis
 
     def cdir(self, obj):
         return [x for x in dir(obj) if not x.startswith('_')]
@@ -46,23 +38,17 @@ class ClashRoyale:
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         pos = cycle.position
-        chests = ''.join([str(self.emoji(ctx, 'chest' + p.get_chest(x).lower())) for x in range(10)])
+        chests = p.get_chest(0).title() + '\n'
+        chests += '\n'.join([p.get_chest(x).title() for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
-                e = self.emoji(ctx, 'chest' + attr.replace('_', ''))
+                e = attr.replace('_', ' ')
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{e}+{until} '
+                    special += f'{e.title()}: +{until}\n'
         return (chests, special)
-
-    def emoji(self, ctx, name):
-        name = name.replace('.', '').lower().replace(' ', '').replace('_', '').replace('-', '')
-        if name == 'chestmagic':
-            name = 'chestmagical'
-        e = discord.utils.get(self.game_emojis, name=name)
-        return e
 
     @commands.command()
     async def profile(self, ctx, tag=None):
