@@ -157,6 +157,7 @@ class ClashRoyale:
             return await ctx.send(f'`{e}`')
 
         chests = self.get_chests(ctx, profile)[0]
+        cycle = profile.chest_cycle
         pos = cycle.position
         special = self.get_chests(ctx, profile)[1]
 
