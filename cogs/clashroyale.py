@@ -32,11 +32,11 @@ class ClashRoyale:
         self.bot = bot
         self.client = crasync.Client()
         self.game_emojis = self.get_game_emojis()
-        self.emoji_servers = [379363572876181515]
 
     def get_game_emojis(self):
         emojis = []
-        for id in self.emoji_servers:
+        emoji_servers = [379363572876181515]
+        for id in emoji_servers:
             g = self.bot.get_guild(id)
             for e in g.emojis:
                 emojis.append(e)
