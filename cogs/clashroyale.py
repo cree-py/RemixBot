@@ -38,17 +38,23 @@ class ClashRoyale:
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         pos = cycle.position
-        chests = p.get_chest(0).title() + '\n'
-        chests += '\n'.join([p.get_chest(x).title() for x in range(1, 8)])
+        chests = ''.join([str(self.emoji(ctx, 'chest' + p.get_chest(x).lower())) for x in range(10)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
-                e = attr.replace('_', ' ')
+                e = self.emoji(ctx, 'chest' + attr.replace('_', ''))
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{e.title()}: +{until}\n'
+                    special += f'{e}+{until} '
         return (chests, special)
+
+    def emoji(self, ctx, name):
+        name = name.replace('.', '').lower().replace(' ', '').replace('_', '').replace('-', '')
+        if name == 'chestmagic':
+            name = 'chestmagical'
+        e = discord.utils.get(ctx.bot.game_emojis, name=name)
+        return e
 
     @commands.command()
     async def profile(self, ctx, tag=None):
