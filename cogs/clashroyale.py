@@ -229,7 +229,7 @@ class ClashRoyale:
     @commands.group(invoke_without_command=True)
     async def members(self, ctx):
         '''A command group that finds the worst and best members in a clan'''
-        await ctx.send(f'Proper usage: `{ctx.prefix}members <best|worst>`')
+        await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan_tag>`')
 
     @members.command()
     async def worst(self, ctx, tag=None):
@@ -238,7 +238,7 @@ class ClashRoyale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
+            em.description = "Please enter a clan tag.\n Example: `c.members worst #29UQQ282` or `c.clan alpha`"
             return await ctx.send(embed=em)
         with open('./data/clans.json') as f:
             clans = json.load(f)
@@ -278,7 +278,7 @@ class ClashRoyale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
+            em.description = "Please enter a clan tag.\n Example: `c.members best #29UQQ282` or `c.clan alpha`"
             return await ctx.send(embed=em)
         with open('./data/clans.json') as f:
             clans = json.load(f)
@@ -318,7 +318,7 @@ class ClashRoyale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.trophies #22UP0G0YU`"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O', '0')
         try:
@@ -344,7 +344,7 @@ class ClashRoyale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.deck #22UP0G0YU`"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O', '0')
         try:
@@ -362,7 +362,7 @@ class ClashRoyale:
         em.title = profile.name
         em.set_author(name='Battle Deck', icon_url=ctx.author.avatar_url)
         em.description = deck
-        em.add_field(name='Battle Deck Average Elixir Cost', value=aoe)
+        em.add_field(name='Average Elixir Cost', value=aoe)
         em.set_thumbnail(
             url='https://cdn.discordapp.com/emojis/376367875965059083.png')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
@@ -376,7 +376,7 @@ class ClashRoyale:
         em = discord.Embed(title='cr-api.com URL')
         em.color = discord.Color(value=0x00ff00)
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.weburl #22UP0G0YU`"
             return await ctx.send(embed=em)
         tag = tag.strip('#').replace('O', '0')
         try:
