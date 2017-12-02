@@ -61,7 +61,7 @@ class ClashRoyale:
         try:
             profile = await self.client.get_profile(tag)
         except Exception as e:
-            return await ctx.send(f'`{e}`')\
+            return await ctx.send(f'`{e}`')
 
         try:
             clan = await profile.get_clan()
@@ -145,7 +145,7 @@ class ClashRoyale:
 
     @commands.command()
     async def clan(self, ctx, tag=None):
-        '''Gets Clan info by clan tag.'''
+        '''Gets a Clash Royale clan's info'''
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag is None:
             em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
@@ -195,7 +195,7 @@ class ClashRoyale:
         em.add_field(name="Required Trophies", value=f"{clan.required_trophies}")
         em.add_field(name='Top Players', value='\n\n'.join(pushers))
         em.add_field(name='Top Contributors', value='\n\n'.join(ccc))
-        em.set_footer(text="Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
+        em.set_footer(text="Stats made by Cree-Py | Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
@@ -205,7 +205,7 @@ class ClashRoyale:
 
     @members.command()
     async def worst(self, ctx, tag=None):
-        '''Find the worst members in a clan'''
+        '''Find the worst members in a CR clan'''
         em = discord.Embed(title='Least Valuable Members')
         em.color = discord.Color(value=0x00ff00)
 
@@ -234,7 +234,7 @@ class ClashRoyale:
             em.description = 'Here are the least valuable members of the clan currently.'
             em.set_author(name=clan)
             em.set_thumbnail(url=clan.badge_url)
-            em.set_footer(text='Selfbot made by SharpBit | Powered by cr-api.com',
+            em.set_footer(text='Stats made by Cree-Py | Powered by cr-api.com',
                           icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
             for m in reversed(to_kick):
@@ -245,7 +245,7 @@ class ClashRoyale:
 
     @members.command()
     async def best(self, ctx, tag=None):
-        '''Find the best members in a clan'''
+        '''Find the best members in a CR clan'''
         em = discord.Embed(title='Most Valuable Members')
         em.color = discord.Color(value=0x00ff00)
 
@@ -274,12 +274,93 @@ class ClashRoyale:
         em.description = 'Here are the most valuable members of the clan currently.'
         em.set_author(name=clan)
         em.set_thumbnail(url=clan.badge_url)
-        em.set_footer(text='Selfbot made by SharpBit | Powered by cr-api.com',
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api.com',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         for m in reversed(best):
             em.add_field(name=f'{m.name}, Role: {m.role_name}',
                          value=f"#{m.tag}\n{m.trophies} trophies\n{m.crowns} crowns\n{m.donations} donations")
+
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def trophies(self, ctx, tag=None):
+        '''Get your current, record, and legend trophies in CR'''
+        em = discord.Embed(title='Trophies')
+        em.color = discord.Color(value=0x00ff00)
+
+        if tag is None:
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
+            return await ctx.send(embed=em)
+        tag = tag.strip('#').replace('O', '0')
+        try:
+            profile = await self.client.get_profile(tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
+
+        em.title = profile.name
+        em.set_author(
+            name='Trophies', icon_url='http://clashroyalehack1.com/wp-content/uploads/2017/06/coctrophy.png')
+        em.description = f'Trophies: `{profile.current_trophies}`\nPersonal Best: `{profile.highest_trophies}`\nLegend Trophies: `{profile.legend_trophies}`'
+        em.set_thumbnail(
+            url='http://vignette1.wikia.nocookie.net/clashroyale/images/7/7c/LegendTrophy.png/revision/latest?cb=20160305151655')
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
+                      icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def deck(self, ctx, tag=None):
+        '''View a player's CR deck'''
+        em = discord.Embed(title='Battle Deck')
+        em.color = discord.Color(value=0x00ff00)
+
+        if tag is None:
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
+            return await ctx.send(embed=em)
+        tag = tag.strip('#').replace('O', '0')
+        try:
+            profile = await self.client.get_profile(tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
+
+        deck = ''
+        aoe = 0
+        for card in profile.deck:
+            deck += f'{card.name}: Lvl {card.level}\n'
+            aoe += card.elixir
+        aoe = f'{(aoe / 8):.1f}'
+
+        em.title = profile.name
+        em.set_author(name='Battle Deck', icon_url=ctx.author.avatar_url)
+        em.description = deck
+        em.add_field(name='Battle Deck Average Elixir Cost', value=aoe)
+        em.set_thumbnail(
+            url='https://cdn.discordapp.com/emojis/376367875965059083.png')
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
+                      icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def weburl(self, ctx, tag=None):
+        '''Get the cr-api.com url for a player tag in CR'''
+        em = discord.Embed(title='cr-api.com URL')
+        em.color = discord.Color(value=0x00ff00)
+        if tag is None:
+            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
+            return await ctx.send(embed=em)
+        tag = tag.strip('#').replace('O', '0')
+        try:
+            profile = await self.client.get_profile(tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
+
+        em.url = f'http://cr-api.com/profile/{tag}'
+        em.title = profile.name
+        em.add_field(name='URL', value=f'http://cr-api.com/profile/{tag}')
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
+                      icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         await ctx.send(embed=em)
 
