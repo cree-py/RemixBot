@@ -164,7 +164,7 @@ class ClashRoyale:
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title = f"{clan.name} (#{clan.tag})"
         em.set_thumbnail(url=clan.badge_url)
-        em.description(f"{clan.description}")
+        em.description = f"{clan.description}"
         em.add_field(name="Clan Name", value=f"{clan.name}")
         em.add_field(name="Clan Trophies", value=f"{clan.score}")
         em.add_field(name="Clan Members", value=f"{len(clan.members)}/50")
