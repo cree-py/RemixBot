@@ -204,7 +204,7 @@ class ClashRoyale:
         await ctx.send(f'Proper usage: `{ctx.prefix}members <best|worst>`')
 
     @members.command()
-    async def worst(self, ctx, clan=None):
+    async def worst(self, ctx, tag=None):
         '''Find the worst members in a clan'''
         em = discord.Embed(title='Least Valuable Members')
         em.color = random_color()
@@ -244,7 +244,7 @@ class ClashRoyale:
             await ctx.send(embed=em)
 
     @members.command()
-    async def best(self, ctx, clan=None):
+    async def best(self, ctx, tag=None):
         '''Find the best members in a clan'''
         em = discord.Embed(title='Most Valuable Members')
         em.color = random_color()
