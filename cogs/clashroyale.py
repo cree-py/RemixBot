@@ -162,7 +162,7 @@ class ClashRoyale:
             return await ctx.send(f'`{e}`')
 
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
-        em.title(f"{clan.name} (#{clan.tag})")
+        em.title = f"{clan.name} (#{clan.tag})"
         em.set_thumbnail(url=clan.badge_url)
         em.description(f"{clan.description}")
         em.add_field(name="Clan Name", value=f"{clan.name}")
