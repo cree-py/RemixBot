@@ -27,6 +27,7 @@ import os
 import io
 import traceback
 import textwrap
+import aiohttp
 import inspect
 import random
 from contextlib import redirect_stdout
@@ -61,7 +62,7 @@ def random_color():
 class Utility:
     def __init__(self, bot):
         self.bot = bot
-        
+
     @commands.command()
     async def embedsay(self, ctx, *, body: str):
         '''Send a simple embed'''
@@ -73,7 +74,7 @@ class Utility:
         '''Makes a link shorter using the tinyurl api'''
         await ctx.message.delete()
         url = 'http://tinyurl.com/api-create.php?url=' + link
-        async with ctx.session.get(url) as resp:
+        async with self.bot.session.get(url) as resp:
             new = await resp.text()
         emb = discord.Embed(color=random_color())
         emb.add_field(name="Original Link", value=link, inline=False)
@@ -85,7 +86,7 @@ class Utility:
     @commands.command()
     async def hastebin(self, ctx, *, code):
         '''Hastebin-ify your code!'''
-        async with ctx.session.post("https://hastebin.com/documents", data=code) as resp:
+        async with self.bot.post("https://hastebin.com/documents", data=code) as resp:
             data = await resp.json()
             key = data['key']
         await ctx.message.edit(content=f"Hastebin-ified! <https://hastebin.com/{key}.py>")
