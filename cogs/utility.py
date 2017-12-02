@@ -103,11 +103,11 @@ class Utility:
         """Get the current time."""
         now = datetime.datetime.now()
         if now.hour > 12:
-            is = "PM"
+            is = 'PM'
             hour = now.hour - 12
         else:
             hour = now.hour
-            is = "AM"
+            is = 'AM'
 
         await ctx.send(f'It is now {hour}:{now.minute} {is}.')        
         
