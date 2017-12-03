@@ -137,7 +137,7 @@ class Utility:
         if now.month == 1 and now.day == 1:
             await ctx.send('It\'s New Years today!')
         else:
-            await ctx.send('No, there are {days_until.days} left until New Year\'s.')
+            await ctx.send(f'No, there are {days_until.days} left until New Year\'s.')
 
     @commands.command()
     async def multiply(self, ctx, a: int, b: int):
