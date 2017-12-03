@@ -95,7 +95,7 @@ class Utility:
 
     @commands.command()
     async def date(self, ctx, tz=None):
-        """Get the current UTC date."""
+        """Get the current date for a time zone or UTC."""
         now = datetime.datetime.now(tz=pytz.UTC)
         if tz:
             try:
@@ -109,7 +109,7 @@ class Utility:
 
     @commands.command()
     async def time(self, ctx, tz=None):
-        """Get the current time."""
+        """Get the current time for a timezone or UTC."""
         now = datetime.datetime.now(pytz.UTC)
         if tz:
             try:
