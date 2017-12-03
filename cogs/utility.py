@@ -130,6 +130,7 @@ class Utility:
             
     @commands.command()
     async def multiply(ctx, a:int, b:int):
+        '''Multiply a number by another number'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Result"
         em.description = a * b
