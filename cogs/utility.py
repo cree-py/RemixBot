@@ -129,7 +129,7 @@ class Utility:
             await ctx.send(f'No, there are {days_until.days} more days until Christmas.')
 
     @commands.command()
-    async def multiply(ctx, a: int, b: int):
+    async def multiply(self, ctx, a: int, b: int):
         '''Multiply two numbers'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Result"
