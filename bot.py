@@ -87,7 +87,12 @@ async def help(ctx):
         cmds = ''
         for c in abc:
             cmds += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
-        em.add_field(name=type(cog).__name__, value=cmds)
+        em.add_field(name=type(cog).__name__.replace('_', ' '), value=cmds)
+    none = ''
+    for c in bot.commands:
+        if type(c.instance).__name__ == 'NoneType':
+            none += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
+    em.add_field(name='Bot', value=none)
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")

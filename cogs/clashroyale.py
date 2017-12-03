@@ -27,7 +27,7 @@ import crasync
 import json
 
 
-class ClashRoyale:
+class Clash_Royale:
     def __init__(self, bot):
         self.bot = bot
         self.client = crasync.Client()
@@ -394,4 +394,4 @@ class ClashRoyale:
 
 
 def setup(bot):
-    bot.add_cog(ClashRoyale(bot))
+    bot.add_cog(Clash_Royale(bot))

@@ -27,7 +27,7 @@ from discord.ext import commands
 import random
 
 
-class Bsboxsim:
+class Brawl_Stars_Box_Simulator:
     def __init__(self, bot):
         self.bot = bot
 
@@ -84,4 +84,4 @@ class Bsboxsim:
 
 
 def setup(bot):
-    bot.add_cog(Bsboxsim(bot))
+    bot.add_cog(Brawl_Stars_Box_Simulator(bot))
