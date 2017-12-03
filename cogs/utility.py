@@ -116,7 +116,7 @@ class Utility:
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
     @commands.command()
-    async def isitchristmas(self, ctx, tz=None):
+    async def isitchristmas(self, ctx):
         '''Is it Christmas?'''
         now = datetime.datetime.now()
         c = datetime.datetime(now.year, 12, 25)
@@ -129,12 +129,24 @@ class Utility:
             await ctx.send(f'No, there are {days_until.days} more days until Christmas.')
 
     @commands.command()
+    async def isitnewyear(self, ctx):
+        '''When is the new year?'''
+        now = datetime.datetime.now()
+        ny = datetime.datetime(now.year + 1, 1, 1)
+        days_until = ny - now
+        if now.month == 1 and now.day == 1:
+            await ctx.send('It\'s New Years today!')
+        else:
+            await ctx.send('No, there are {days_until.days} left until New Year\'s.')
+
+    @commands.command()
     async def multiply(self, ctx, a: int, b: int):
         '''Multiply two numbers'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Result"
         em.description = f'❓ Problem: `{a}*{b}`\n✅ Solution: `{a * b}`'
         await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
