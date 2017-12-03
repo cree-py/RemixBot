@@ -133,8 +133,8 @@ class Utility:
         '''Multiply two numbers'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Result"
-        em.description = f'❓ Problem: `{a}*{b}`\n	✅Solution: `{a * b}`'
+        em.description = f'❓ Problem: `{a}*{b}`\n✅ Solution: `{a * b}`'
         await ctx.send(embed=em)
-        
+
 def setup(bot):
     bot.add_cog(Utility(bot))
