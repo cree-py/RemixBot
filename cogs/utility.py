@@ -184,6 +184,14 @@ class Utility:
         em.title = "Result"
         em.description = f'❓ Problem: `{a}%{b}`\n✅ Solution: `{a % b}`'
         await ctx.send(embed=em)
+    
+    @commands.command()
+    async def power(self, ctx, a: int, b: int):
+        '''Raise A to the power of B'''
+        em = discord.Embed(color = discord.Color(value=0x00ff00))
+        em.title = "Result"
+        em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
+        await ctx.send(embed=em)
 
 
 def setup(bot):
