@@ -94,19 +94,29 @@ class Utility:
         await ctx.message.edit(content=f"Hastebin-ified! <https://hastebin.com/{key}.py>")
 
     @commands.command()
-    async def date(self, ctx):
+    async def date(self, ctx, tz=None):
         """Get the current UTC date."""
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(tz=pytz.UTC)
+        if tz:
+            try:
+                now = now.astimezone(pytz.timezone(tz))
+            except:
+                return await ctx.send('Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.')
         await ctx.send(f'The current date is {now:%A, %B %d, %Y}.')
 
     @commands.command()
-    async def time(self, ctx):
-        """Get the current UTC time."""
-        now = datetime.datetime.now()
+    async def time(self, ctx, tz=None):
+        """Get the current time."""
+        now = datetime.datetime.now(pytz.UTC)
+        if tz:
+            try:
+                now = now.astimezone(pytz.timezone(tz))
+            except:
+                return await ctx.send('Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.')
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
     @commands.command()
-    async def isitchristmas(self, ctx):
+    async def isitchristmas(self, ctx, tz=None):
         '''Is it Christmas?'''
         now = datetime.datetime.now()
         c = datetime.datetime(now.year, 12, 25)
