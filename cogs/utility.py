@@ -116,7 +116,7 @@ class Utility:
         if days_until.days == 0:
             await ctx.send('Merry Christmas!')
         else:
-            await ctx.send('No, there are {days_until.days} more days until Christmas.')
+            await ctx.send(f'No, there are {days_until.days} more days until Christmas.')
 
 
 def setup(bot):
