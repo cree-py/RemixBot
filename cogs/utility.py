@@ -194,7 +194,7 @@ class Utility:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def factorial(self, ctx, a: int) 
+    async def factorial(self, ctx, a: int): 
         '''Factorial something'''
         em = discord.Embed(color = discord.Color(value=0x00ff00))
         em.title = "Result"
