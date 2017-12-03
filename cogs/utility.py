@@ -33,7 +33,8 @@ import random
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-from datetime import datetime
+import datetime
+import pytz
 
 
 def dev_check(id):
@@ -95,14 +96,27 @@ class Utility:
     @commands.command()
     async def date(self, ctx):
         """Get the current UTC date."""
-        now = datetime.now()
+        now = datetime.datetime.now()
         await ctx.send(f'The current date is {now:%A, %B %d, %Y}.')
 
     @commands.command()
     async def time(self, ctx):
         """Get the current UTC time."""
-        now = datetime.now()
+        now = datetime.datetime.now()
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
+
+    @commands.command()
+    async def isitchristmas(self, ctx):
+        '''Is it Christmas?'''
+        now = datetime.datetime.now()
+        c = datetime.datetime(now.year, 12, 25)
+        if now.month == 12 and now.day > 25:
+            c = datetime.datetime((now.year + 1), 12, 25)
+        days_until = c - now
+        if days_until.days == 0:
+            await ctx.send('Merry Christmas!')
+        else:
+            await ctx.send('No, there are {days_until.days} more days until Christmas.')
 
 
 def setup(bot):
