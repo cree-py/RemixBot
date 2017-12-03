@@ -86,7 +86,7 @@ async def help(ctx):
         abc = sorted(cc, key=lambda x: x.name)
         cmds = ''
         for c in abc:
-            cmds += f'`{ctx.prefix}{c.name}:\t{c.short_doc}\n`'
+            cmds += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
         em.add_field(name=type(cog).__name__, value=cmds)
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
