@@ -201,6 +201,7 @@ class Utility:
         result = 1
         while a > 0:
             result = result * a
+            a = a - 1
         em.description = f'❓ Problem: `{a}!`\n✅ Solution: `{result}`'
         await ctx.send(embed=em)
 
