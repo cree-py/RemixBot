@@ -96,16 +96,13 @@ class Utility:
     async def date(self, ctx):
         """Get the current UTC date."""
         now = datetime.now()
-        await ctx.send(f'The current date is {now.month}/{now.day}/{now.year}.')
+        await ctx.send(f'The current date is {now:%A, %B %d, %Y}.')
 
     @commands.command()
     async def time(self, ctx):
         """Get the current UTC time."""
         now = datetime.now()
-        if now.hour > 12:
-            await ctx.send(f'It is now {now.hour - 12}:{now.minute} PM.')
-        else:
-            await ctx.send(f'It is now {now.hour}:{now.minute} AM.')
+        await ctx.send(f'It is currently {now:%I:%M:%S %p}')
 
 
 def setup(bot):
