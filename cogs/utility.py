@@ -196,14 +196,18 @@ class Utility:
     @commands.command()
     async def factorial(self, ctx, a: int): 
         '''Factorial something'''
-        em = discord.Embed(color = discord.Color(value=0x00ff00))
-        em.title = "Result"
-        result = 1
-        while a > 0:
-            result = result * a
-            a = a - 1
-        em.description = f'❓ Problem: `{a}!`\n✅ Solution: `{result}`'
-        await ctx.send(embed=em)
+        if a > 814:
+            await ctx.send("That number is too high to fit within the message limit for discord.")
+        else:
+            em = discord.Embed(color = discord.Color(value=0x00ff00))
+            em.title = "Result"
+            result = 1
+            problem = a
+            while a > 0:
+                result = result * a
+                a = a - 1
+            em.description = f'❓ Problem: `{problem}!`\n✅ Solution: `{result}`'
+            await ctx.send(embed=em)
 
 
 def setup(bot):
