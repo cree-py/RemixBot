@@ -101,7 +101,7 @@ class Utility:
             try:
                 now = now.astimezone(pytz.timezone(tz))
             except:
-                em = discord.Embed(color=discord.Color(value=0x00ff00))
+                em = discord.Embed(color=discord.Color(value=0xff0000))
                 em.title = "Invalid timezone"
                 em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
                 return await ctx.send(embed=em)
@@ -115,7 +115,10 @@ class Utility:
             try:
                 now = now.astimezone(pytz.timezone(tz))
             except:
-                return await ctx.send('Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.')
+                em = discord.Embed(color=discord.Color(value=0xff0000))
+                em.title = "Invalid timezone"
+                em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
+                return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
     @commands.command()
