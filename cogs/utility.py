@@ -196,7 +196,7 @@ class Utility:
     @commands.command()
     async def factorial(self, ctx, a: int): 
         '''Factorial something'''
-        if a > 814:
+        if a > 813:
             await ctx.send("That number is too high to fit within the message limit for discord.")
         else:
             em = discord.Embed(color = discord.Color(value=0x00ff00))
