@@ -116,7 +116,7 @@ class Fun:
 
     @commands.command(aliases=['lotto'])
     async def lottery(self, ctx, *, guesses):
-        '''Enter the lottery and see if you win'''
+        '''Enter the lottery and see if you win!'''
         author = ctx.author
         numbers = []
         for x in range(3):

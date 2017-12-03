@@ -52,7 +52,7 @@ class Clash_Royale:
 
     @commands.command()
     async def profile(self, ctx, tag=None):
-        '''Fetch a Clash Royale Profile by tag'''
+        '''Fetch a profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
             em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
@@ -145,7 +145,7 @@ class Clash_Royale:
 
     @commands.command()
     async def chests(self, ctx, tag=None):
-        '''Get your CR chest cycle'''
+        '''Get a profile's chest cycle'''
         em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
         if tag is None:
             em.description = "Please enter a Clash Royale player tag.\nExample: `c.chests #22UP0G0YU`"
@@ -173,7 +173,7 @@ class Clash_Royale:
 
     @commands.command()
     async def clan(self, ctx, tag=None):
-        '''Gets a Clash Royale clan's info'''
+        '''Gets a clan's info by clan tag'''
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag is None:
             em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
@@ -233,7 +233,7 @@ class Clash_Royale:
 
     @members.command()
     async def worst(self, ctx, tag=None):
-        '''Find the worst members in a CR clan'''
+        '''Find the worst members in a clan'''
         em = discord.Embed(title='Least Valuable Members')
         em.color = discord.Color(value=0x00ff00)
 
@@ -273,7 +273,7 @@ class Clash_Royale:
 
     @members.command()
     async def best(self, ctx, tag=None):
-        '''Find the best members in a CR clan'''
+        '''Find the best members in a clan'''
         em = discord.Embed(title='Most Valuable Members')
         em.color = discord.Color(value=0x00ff00)
 
@@ -313,7 +313,7 @@ class Clash_Royale:
 
     @commands.command()
     async def trophies(self, ctx, tag=None):
-        '''Get your current, record, and legend trophies in CR'''
+        '''Get your current, record, and legend trophies'''
         em = discord.Embed(title='Trophies')
         em.color = discord.Color(value=0x00ff00)
 
@@ -339,7 +339,7 @@ class Clash_Royale:
 
     @commands.command()
     async def deck(self, ctx, tag=None):
-        '''View a player's CR deck'''
+        '''View a player's current battle deck'''
         em = discord.Embed(title='Battle Deck')
         em.color = discord.Color(value=0x00ff00)
 
@@ -372,7 +372,7 @@ class Clash_Royale:
 
     @commands.command()
     async def weburl(self, ctx, tag=None):
-        '''Get the cr-api.com url for a player tag in CR'''
+        '''Get the cr-api.com url for a player tag'''
         em = discord.Embed(title='cr-api.com URL')
         em.color = discord.Color(value=0x00ff00)
         if tag is None:

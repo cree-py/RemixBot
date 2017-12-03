@@ -36,7 +36,6 @@ import json
 from datetime import datetime
 
 
-
 def dev_check(id):
     with open('data/devs.json') as f:
         devs = json.load(f)
@@ -95,21 +94,21 @@ class Utility:
 
     @commands.command()
     async def date(self, ctx):
-        """Get today's date."""
+        """Get today's date. in UTC"""
         now = datetime.now()
         await ctx.send(f'The current date is {now.month}/{now.day}/{now.year}.')
 
     @commands.command()
     async def time(self, ctx):
-        """Get the current time."""
+        """Get the current UTC time."""
         now = datetime.now()
         if now.hour > 12:
             await ctx.send(f'It is now {now.hour - 12}:{now.minute} PM.')
         else:
             await ctx.send(f'It is now {now.hour}:{now.minute} AM.')
 
-                
-        
+
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
