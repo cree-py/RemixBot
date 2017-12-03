@@ -127,6 +127,13 @@ class Utility:
             await ctx.send('Merry Christmas!')
         else:
             await ctx.send(f'No, there are {days_until.days} more days until Christmas.')
+            
+    @commands.command()
+    async def multiply(ctx, a:int, b:int):
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "Result"
+        em.description = a * b
+        await ctx.send(embed=em)
 
 
 def setup(bot):
