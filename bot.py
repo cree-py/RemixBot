@@ -80,9 +80,10 @@ async def help(ctx):
     em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n\n"
     for cog in bot.cogs.values():
         cc = ''
+        nonstr = None
         for cmd in bot.commands:
             if cmd.instance is cog:
-                cc += cmd.name
+                cc += cmd
         abc = sorted(cc, key=lambda x: x.name)
         cmds = ''
         for c in abc:
