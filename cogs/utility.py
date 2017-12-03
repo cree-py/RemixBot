@@ -193,6 +193,17 @@ class Utility:
         em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
         await ctx.send(embed=em)
 
+    @commands.command()
+    async def factorial(self, ctx, a: int) 
+        '''Factorial something'''
+        em = discord.Embed(color = discord.Color(value=0x00ff00))
+        em.title = "Result"
+        result = 1
+        while a > 0:
+            result = result * a
+        em.description = f'❓ Problem: `{a}!`\n✅ Solution: `{result}`'
+        await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Utility(bot))
