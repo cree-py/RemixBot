@@ -146,6 +146,38 @@ class Utility:
         em.title = "Result"
         em.description = f'❓ Problem: `{a}*{b}`\n✅ Solution: `{a * b}`'
         await ctx.send(embed=em)
+        
+    @commands.command()
+    async def devide(self, ctx, a: int, b: int):
+        '''Devide two numbers'''
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "Result"
+        em.description = f'❓ Problem: `{a}/{b}`\n✅ Solution: `{a / b}`'
+        await ctx.send(embed=em)
+        
+    @commands.command()
+    async def add(self, ctx, a: int, b: int):
+        '''Add a number to a number'''
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "Result"
+        em.description = f'❓ Problem: `{a}+{b}`\n✅ Solution: `{a + b}`'
+        await ctx.send(embed=em)
+        
+    @commands.command()
+    async def subst(self, ctx, a: int, b: int):
+        '''Substract two numbers'''
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "Result"
+        em.description = f'❓ Problem: `{a}-{b}`\n✅ Solution: `{a - b}`'
+        await ctx.send(embed=em)
+       
+    @commands.command()
+    async def remainder(self, ctx, a: int, b: int):
+        '''Gets a remainder'''
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "Result"
+        em.description = f'❓ Problem: `{a}%{b}`\n✅ Solution: `{a % b}`'
+        await ctx.send(embed=em)
 
 
 def setup(bot):
