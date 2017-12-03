@@ -102,7 +102,7 @@ class Utility:
     async def time(self, ctx):
         """Get the current UTC time."""
         now = datetime.now()
-        await ctx.send(f'It is currently {now:%I:%M:%S %p}')
+        await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
 
 def setup(bot):
