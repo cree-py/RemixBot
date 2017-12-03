@@ -78,14 +78,19 @@ async def help(ctx):
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n\n"
-    commands = sorted(bot.commands, key=lambda x: x.name)
-    for command in commands:
-        em.description += f'`{ctx.prefix}{command.name}`:\t{command.short_doc}.\n'
+    for cog in bot.cogs.values():
+        cc = ''
+        for cmd in bot.commands:
+            if cmd.instance is cog:
+                cc += cmd.name
+        abc = sorted(cc, key=lambda x: x.name)
+        cmds = ''
+        for c in abc:
+            cmds += f'`{ctx.prefix}{c.name}:\t{c.short_doc}\n`'
+        em.add_field(name=type(cog).__name__, value=cmds)
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
-    else:
-        pass
 
 
 @bot.event
