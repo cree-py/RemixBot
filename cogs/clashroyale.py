@@ -331,7 +331,7 @@ class Clash_Royale:
         em.title = profile.name
         em.set_author(
             name='Trophies', icon_url='http://clashroyalehack1.com/wp-content/uploads/2017/06/coctrophy.png')
-        em.description = f'Trophies: `{profile.current_trophies}:trophy:`\nPersonal Best: `{profile.highest_trophies}:trophy:`\nLegend Trophies: `{profile.legend_trophies}:trophy:`'
+        em.description = f'Trophies: `{profile.current_trophies}`:trophy:\nPersonal Best: `{profile.highest_trophies}`:trophy:\nLegend Trophies: `{profile.legend_trophies}`:trophy:'
         em.set_thumbnail(
             url='http://vignette1.wikia.nocookie.net/clashroyale/images/7/7c/LegendTrophy.png/revision/latest?cb=20160305151655')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
