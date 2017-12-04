@@ -57,8 +57,9 @@ async def help(ctx):
     for cog in bot.cogs.values():
         cc = []
         for cmd in bot.commands:
-            if cmd.instance is cog:
-                cc.append(cmd)
+            if not cmd.hidden:
+                if cmd.instance is cog:
+                    cc.append(cmd)
         abc = sorted(cc, key=lambda x: x.name)
         cmds = ''
         for c in abc:
