@@ -56,7 +56,7 @@ class ClashOfClans:
         pb = bot.get_emoji(387281346898165761)
         cc = bot.get_emoji(387281270960422922)
         em.title = "CoC Profile"
-        em.description = "Clash of Clans Stats: **beta**"
+        em.description = "Clash of Clans Stats: **BETA**"
         em.set_thumbnail(url=response.json()['league']['iconUrls']['medium'])
         em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['clan']['badgeUrls']['large'])
         em.add_field(name="Player Name", value=f"{name} {clan_emoji}")
