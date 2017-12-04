@@ -21,12 +21,13 @@ A multifunctional Discord bot in development that allows you to easily control y
 If you need support with the bot or would like to *contribute to CreeperBot*, join [the discord server](https://discord.gg/hEPxEX6) and ask any of the people with the Creators/Contributors role. Make sure to read the [Contributor Covenant Code of Conduct](https://github.com/cree-py/creepy.py/wiki/Contributor-Covenant-Code-of-Conduct) and agree to it before becoming a contributor.
 
 ### Features
-- [x] Evalulate python code and more commands for contributors!
+- [x] Evalulate python code and more commands for creators!
 - [x] Get info about a user, server, or role
 - [x] Embed help command
 - [x] Moderator commands
 - [x] Fun commands (8ball, Roll dice, etc.)
 - [x] Clash Royale Stats
+- [ ] Clash of Clans Stats
 - [x] Brawl Stars Box Simulator
 - [ ] Utility (Embed, Urban Dictionary, Wikipedia)
 - [ ] Mod-log
