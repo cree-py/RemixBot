@@ -384,7 +384,7 @@ class Clash_Royale:
         try:
             profile = await self.client.get_profile(tag)
         except Exception as e:
-            return await ctx.send(f'`{e}`')
+            return await ctx.send(f'`{e}`')a
 
         em.url = f'http://cr-api.com/profile/{tag}'
         em.title = profile.name

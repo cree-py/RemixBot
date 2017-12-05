@@ -66,9 +66,14 @@ async def help(ctx):
             cmds += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
         em.add_field(name=type(cog).__name__.replace('_', ' '), value=cmds)
     none = ''
+    nonec = []
     for c in bot.commands:
-        if type(c.instance).__name__ == 'NoneType':
-            none += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
+        if not c.hidden:
+            if type(c.instance).__name__ == 'NoneType':
+                nonec.append(c)
+    abc = sorted(nonec, key=lambda x: x.name)
+    for c in abc:
+        none += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
     em.add_field(name='Bot', value=none)
     await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
