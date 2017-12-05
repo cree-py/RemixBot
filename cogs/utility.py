@@ -155,11 +155,19 @@ class Utility:
 
     @commands.command()
     async def divide(self, ctx, a: int, b: int):
-        '''Divide two numbers'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
-        em.title = "Result"
-        em.description = f'❓ Problem: `{a}/{b}`\n✅ Solution: `{a / b}`'
-        await ctx.send(embed=em)
+        '''Divide a number by a number'''
+        try:
+           em = discord.Embed(color=discord.Color(value=0x00ff00))
+           em.title = "Result"
+           em.description = f'❓ Problem: `{a}/{b}`\n✅ Solution: `{a / b}`'
+           await ctx.send(embed=em)
+        except ZeroDivisionError:
+            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em.title = "Error"
+            em.description = "You can't divide by zero"
+            await ctx.send(embed=em)
+
+            
 
     @commands.command()
     async def add(self, ctx, a: int, b: int):
