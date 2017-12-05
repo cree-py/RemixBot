@@ -46,8 +46,9 @@ class Clash_Royale:
     def save_tag(self, userid, tag):
         with open('./data/tags.json', 'r+') as f:
             config = json.load(f)
+            f.seek(0)
             config[userid] = tag
-            json.dump(config, indent=4, f)
+            json.dump(config, f, indent=4)
 
     def check_tag(self, tag):
         chars = ['0', '2', '8', '9', 'P', 'Y', 'L', 'Q', 'G', 'R', 'J', 'C', 'U', 'V']
