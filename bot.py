@@ -220,12 +220,12 @@ async def say(ctx, *, message: str):
 
 
 @bot.command()
-async def restart(ctx):
-    '''Restart the bot'''
+async def shutdown(ctx):
+    '''Shut down the bot'''
     if not dev_check(ctx.author.id):
         return
 
-    await ctx.send("Restarting....")
+    await ctx.send("Shutting down....")
     await bot.logout()
 
 if __name__ == "__main__":

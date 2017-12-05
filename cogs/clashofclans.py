@@ -46,7 +46,7 @@ class ClashOfClans:
             apikey = coc.get('APIKEY')
         try:
             headers = {'Authorization': apikey}
-            response = requests.get('https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
+            response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
         except:
             em.description = "Invalid Tag. Please check the tag that you entered is correct"
             return await ctx.send(embed=em)
