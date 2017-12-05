@@ -29,7 +29,7 @@ import discord
 from discord.ext import commands
 
 
-class ClashOfClans:
+class Clash_of_Clans:
     def __init__(self, bot):
         self.bot = bot
 

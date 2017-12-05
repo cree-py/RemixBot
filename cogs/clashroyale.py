@@ -34,6 +34,28 @@ class Clash_Royale:
         self.bot = bot
         self.client = crasync.Client()
 
+    def get_tag(self, userid):
+        with open('./data/tags.json') as f:
+            config = json.load(f)
+            try:
+                tag = config[userid]
+            except KeyError:
+                return 'None'
+        return tag
+
+    def save_tag(self, userid, tag):
+        with open('./data/tags.json', 'r+') as f:
+            config = json.load(f)
+            config[userid] = tag
+            json.dump(config, indent=4, f)
+
+    def check_tag(self, tag):
+        chars = ['0', '2', '8', '9', 'P', 'Y', 'L', 'Q', 'G', 'R', 'J', 'C', 'U', 'V']
+        for char in tag:
+            if char not in chars:
+                return False
+        return True
+
     def cdir(self, obj):
         return [x for x in dir(obj) if not x.startswith('_')]
 
@@ -51,6 +73,21 @@ class Clash_Royale:
                     until = c_pos - pos
                     special += f'{e.title()}: +{until}\n'
         return (chests, special)
+
+    @commands.command()
+    async def save(self, ctx, tag=None):
+        '''Save a tag to your discord profile'''
+        if tag is None:
+            return await ctx.send('Please enter a tag.\nExample: `c.save #CY8G8VVQ`')
+        tag = tag.strip('#').replace('O', '0')
+        if not self.check_tag(tag):
+            return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+        try:
+            self.save_tag(ctx.author.id, tag)
+        except Exception as e:
+            return await ctx.send(f'`{e}`')
+        else:
+            await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
     @commands.command()
     async def profile(self, ctx, tag=None):
@@ -88,9 +125,9 @@ class Clash_Royale:
         if profile.seasons:
             s = profile.seasons[0]
             global_r = s.end_global
-            season = f"Highest: {s.highest} trophies\n" \
-                     f"Finish: {s.ending} trophies\n" \
-                     f"Global Rank: {global_r}"
+            season = f"Highest: {s.highest} trophies\n"
+                f"Finish: {s.ending} trophies\n"
+                f"Global Rank: {global_r}"
         else:
             season = None
 
