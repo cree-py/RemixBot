@@ -78,4 +78,4 @@ class Clash_of_Clans:
 
 
 def setup(bot):
-    bot.add_cog(ClashOfClans(bot))
+    bot.add_cog(Clash_of_Clans(bot))
