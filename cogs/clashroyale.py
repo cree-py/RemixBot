@@ -126,9 +126,9 @@ class Clash_Royale:
         if profile.seasons:
             s = profile.seasons[0]
             global_r = s.end_global
-            season = f"Highest: {s.highest} trophies\n"
-                f"Finish: {s.ending} trophies\n"
-                f"Global Rank: {global_r}"
+            season = f"Highest: {s.highest} trophies\n" \
+                     f"Finish: {s.ending} trophies\n" \
+                     f"Global Rank: {global_r}"
         else:
             season = None
 
