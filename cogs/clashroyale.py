@@ -95,13 +95,20 @@ class Clash_Royale:
         '''Fetch a profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.profile #22UP0G0YU`"
-            return await ctx.send(embed=em)
-        tag = tag.strip('#').replace('O', '0')
-        try:
-            profile = await self.client.get_profile(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(ctx.author.id) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(ctx.author.id)
+            try:
+                profile = self.client.get_profile(tag)
+            except:
+                return await ctx.send(f'`{e}`')
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+            try:
+                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         try:
             clan = await profile.get_clan()
@@ -188,13 +195,20 @@ class Clash_Royale:
         '''Get a profile's chest cycle'''
         em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.chests #22UP0G0YU`"
-            return await ctx.send(embed=em)
-        tag = tag.strip('#').replace('O', '0')
-        try:
-            profile = await self.client.get_profile(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(ctx.author.id) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(ctx.author.id)
+            try:
+                profile = self.client.get_profile(tag)
+            except:
+                return await ctx.send(f'`{e}`')
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+            try:
+                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         chests = self.get_chests(ctx, profile)[0]
         cycle = profile.chest_cycle
@@ -358,13 +372,20 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.trophies #22UP0G0YU`"
-            return await ctx.send(embed=em)
-        tag = tag.strip('#').replace('O', '0')
-        try:
-            profile = await self.client.get_profile(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(ctx.author.id) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(ctx.author.id)
+            try:
+                profile = self.client.get_profile(tag)
+            except:
+                return await ctx.send(f'`{e}`')
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+            try:
+                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         em.title = profile.name
         em.set_author(
@@ -384,13 +405,20 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.deck #22UP0G0YU`"
-            return await ctx.send(embed=em)
-        tag = tag.strip('#').replace('O', '0')
-        try:
-            profile = await self.client.get_profile(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(ctx.author.id) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(ctx.author.id)
+            try:
+                profile = self.client.get_profile(tag)
+            except:
+                return await ctx.send(f'`{e}`')
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+            try:
+                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         deck = ''
         aoe = 0
@@ -416,13 +444,20 @@ class Clash_Royale:
         em = discord.Embed(title='cr-api.com URL')
         em.color = discord.Color(value=0x00ff00)
         if tag is None:
-            em.description = "Please enter a Clash Royale player tag.\nExample: `c.weburl #22UP0G0YU`"
-            return await ctx.send(embed=em)
-        tag = tag.strip('#').replace('O', '0')
-        try:
-            profile = await self.client.get_profile(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(ctx.author.id) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(ctx.author.id)
+            try:
+                profile = self.client.get_profile(tag)
+            except:
+                return await ctx.send(f'`{e}`')
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+            try:
+                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         em.url = f'http://cr-api.com/profile/{tag}'
         em.title = profile.name
