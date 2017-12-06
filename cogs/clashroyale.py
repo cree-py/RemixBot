@@ -57,22 +57,30 @@ class Clash_Royale:
                 return False
         return True
 
+    def emoji(self, emoji):
+        if emoji == 'chestmagic':
+            emoji = 'chestmagical'
+        with open('data/emojis.json') as f:
+            emojis = json.load(f)
+            e = emojis[emoji]
+        return e
+
     def cdir(self, obj):
         return [x for x in dir(obj) if not x.startswith('_')]
 
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         pos = cycle.position
-        chests = p.get_chest(0).title() + '\n'
-        chests += '\n'.join([p.get_chest(x).title() for x in range(1, 8)])
+        chests = '| ' + self.bot.get_emoji(self.emoji('chest' + p.get_chest(0))) + ' |'
+        chests += ''.join([self.bot.get_emoji(self.emoji('chest' + p.get_chest(x))) for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
-                e = attr.replace('_', ' ')
+                e = attr.replace('_', '')
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{e.title()}: +{until}\n'
+                    special += self.bot.get_emoji(self.emoji(e)) + f': +{until}'
         return (chests, special)
 
     @commands.command()

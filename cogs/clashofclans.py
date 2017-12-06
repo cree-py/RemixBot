@@ -56,6 +56,12 @@ class Clash_of_Clans:
                 return False
         return True
 
+    def emoji(self, emoji):
+        with open('data/emojis.json') as f:
+            emojis = json.load(f)
+            e = emojis[emoji]
+        return e
+
     @commands.command()
     async def cocsave(self, ctx, tag=None):
         '''Save a Clash of Clans tag to your discord profile'''
