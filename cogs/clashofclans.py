@@ -76,10 +76,6 @@ class Clash_of_Clans:
             coc = json.load(f)
             apikey = coc.get('APIKEY')
 
-        headers = {'Authorization': apikey}
-        response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
-        status = response.status_code
-
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
@@ -87,6 +83,11 @@ class Clash_of_Clans:
         else:
             if not self.check_tag(tag):
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
+            tag = tag.strip('#')
+
+        headers = {'Authorization': apikey}
+        response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
+        status = response.status_code
 
         name = response.json()['name']
         clanname = response.json()['clan']['name']
