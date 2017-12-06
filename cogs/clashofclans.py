@@ -60,6 +60,8 @@ class Clash_of_Clans:
         exp = self.bot.get_emoji(387315278427717643)
         pb = self.bot.get_emoji(387281346898165761)
         cc = self.bot.get_emoji(387281270960422922)
+        sword = self.bot.get_emoji(388053082698940416)
+        bh = self.bot.get_emoji(388053155683762176)
         em.title = "CoC Profile"
         em.description = "Clash of Clans Stats: **BETA**"
         em.set_thumbnail(url=response.json()['league']['iconUrls']['medium'])
@@ -69,10 +71,14 @@ class Clash_of_Clans:
         em.add_field(name="Townhall", value=response.json()['townHallLevel'])
         em.add_field(name="Trophies", value=f"{response.json()['trophies']} {trophy_emoji}")
         em.add_field(name="All Time Best", value=f"{response.json()['bestTrophies']} {pb}")
+        em.add_field(name="Attacks Won", value=f"{response.json()['attackWins']} {sword}")
         em.add_field(name="Defenses Won", value=f"{response.json()['defenseWins']} {defense}")
         em.add_field(name="War Stars", value=f"{response.json()['warStars']} :star:")
         em.add_field(name="Clan Name", value=f"{clanname}{cc}")
         em.add_field(name="Clan Role", value=response.json()['role'].title())
+        em.add_field(name="Builderhall Level", value=f"{response.json()['builderHallLevel']} {bh}")
+        em.add_field(name="Builderhall Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
+        em.add_field(name="Builderhall Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
         em.set_footer(text="Stats by Cree-Py with CoC API")
         await ctx.send(embed=em)
 
