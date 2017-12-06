@@ -35,7 +35,7 @@ class Clash_Royale:
         self.client = crasync.Client(timeout=3)
 
     def get_tag(self, userid):
-        with open('./data/tags.json') as f:
+        with open('./data/tags/tags.json') as f:
             config = json.load(f)
             try:
                 tag = config[userid]
@@ -44,7 +44,7 @@ class Clash_Royale:
         return tag
 
     def save_tag(self, userid, tag):
-        with open('./data/tags.json', 'r+') as f:
+        with open('./data/tags/tags.json', 'r+') as f:
             config = json.load(f)
             f.seek(0)
             config[userid] = tag
@@ -83,10 +83,7 @@ class Clash_Royale:
         tag = tag.strip('#').replace('O', '0')
         if not self.check_tag(tag):
             return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
-        try:
-            self.save_tag(str(ctx.author.id), tag)
-        except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
-            return await ctx.send(f'`Error {e.code}: {e.error}`')
+        self.save_tag(str(ctx.author.id), tag)
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
     @commands.command()

@@ -33,14 +33,44 @@ class Clash_of_Clans:
     def __init__(self, bot):
         self.bot = bot
 
+    def get_tag(self, userid):
+        with open('./data/tags/coctags.json') as f:
+            config = json.load(f)
+            try:
+                tag = config[userid]
+            except KeyError:
+                return 'None'
+        return tag
+
+    def save_tag(self, userid, tag):
+        with open('./data/tags/coctags.json', 'r+') as f:
+            config = json.load(f)
+            f.seek(0)
+            config[userid] = tag
+            json.dump(config, f, indent=4)
+
+    def check_tag(self, tag):
+        chars = '0289PYLQGRJCUV'
+        for char in tag:
+            if char not in chars:
+                return False
+        return True
+
+    @commands.command()
+    async def cocsave(self, ctx, tag=None):
+        '''Save a Clash of Clans tag to your discord profile'''
+        if tag is None:
+            return await ctx.send('Please enter a tag.\nExample: `c.save #92CP9Y8PC`')
+        tag = tag.strip('#').replace('O', '0')
+        if not self.check_tag(tag):
+            return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
+        self.save_tag(str(ctx.author.id), tag)
+        await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
+
     @commands.command()
     async def cocprofile(self, ctx, tag=None):
         '''Get a Clash of Clans profile by tag'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
-        if tag is None:
-            em.description = "Please enter a tag. For example, `c.cocprofile #92CP9Y8PC`"
-            return await ctx.send(embed=em)
-        tag = tag.strip('#')
 
         with open('data/cocapi.json') as f:
             coc = json.load(f)
@@ -48,14 +78,17 @@ class Clash_of_Clans:
 
         headers = {'Authorization': apikey}
         response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
-
         status = response.status_code
-        try:
-            name = response.json()['name']
-        except KeyError:
-            em.description = "Invalid Tag. Please check the tag that you entered is correct"
-            return await ctx.send(embed=em)
 
+        if tag is None:
+            if self.get_tag(str(ctx.author.id)) == 'None':
+                return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(str(ctx.author.id))
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
+
+        name = response.json()['name']
         clanname = response.json()['clan']['name']
         clan_emoji = self.bot.get_emoji(387281156258922508)
         trophy_emoji = self.bot.get_emoji(387281233106698241)
@@ -67,8 +100,8 @@ class Clash_of_Clans:
         bh = self.bot.get_emoji(388053155683762176)
         em.title = "CoC Profile"
         em.description = "Clash of Clans Stats: **BETA**"
-        em.set_thumbnail(url=response.json()['league']['iconUrls']['medium'])
-        em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['clan']['badgeUrls']['large'])
+        em.set_thumbnail(url=response.json()['league']['iconUrls']['medium'] or 'http://clash-wiki.com/images/progress/leagues/no_league.png')
+        em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['clan']['badgeUrls']['large'] or 'http://clash-wiki.com/images/progress/leagues/no_league.png')
         em.add_field(name="Player Name", value=f"{name} {clan_emoji}")
         em.add_field(name="Exp", value=f"{response.json()['expLevel']} {exp}")
         em.add_field(name="Townhall", value=response.json()['townHallLevel'])
@@ -77,13 +110,19 @@ class Clash_of_Clans:
         em.add_field(name="Attacks Won", value=f"{response.json()['attackWins']} {sword}")
         em.add_field(name="Defenses Won", value=f"{response.json()['defenseWins']} {defense}")
         em.add_field(name="War Stars", value=f"{response.json()['warStars']} :star:")
-        em.add_field(name="Clan Name", value=f"{clanname}{cc}")
+        try:
+            em.add_field(name="Clan Name", value=f"{clanname}{cc}")
+        except KeyError:
+            em.add_field(name='Clan', value='No clan')
         em.add_field(name="Donations", value=f"{response.json()['donations']}")
         em.add_field(name="Donations Received", value=response.json()['donationsReceived'])
         em.add_field(name="Clan Role", value=response.json()['role'].title())
-        em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {bh}")
-        em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
-        em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
+        try:
+            em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {bh}")
+            em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
+            em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
+        except KeyError:
+            em.add_field(name='Builder Base', value='Not unlocked yet')
         em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
         await ctx.send(embed=em)
 
