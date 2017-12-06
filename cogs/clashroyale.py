@@ -71,8 +71,8 @@ class Clash_Royale:
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         pos = cycle.position
-        chests = '| ' + self.bot.get_emoji(self.emoji('chest' + p.get_chest(0))) + ' |'
-        chests += ''.join([self.bot.get_emoji(self.emoji('chest' + p.get_chest(x))) for x in range(1, 8)])
+        chests = '| ' + self.bot.get_emoji(self.emoji('chest' + p.get_chest(0).lower())) + ' |'
+        chests += ''.join([self.bot.get_emoji(self.emoji('chest' + p.get_chest(x).lower())) for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
@@ -80,7 +80,7 @@ class Clash_Royale:
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += self.bot.get_emoji(self.emoji(e)) + f': +{until}'
+                    special += self.bot.get_emoji(self.emoji(e.lower())) + f': +{until}'
         return (chests, special)
 
     @commands.command()
