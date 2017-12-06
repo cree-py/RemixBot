@@ -98,14 +98,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = self.client.get_profile(tag)
+                profile = await self.client.get_profile(tag)
             except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
             except Exception as e:
                 return await ctx.send(f'`{e}`')
 
@@ -198,14 +198,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(ctx.author.id)
             try:
-                profile = self.client.get_profile(tag)
+                profile = await self.client.get_profile(tag)
             except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
             except Exception as e:
                 return await ctx.send(f'`{e}`')
 
@@ -375,14 +375,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(ctx.author.id)
             try:
-                profile = self.client.get_profile(tag)
+                profile = await self.client.get_profile(tag)
             except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
             except Exception as e:
                 return await ctx.send(f'`{e}`')
 
@@ -408,14 +408,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(ctx.author.id)
             try:
-                profile = self.client.get_profile(tag)
+                profile = await self.client.get_profile(tag)
             except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
             except Exception as e:
                 return await ctx.send(f'`{e}`')
 
@@ -447,14 +447,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(ctx.author.id)
             try:
-                profile = self.client.get_profile(tag)
+                profile = await self.client.get_profile(tag)
             except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
             except Exception as e:
                 return await ctx.send(f'`{e}`')
 
