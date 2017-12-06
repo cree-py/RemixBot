@@ -41,18 +41,21 @@ class Clash_of_Clans:
             em.description = "Please enter a tag. For example, `c.cocprofile #92CP9Y8PC`"
             return await ctx.send(embed=em)
         tag = tag.strip('#')
+
         with open('data/cocapi.json') as f:
             coc = json.load(f)
             apikey = coc.get('APIKEY')
+
+        headers = {'Authorization': apikey}
+        response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
+
+        status = response.status_code
         try:
-            headers = {'Authorization': apikey}
-            response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
-        except:
+            name = response.json()['name']
+        except KeyError:
             em.description = "Invalid Tag. Please check the tag that you entered is correct"
             return await ctx.send(embed=em)
 
-        status = response.status_code
-        name = response.json()['name']
         clanname = response.json()['clan']['name']
         clan_emoji = self.bot.get_emoji(387281156258922508)
         trophy_emoji = self.bot.get_emoji(387281233106698241)
