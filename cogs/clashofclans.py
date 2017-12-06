@@ -118,11 +118,11 @@ class Clash_of_Clans:
         em.add_field(name="War Stars", value=f"{response.json()['warStars']} :star:")
         try:
             em.add_field(name="Clan Name", value=f"{response.json()['clan']['name']}{cc}")
+            em.add_field(name="Clan Role", value=response.json()['role'].title())
         except KeyError:
             em.add_field(name='Clan', value='No clan')
         em.add_field(name="Donations", value=f"{response.json()['donations']}")
         em.add_field(name="Donations Received", value=response.json()['donationsReceived'])
-        em.add_field(name="Clan Role", value=response.json()['role'].title())
         try:
             em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {bh}")
             em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
