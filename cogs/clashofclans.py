@@ -100,8 +100,14 @@ class Clash_of_Clans:
         bh = self.bot.get_emoji(388053155683762176)
         em.title = "CoC Profile"
         em.description = "Clash of Clans Stats: **BETA**"
-        em.set_thumbnail(url=response.json()['league']['iconUrls']['medium'] or 'http://clash-wiki.com/images/progress/leagues/no_league.png')
-        em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['clan']['badgeUrls']['large'] or 'http://clash-wiki.com/images/progress/leagues/no_league.png')
+        try:
+            em.set_thumbnail(url=response.json()['league']['iconUrls']['medium'])
+        except KeyError:
+            em.set_thumbnail(url='http://clash-wiki.com/images/progress/leagues/no_league.png')
+        try:
+            em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['clan']['badgeUrls']['large'])
+        except KeyError:
+            em.set_author(name=f"{response.json()['tag']}", icon_url='http://clash-wiki.com/images/progress/leagues/no_league.png')
         em.add_field(name="Player Name", value=f"{name} {clan_emoji}")
         em.add_field(name="Exp", value=f"{response.json()['expLevel']} {exp}")
         em.add_field(name="Townhall", value=response.json()['townHallLevel'])
