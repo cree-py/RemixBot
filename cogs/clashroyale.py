@@ -71,7 +71,7 @@ class Clash_Royale:
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         pos = cycle.position
-        chests = f'| {self.bot.get_emoji(self.emoji("chest" + p.get_chest(0).lower()))} |'
+        chests = f'| {self.bot.get_emoji(self.emoji("chest" + p.get_chest(0).lower()))} | '
         chests += ''.join([f'{self.bot.get_emoji(self.emoji("chest" + p.get_chest(x).lower()))}' for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
@@ -80,7 +80,7 @@ class Clash_Royale:
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{self.bot.get_emoji(self.emoji("chest" + e.lower()))}: +{until}'
+                    special += f'{self.bot.get_emoji(self.emoji("chest" + e.lower()))}{until}'
         return (chests, special)
 
     @commands.command()
@@ -219,13 +219,13 @@ class Clash_Royale:
         pos = cycle.position
         special = self.get_chests(ctx, profile)[1]
 
-        em.description = f'{profile.name} has opened {pos} chests.'
+        em.description = f'{pos} total chests opened.'
         em.url = f'http://cr-api.com/profile/{tag}'
         em.add_field(name='Upcoming', value=chests)
         em.add_field(name='Chests Until', value=special)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         em.set_author(name='Upcoming Chests')
-        em.title = profile.name
+        em.title = f'{profile.name} (#{profile.tag})'
 
         await ctx.send(embed=em)
 
