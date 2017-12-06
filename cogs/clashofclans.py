@@ -38,7 +38,7 @@ class Clash_of_Clans:
         '''Get a Clash of Clans profile by tag'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         if tag is None:
-            em.description = "Please enter a tag. For example, c.cocprofile #92CP9Y8PC"
+            em.description = "Please enter a tag. For example, `c.cocprofile #92CP9Y8PC`"
             return await ctx.send(embed=em)
         tag = tag.strip('#')
         with open('data/cocapi.json') as f:
@@ -78,10 +78,10 @@ class Clash_of_Clans:
         em.add_field(name="Donations", value=f"{response.json()['donations']}")
         em.add_field(name="Donations Received", value=response.json()['donationsReceived'])
         em.add_field(name="Clan Role", value=response.json()['role'].title())
-        em.add_field(name="Builderhall Level", value=f"{response.json()['builderHallLevel']} {bh}")
-        em.add_field(name="Builderhall Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
-        em.add_field(name="Builderhall Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
-        em.set_footer(text="Stats by Cree-Py with CoC API")
+        em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {bh}")
+        em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
+        em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
+        em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
         await ctx.send(embed=em)
 
 

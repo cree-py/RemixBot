@@ -51,7 +51,7 @@ class Clash_Royale:
             json.dump(config, f, indent=4)
 
     def check_tag(self, tag):
-        chars = ['0', '2', '8', '9', 'P', 'Y', 'L', 'Q', 'G', 'R', 'J', 'C', 'U', 'V']
+        chars = '0289PYLQGRJCUV'
         for char in tag:
             if char not in chars:
                 return False
