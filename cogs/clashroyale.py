@@ -229,18 +229,25 @@ class Clash_Royale:
         '''Gets a clan's info by clan tag'''
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag is None:
-            em.description = "Please enter a clan tag.\n Example: `c.clan #29UQQ282` or `c.clan alpha`"
-            return await ctx.send(embed=em)
-        with open('./data/clans.json') as f:
-            clans = json.load(f)
-        try:
-            tag = clans[tag.lower()]
-        except KeyError:
-            tag = tag.strip('#').replace('O', '0')
-        try:
-            clan = await self.client.get_clan(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(str(ctx.author.id)) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(str(ctx.author.id))
+            try:
+                profile = await self.client.get_profile(tag)
+                clan = await profile.get_clan()
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
+        else:
+            with open('./data/clans.json') as f:
+                clans = json.load(f)
+            try:
+                tag = clans[tag.lower()]
+            except KeyError:
+                tag = tag.strip('#').replace('O', '0')
+            try:
+                clan = await self.client.get_clan(tag)
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         if clan.rank == 0:
             rank = 'Unranked'
@@ -291,18 +298,25 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a clan tag.\n Example: `c.members worst #29UQQ282` or `c.clan alpha`"
-            return await ctx.send(embed=em)
-        with open('./data/clans.json') as f:
-            clans = json.load(f)
-        try:
-            tag = clans[tag.lower()]
-        except KeyError:
-            tag = tag.strip('#').replace('O', '0')
-        try:
-            clan = await self.client.get_clan(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(str(ctx.author.id)) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(str(ctx.author.id))
+            try:
+                profile = await self.client.get_profile(tag)
+                clan = await profile.get_clan()
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
+        else:
+            with open('./data/clans.json') as f:
+                clans = json.load(f)
+            try:
+                tag = clans[tag.lower()]
+            except KeyError:
+                tag = tag.strip('#').replace('O', '0')
+            try:
+                clan = await self.client.get_clan(tag)
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         if len(clan.members) < 4:
             return await ctx.send('Clan must have more than 4 players for stats.')
@@ -331,18 +345,25 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            em.description = "Please enter a clan tag.\n Example: `c.members best #29UQQ282` or `c.clan alpha`"
-            return await ctx.send(embed=em)
-        with open('./data/clans.json') as f:
-            clans = json.load(f)
-        try:
-            tag = clans[tag.lower()]
-        except KeyError:
-            tag = tag.strip('#').replace('O', '0')
-        try:
-            clan = await self.client.get_clan(tag)
-        except Exception as e:
-            return await ctx.send(f'`{e}`')
+            if self.get_tag(str(ctx.author.id)) == 'None':
+                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(str(ctx.author.id))
+            try:
+                profile = await self.client.get_profile(tag)
+                clan = await profile.get_clan()
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
+        else:
+            with open('./data/clans.json') as f:
+                clans = json.load(f)
+            try:
+                tag = clans[tag.lower()]
+            except KeyError:
+                tag = tag.strip('#').replace('O', '0')
+            try:
+                clan = await self.client.get_clan(tag)
+            except Exception as e:
+                return await ctx.send(f'`{e}`')
 
         if len(clan.members) < 4:
             return await ctx.send('Clan must have more than 4 players for stats.')
