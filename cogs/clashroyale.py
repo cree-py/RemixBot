@@ -84,7 +84,7 @@ class Clash_Royale:
         if not self.check_tag(tag):
             return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
         try:
-            self.save_tag(ctx.author.id, tag)
+            self.save_tag(str(ctx.author.id), tag)
         except Exception as e:
             return await ctx.send(f'`{e}`')
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
@@ -94,9 +94,9 @@ class Clash_Royale:
         '''Fetch a profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if self.get_tag(str(str(ctx.author.id))) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = self.get_tag(str(str(ctx.author.id)))
             try:
                 profile = await self.client.get_profile(tag)
             except Exception as e:
@@ -194,9 +194,9 @@ class Clash_Royale:
         '''Get a profile's chest cycle'''
         em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(ctx.author.id) == 'None':
+            if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(ctx.author.id)
+            tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_profile(tag)
             except Exception as e:
@@ -371,9 +371,9 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            if self.get_tag(ctx.author.id) == 'None':
+            if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(ctx.author.id)
+            tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_profile(tag)
             except Exception as e:
@@ -404,9 +404,9 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            if self.get_tag(ctx.author.id) == 'None':
+            if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(ctx.author.id)
+            tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_profile(tag)
             except Exception as e:
@@ -443,9 +443,9 @@ class Clash_Royale:
         em = discord.Embed(title='cr-api.com URL')
         em.color = discord.Color(value=0x00ff00)
         if tag is None:
-            if self.get_tag(ctx.author.id) == 'None':
+            if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(ctx.author.id)
+            tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_profile(tag)
             except Exception as e:
