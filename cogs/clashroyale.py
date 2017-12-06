@@ -87,20 +87,19 @@ class Clash_Royale:
             self.save_tag(ctx.author.id, tag)
         except Exception as e:
             return await ctx.send(f'`{e}`')
-        else:
-            await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
+        await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
     @commands.command()
     async def profile(self, ctx, tag=None):
         '''Fetch a profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(ctx.author.id) == 'None':
+            if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(ctx.author.id)
+            tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = self.client.get_profile(tag)
-            except:
+            except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
@@ -200,7 +199,7 @@ class Clash_Royale:
             tag = self.get_tag(ctx.author.id)
             try:
                 profile = self.client.get_profile(tag)
-            except:
+            except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
@@ -377,7 +376,7 @@ class Clash_Royale:
             tag = self.get_tag(ctx.author.id)
             try:
                 profile = self.client.get_profile(tag)
-            except:
+            except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
@@ -410,7 +409,7 @@ class Clash_Royale:
             tag = self.get_tag(ctx.author.id)
             try:
                 profile = self.client.get_profile(tag)
-            except:
+            except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
@@ -449,7 +448,7 @@ class Clash_Royale:
             tag = self.get_tag(ctx.author.id)
             try:
                 profile = self.client.get_profile(tag)
-            except:
+            except Exception as e:
                 return await ctx.send(f'`{e}`')
         else:
             if not self.check_tag(tag):
