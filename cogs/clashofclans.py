@@ -90,7 +90,6 @@ class Clash_of_Clans:
         status = response.status_code
 
         name = response.json()['name']
-        clanname = response.json()['clan']['name']
         clan_emoji = self.bot.get_emoji(387281156258922508)
         trophy_emoji = self.bot.get_emoji(387281233106698241)
         defense = self.bot.get_emoji(387281145320046592)
@@ -112,7 +111,7 @@ class Clash_of_Clans:
         em.add_field(name="Defenses Won", value=f"{response.json()['defenseWins']} {defense}")
         em.add_field(name="War Stars", value=f"{response.json()['warStars']} :star:")
         try:
-            em.add_field(name="Clan Name", value=f"{clanname}{cc}")
+            em.add_field(name="Clan Name", value=f"{response.json()['clan']['name']}{cc}")
         except KeyError:
             em.add_field(name='Clan', value='No clan')
         em.add_field(name="Donations", value=f"{response.json()['donations']}")
