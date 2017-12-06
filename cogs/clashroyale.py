@@ -221,8 +221,8 @@ class Clash_Royale:
 
         em.description = f'{pos} total chests opened.'
         em.url = f'http://cr-api.com/profile/{tag}'
-        em.add_field(name='Upcoming', value=chests)
-        em.add_field(name='Chests Until', value=special)
+        em.add_field(name='Upcoming', value=chests, inline=False)
+        em.add_field(name='Chests Until', value=special, inline=False)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         em.set_author(name='Upcoming Chests')
         em.title = f'{profile.name} (#{profile.tag})'
