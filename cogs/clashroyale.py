@@ -94,9 +94,9 @@ class Clash_Royale:
         '''Fetch a profile by tag'''
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(str(str(ctx.author.id))) == 'None':
+            if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(str(ctx.author.id)))
+            tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_profile(tag)
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
