@@ -154,7 +154,7 @@ class Clash_Royale:
 
         deck = ''
         for card in profile.deck:
-            deck += f'{self.bot.get_emoji(self.emoji(card.name.lower().strip('.').strip(' - ').strip(' ')))}{card.level}\n'
+            deck += f"{self.bot.get_emoji(self.emoji(card.name.lower().strip('.').strip('-').strip(' ')))}{card.level}"
 
         em.title = profile.name
         em.description = f'#{tag}'
