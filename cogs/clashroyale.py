@@ -449,6 +449,7 @@ class Clash_Royale:
         aoe = 0
         for card in profile.deck:
             deck += f"{self.bot.get_emoji(self.emoji(card.name.lower().strip('.').strip('-').replace(' ', '')))}{card.level}"
+            aoe += card.elixir
         aoe = f'{(aoe / 8):.3f}'
 
         em.title = profile.name
