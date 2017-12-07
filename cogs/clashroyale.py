@@ -146,11 +146,11 @@ class Clash_Royale:
         special = self.get_chests(ctx, profile)[1]
         shop_offers = ''
         if profile.shop_offers.legendary:
-            shop_offers += f"Legendary Chest: {profile.shop_offers.legendary} days\n"
+            shop_offers += f"{self.bot.get_emoji(self.emoji('chestlegendary'))}{profile.shop_offers.legendary} days\n"
         if profile.shop_offers.epic:
-            shop_offers += f"Epic Chest: {profile.shop_offers.epic} days\n"
+            shop_offers += f"{self.bot.get_emoji(self.emoji('chestepic'))}{profile.shop_offers.epic} days\n"
         if profile.shop_offers.arena:
-            shop_offers += f"Arena: {profile.shop_offers.arena} days\n"
+            shop_offers += f"{self.bot.get_emoji(self.emoji('arena11'))}{profile.shop_offers.arena} days\n"
 
         deck = ''
         for card in profile.deck:
@@ -170,7 +170,7 @@ class Clash_Royale:
         em.add_field(name='Win Percentage',
                      value=f'{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%')
         em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins}')
-        em.add_field(name='Favorite Card', value=profile.favourite_card.replace('_', ' '))
+        em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.bot.get_emoji(self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', '')))}")
         em.add_field(name='Game Record (Win Streak)', value=f'{record} ({profile.win_streak})')
         if profile.clan_role:
             em.add_field(name='Clan Info', value=f'{clan.name}\n#{clan.tag}\n{profile.clan_role}')
@@ -182,7 +182,7 @@ class Clash_Royale:
         em.add_field(name='Battle Deck', value=deck)
         em.add_field(name=f'Chests (Total {pos} opened)', value=chests)
         em.add_field(name='Chests Until', value=special)
-        em.add_field(name='Shop Offers', value=shop_offers)
+        em.add_field(name='Shop Offers (Days)', value=shop_offers)
         if s:
             em.add_field(name=f'Previous Season Results (Season {s.number})', value=season)
         else:
@@ -448,8 +448,7 @@ class Clash_Royale:
         deck = ''
         aoe = 0
         for card in profile.deck:
-            deck += f'{card.name}: Lvl {card.level}\n'
-            aoe += card.elixir
+            deck += f"{self.bot.get_emoji(self.emoji(card.name.lower().strip('.').strip('-').replace(' ', '')))}{card.level}"
         aoe = f'{(aoe / 8):.3f}'
 
         em.title = profile.name
