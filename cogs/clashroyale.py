@@ -486,7 +486,7 @@ class Clash_Royale:
             tag = tag.strip('#').replace('O', '0')
 
         em.url = f'http://cr-api.com/profile/{tag}'
-        em.title = profile.name
+        em.title = ctx.author.name
         em.add_field(name='URL', value=f'http://cr-api.com/profile/{tag}')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
