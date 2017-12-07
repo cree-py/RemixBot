@@ -63,7 +63,7 @@ class Clash_Royale:
         with open('data/emojis.json') as f:
             emojis = json.load(f)
             e = emojis[emoji]
-        return e
+        return self.bot.get_emoji(e)
 
     def cdir(self, obj):
         return [x for x in dir(obj) if not x.startswith('_')]
@@ -71,8 +71,8 @@ class Clash_Royale:
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         pos = cycle.position
-        chests = f'| {self.bot.get_emoji(self.emoji("chest" + p.get_chest(0).lower()))} | '
-        chests += ''.join([f'{self.bot.get_emoji(self.emoji("chest" + p.get_chest(x).lower()))}' for x in range(1, 8)])
+        chests = f'| {self.emoji("chest" + p.get_chest(0).lower())} | '
+        chests += ''.join([f'{self.emoji("chest" + p.get_chest(x).lower())}' for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
@@ -80,7 +80,7 @@ class Clash_Royale:
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{self.bot.get_emoji(self.emoji("chest" + e.lower()))}{until}'
+                    special += f'{self.emoji("chest" + e.lower())}{until}'
         return (chests, special)
 
     @commands.command()
@@ -146,15 +146,15 @@ class Clash_Royale:
         special = self.get_chests(ctx, profile)[1]
         shop_offers = ''
         if profile.shop_offers.legendary:
-            shop_offers += f"{self.bot.get_emoji(self.emoji('chestlegendary'))}{profile.shop_offers.legendary}"
+            shop_offers += f"{self.emoji('chestlegendary')}{profile.shop_offers.legendary}"
         if profile.shop_offers.epic:
-            shop_offers += f"{self.bot.get_emoji(self.emoji('chestepic'))}{profile.shop_offers.epic}"
+            shop_offers += f"{self.emoji('chestepic')}{profile.shop_offers.epic}"
         if profile.shop_offers.arena:
-            shop_offers += f"{self.bot.get_emoji(self.emoji('arena11'))}{profile.shop_offers.arena}"
+            shop_offers += f"{self.emoji('arena11')}{profile.shop_offers.arena}"
 
         deck = ''
         for card in profile.deck:
-            deck += f"{self.bot.get_emoji(self.emoji(card.name.lower().strip('.').strip('-').replace(' ', '')))}{card.level}"
+            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
 
         em.title = profile.name
         em.description = f'#{tag}'
@@ -170,7 +170,7 @@ class Clash_Royale:
         em.add_field(name='Win Percentage',
                      value=f'{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%')
         em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins}')
-        em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.bot.get_emoji(self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', '')))}")
+        em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', ''))}")
         em.add_field(name='Game Record (Win Streak)', value=f'{record} ({profile.win_streak})')
         if profile.clan_role:
             em.add_field(name='Clan Info', value=f'{clan.name}\n#{clan.tag}\n{profile.clan_role}')
@@ -448,7 +448,7 @@ class Clash_Royale:
         deck = ''
         aoe = 0
         for card in profile.deck:
-            deck += f"{self.bot.get_emoji(self.emoji(card.name.lower().strip('.').strip('-').replace(' ', '')))}{card.level}"
+            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
             aoe += card.elixir
         aoe = f'{(aoe / 8):.3f}'
 

@@ -60,7 +60,7 @@ class Clash_of_Clans:
         with open('data/emojis.json') as f:
             emojis = json.load(f)
             e = emojis[emoji]
-        return e
+        return self.bot.get_emoji(e)
 
     @commands.command()
     async def cocsave(self, ctx, tag=None):
