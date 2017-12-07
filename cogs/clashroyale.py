@@ -146,11 +146,11 @@ class Clash_Royale:
         special = self.get_chests(ctx, profile)[1]
         shop_offers = ''
         if profile.shop_offers.legendary:
-            shop_offers += f"{self.bot.get_emoji(self.emoji('chestlegendary'))}{profile.shop_offers.legendary} days\n"
+            shop_offers += f"{self.bot.get_emoji(self.emoji('chestlegendary'))}{profile.shop_offers.legendary}"
         if profile.shop_offers.epic:
-            shop_offers += f"{self.bot.get_emoji(self.emoji('chestepic'))}{profile.shop_offers.epic} days\n"
+            shop_offers += f"{self.bot.get_emoji(self.emoji('chestepic'))}{profile.shop_offers.epic}"
         if profile.shop_offers.arena:
-            shop_offers += f"{self.bot.get_emoji(self.emoji('arena11'))}{profile.shop_offers.arena} days\n"
+            shop_offers += f"{self.bot.get_emoji(self.emoji('arena11'))}{profile.shop_offers.arena}"
 
         deck = ''
         for card in profile.deck:
