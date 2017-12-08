@@ -72,7 +72,7 @@ class Clash_Royale:
         cycle = p.chest_cycle
         pos = cycle.position
         chests = f'| {self.emoji("chest" + p.get_chest(0).lower())} | '
-        chests += ''.join([f'{self.emoji("chest" + p.get_chest(x).lower())}' for x in range(1, 8)])
+        chests += ' '.join([f'{self.emoji("chest" + p.get_chest(x).lower())}' for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
@@ -80,7 +80,7 @@ class Clash_Royale:
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{self.emoji("chest" + e.lower())}{until}'
+                    special += f'{self.emoji("chest" + e.lower())} {until} '
         return (chests, special)
 
     @commands.command()
@@ -121,12 +121,12 @@ class Clash_Royale:
             pass
 
         if profile.global_rank is not None:
-            global_rank = str(profile.global_rank)
+            global_rank = f"{profile.global_rank} {self.emoji('global')}"
         else:
-            global_rank = 'Unranked'
+            global_rank = f'Unranked {self.emoji("global")}'
 
         experience = f'{profile.experience[0]}/{profile.experience[1]}'
-        record = f'{profile.wins}-{profile.draws}-{profile.losses}'
+        record = f'{profile.wins}/{profile.draws}/{profile.losses} {self.emoji("clashswords")}'
         av = profile.clan_badge_url or 'https://i.imgur.com/Y3uXsgj.png'
 
         chests = self.get_chests(ctx, profile)[0]
@@ -138,9 +138,9 @@ class Clash_Royale:
         if profile.seasons:
             s = profile.seasons[0]
             global_r = s.end_global
-            season = f"Highest: {s.highest} trophies\n" \
-                     f"Finish: {s.ending} trophies\n" \
-                     f"Global Rank: {global_r}"
+            season = f"Highest: {s.highest} {self.emoji('trophy')}\n" \
+                     f"Finish: {s.ending} {self.emoji('trophy')}\n" \
+                     f"Global Rank: {global_r} {self.emoji('global')}"
         else:
             season = None
 
@@ -155,31 +155,31 @@ class Clash_Royale:
 
         deck = ''
         for card in profile.deck:
-            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
+            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))} {card.level}"
 
         em.title = profile.name
         em.description = f'#{tag}'
         em.url = f'http://cr-api.com/profile/{tag}'
         em.set_author(name='Profile', icon_url=av)
 
-        em.add_field(name='Level', value=f'{profile.level} ({experience})')
+        em.add_field(name='Level', value=f'{profile.level} ({experience}) {self.emoji("xp")}')
         em.add_field(name='Arena', value=profile.arena.name)
         em.add_field(
-            name='Trophies', value=f'{profile.current_trophies}/{profile.highest_trophies}(PB)/{profile.legend_trophies} Legend')
+            name='Trophies', value=f'{profile.current_trophies} {self.emoji("trophy")}/{profile.highest_trophies} {self.emoji("trophy")}/{profile.legend_trophies} {self.emoji("legendtrophy")}')
         em.add_field(name='Global Rank', value=global_rank)
-        em.add_field(name='Total Donations', value=f'{profile.total_donations}')
+        em.add_field(name='Total Donations', value=f'{profile.total_donations} {self.emoji("cards")}')
         em.add_field(name='Win Percentage',
-                     value=f'{(profile.wins / (profile.wins + profile.losses) * 100):.3f}%')
-        em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins}')
+                     value=f'{(profile.wins / (profile.wins + profile.losses) * 100):.3f}% {self.emoji("crownblue")}')
+        em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins} {self.emoji("cards")}')
         em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', ''))}")
-        em.add_field(name='Game Record (Win Streak)', value=f'{record} ({profile.win_streak})')
+        em.add_field(name='Game Record (Win Streak)', value=f'{record} ({profile.win_streak}) {self.emoji("clashswords")}')
         if profile.clan_role:
-            em.add_field(name='Clan Info', value=f'{clan.name}\n#{clan.tag}\n{profile.clan_role}')
+            em.add_field(name='Clan Info', value=f'{clan.name} {self.emoji("clan")}\n#{clan.tag}\n{profile.clan_role} {self.emoji("clan")}')
         else:
-            em.add_field(name='Clan Info', value='No clan')
+            em.add_field(name='Clan Info', value=f'No clan {self.emoji("clan")}')
 
-        em.add_field(name='Tournament Cards Won', value=str(profile.tournament_cards_won))
-        em.add_field(name='Challenge Cards Won', value=str(profile.challenge_cards_won))
+        em.add_field(name='Tournament Cards Won', value=f"{profile.tournament_cards_won} {self.emoji('cards')}")
+        em.add_field(name='Challenge Cards Won', value=f"{profile.challenge_cards_won} {self.emoji('cards')}")
         em.add_field(name='Battle Deck', value=deck)
         em.add_field(name=f'Chests (Total {pos} opened)', value=chests)
         em.add_field(name='Chests Until', value=special)

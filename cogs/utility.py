@@ -157,17 +157,15 @@ class Utility:
     async def divide(self, ctx, a: int, b: int):
         '''Divide a number by a number'''
         try:
-           em = discord.Embed(color=discord.Color(value=0x00ff00))
-           em.title = "Result"
-           em.description = f'❓ Problem: `{a}/{b}`\n✅ Solution: `{a / b}`'
-           await ctx.send(embed=em)
+            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em.title = "Result"
+            em.description = f'❓ Problem: `{a}/{b}`\n✅ Solution: `{a / b}`'
+            await ctx.send(embed=em)
         except ZeroDivisionError:
             em = discord.Embed(color=discord.Color(value=0x00ff00))
             em.title = "Error"
             em.description = "You can't divide by zero"
             await ctx.send(embed=em)
-
-            
 
     @commands.command()
     async def add(self, ctx, a: int, b: int):
@@ -192,22 +190,22 @@ class Utility:
         em.title = "Result"
         em.description = f'❓ Problem: `{a}%{b}`\n✅ Solution: `{a % b}`'
         await ctx.send(embed=em)
-    
+
     @commands.command()
     async def power(self, ctx, a: int, b: int):
         '''Raise A to the power of B'''
-        em = discord.Embed(color = discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Result"
         em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
         await ctx.send(embed=em)
 
     @commands.command()
-    async def factorial(self, ctx, a: int): 
+    async def factorial(self, ctx, a: int):
         '''Factorial something'''
         if a > 813:
             await ctx.send("That number is too high to fit within the message limit for discord.")
         else:
-            em = discord.Embed(color = discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color(value=0x00ff00))
             em.title = "Result"
             result = 1
             problem = a
