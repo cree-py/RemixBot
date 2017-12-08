@@ -175,7 +175,7 @@ class Clash_Royale:
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
         if profile.clan_role:
             em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")}')
-            em.add_field(name='Clan Tag', value=f'#{clan.tag}')
+            em.add_field(name='Clan Tag', value=f"#{clan.tag} {self.emoji('clan')}")
             em.add_field(name='Clan Role', value=f'{profile.clan_role} {self.emoji("clan")}')
         else:
             em.add_field(name='Clan Info', value=f'No clan {self.emoji("clan")}')
@@ -265,7 +265,7 @@ class Clash_Royale:
         else:
             rank = f"{clan.rank} {self.emoji('global')}"
 
-        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%) {self.emoji("chestclan")}'
+        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} {self.emoji("chestclan")}'
 
         pushers = []
         if len(clan.members) >= 3:
@@ -285,13 +285,13 @@ class Clash_Royale:
         em.set_thumbnail(url=clan.badge_url)
         em.description = f"{clan.description}"
         em.add_field(name="Score", value=f"{clan.score} {self.emoji('trophy')}")
-        em.add_field(name="Members", value=f"{len(clan.members)}/50")
+        em.add_field(name="Members", value=f"{len(clan.members)}/50 {self.emoji('clan')}")
         em.add_field(name="Type", value=f"{clan.type_name} :envelope_with_arrow:")
         em.add_field(name="Region", value=f"{clan.region} :earth_americas:")
         em.add_field(name="Global Rank", value=rank)
         em.add_field(name="Chest Progress", value=chest)
-        em.add_field(name="Donations", value=f"{clan.donations}")
-        em.add_field(name="Required Trophies", value=f"{clan.required_trophies}")
+        em.add_field(name="Donations", value=f"{clan.donations} {self.emoji('cards')}")
+        em.add_field(name="Required Trophies", value=f"{clan.required_trophies} {self.emoji('trophy')}")
         em.add_field(name='Top Players', value='\n\n'.join(pushers))
         em.add_field(name='Top Contributors', value='\n\n'.join(ccc))
         em.set_footer(text="Stats made by Cree-Py | Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
