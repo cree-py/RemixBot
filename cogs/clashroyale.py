@@ -261,9 +261,9 @@ class Clash_Royale:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         if clan.rank == 0:
-            rank = f'Unranked {self.emoji("global")}'
+            rank = f"Unranked {self.emoji('global')}"
         else:
-            rank = f"{clan.rank} {self.emoji("global")}"
+            rank = f"{clan.rank} {self.emoji('global')}"
 
         chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%) {self.emoji("chestclan")}'
 
