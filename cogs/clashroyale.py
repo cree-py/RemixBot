@@ -72,7 +72,7 @@ class Clash_Royale:
         cycle = p.chest_cycle
         pos = cycle.position
         chests = f'| {self.emoji("chest" + p.get_chest(0).lower())} | '
-        chests += ' '.join([f'{self.emoji("chest" + p.get_chest(x).lower())}' for x in range(1, 8)])
+        chests += ''.join([f'{self.emoji("chest" + p.get_chest(x).lower())}' for x in range(1, 8)])
         special = ''
         for i, attr in enumerate(self.cdir(cycle)):
             if attr != 'position':
@@ -80,7 +80,7 @@ class Clash_Royale:
                 if getattr(cycle, attr):
                     c_pos = int(getattr(cycle, attr))
                     until = c_pos - pos
-                    special += f'{self.emoji("chest" + e.lower())} {until} '
+                    special += f'{self.emoji("chest" + e.lower())}{until} '
         return (chests, special)
 
     @commands.command()
@@ -147,15 +147,15 @@ class Clash_Royale:
         special = self.get_chests(ctx, profile)[1]
         shop_offers = ''
         if profile.shop_offers.legendary:
-            shop_offers += f"{self.emoji('chestlegendary')}{profile.shop_offers.legendary}"
+            shop_offers += f"{self.emoji('chestlegendary')}{profile.shop_offers.legendary} "
         if profile.shop_offers.epic:
-            shop_offers += f"{self.emoji('chestepic')}{profile.shop_offers.epic}"
+            shop_offers += f"{self.emoji('chestepic')}{profile.shop_offers.epic} "
         if profile.shop_offers.arena:
             shop_offers += f"{self.emoji('arena11')}{profile.shop_offers.arena}"
 
         deck = ''
         for card in profile.deck:
-            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))} {card.level}"
+            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
 
         em.title = profile.name
         em.description = f'#{tag}'
@@ -261,33 +261,33 @@ class Clash_Royale:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         if clan.rank == 0:
-            rank = 'Unranked'
+            rank = f'Unranked {self.emoji("global")}'
         else:
-            rank = str(rank)
+            rank = f"{clan.rank} {self.emoji("global")}"
 
-        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%)'
+        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} ({(clan.clan_chest.crowns / clan.clan_chest.required) * 100:.3f}%) {self.emoji("chestclan")}'
 
         pushers = []
         if len(clan.members) >= 3:
             for i in range(3):
                 pushers.append(
-                    f"**{clan.members[i].name}**\n{clan.members[i].trophies} trophies\n#{clan.members[i].tag}")
+                    f"**{clan.members[i].name}**\n{clan.members[i].trophies} {self.emoji('trophy')}\n#{clan.members[i].tag}")
         contributors = list(reversed(sorted(clan.members, key=lambda x: x.crowns)))
 
         ccc = []
         if len(clan.members) >= 3:
             for i in range(3):
                 ccc.append(
-                    f"**{contributors[i].name}**\n{contributors[i].crowns} crowns\n#{contributors[i].tag}")
+                    f"**{contributors[i].name}**\n{contributors[i].crowns} {self.emoji('crownred')}\n#{contributors[i].tag}")
 
         em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
         em.title = f"{clan.name} (#{clan.tag})"
         em.set_thumbnail(url=clan.badge_url)
         em.description = f"{clan.description}"
-        em.add_field(name="Score", value=f"{clan.score}")
+        em.add_field(name="Score", value=f"{clan.score} {self.emoji('trophy')}")
         em.add_field(name="Members", value=f"{len(clan.members)}/50")
-        em.add_field(name="Type", value=f"{clan.type_name}")
-        em.add_field(name="Region", value=f"{clan.region}")
+        em.add_field(name="Type", value=f"{clan.type_name} :envelope_with_arrow:")
+        em.add_field(name="Region", value=f"{clan.region} :earth_americas:")
         em.add_field(name="Global Rank", value=rank)
         em.add_field(name="Chest Progress", value=chest)
         em.add_field(name="Donations", value=f"{clan.donations}")
@@ -424,7 +424,7 @@ class Clash_Royale:
         em.title = profile.name
         em.set_author(
             name='Trophies', icon_url='http://clashroyalehack1.com/wp-content/uploads/2017/06/coctrophy.png')
-        em.description = f'Trophies: `{profile.current_trophies}`:trophy:\nPersonal Best: `{profile.highest_trophies}`:trophy:\nLegend Trophies: `{profile.legend_trophies}`:trophy:'
+        em.description = f'Trophies: {profile.current_trophies} {self.emoji("trophy")}\nPersonal Best: {profile.highest_trophies} {self.emoji("trophy")}\nLegend Trophies: {profile.legend_trophies} {self.emoji("legendtrophy")}'
         em.set_thumbnail(
             url='http://vignette1.wikia.nocookie.net/clashroyale/images/7/7c/LegendTrophy.png/revision/latest?cb=20160305151655')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
