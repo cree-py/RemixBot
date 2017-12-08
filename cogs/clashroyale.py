@@ -423,7 +423,7 @@ class Clash_Royale:
 
         em.title = profile.name
         em.set_author(
-            name='Trophies', icon_url='https://cdn.discordapp.com/emojis/388496509861101591.png')
+            name='Trophies', icon_url=ctx.author.avatar_url)
         em.description = f'Trophies: {profile.current_trophies} {self.emoji("trophy")}\nPersonal Best: {profile.highest_trophies} {self.emoji("trophy")}\nLegend Trophies: {profile.legend_trophies} {self.emoji("legendtrophy")}'
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
