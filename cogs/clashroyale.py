@@ -345,8 +345,8 @@ class Clash_Royale:
                           icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
             for m in reversed(to_kick):
-                em.add_field(name=f'{m.name}, Role: {m.role_name}',
-                             value=f"#{m.tag}\n{m.trophies} trophies\n{m.crowns} crowns\n{m.donations} donations")
+                em.add_field(name=f'{m.name} ({m.role_name})',
+                             value=f"#{m.tag}\n{m.trophies} {self.emoji('trophy')}\n{m.crowns} {self.emoji('crownblue')}\n{m.donations} {self.emoji('cards')}")
 
             await ctx.send(embed=em)
 
@@ -393,8 +393,8 @@ class Clash_Royale:
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         for m in reversed(best):
-            em.add_field(name=f'{m.name}, Role: {m.role_name}',
-                         value=f"#{m.tag}\n{m.trophies} trophies\n{m.crowns} crowns\n{m.donations} donations")
+            em.add_field(name=f'{m.name} ({m.role_name})',
+                         value=f"#{m.tag}\n{m.trophies} {self.emoji('trophy')}\n{m.crowns} {self.emoji('crownblue')}\n{m.donations} {self.emoji('cards')}")
 
         await ctx.send(embed=em)
 
@@ -423,12 +423,9 @@ class Clash_Royale:
 
         em.title = profile.name
         em.set_author(
-            name='Trophies', icon_url='http://clashroyalehack1.com/wp-content/uploads/2017/06/coctrophy.png')
+            name='Trophies', icon_url='https://cdn.discordapp.com/emojis/388496509861101591.png')
         em.description = f'Trophies: {profile.current_trophies} {self.emoji("trophy")}\nPersonal Best: {profile.highest_trophies} {self.emoji("trophy")}\nLegend Trophies: {profile.legend_trophies} {self.emoji("legendtrophy")}'
-        em.set_thumbnail(
-            url='http://vignette1.wikia.nocookie.net/clashroyale/images/7/7c/LegendTrophy.png/revision/latest?cb=20160305151655')
-        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
-                      icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         await ctx.send(embed=em)
 
@@ -463,11 +460,9 @@ class Clash_Royale:
         aoe = f'{(aoe / 8):.3f}'
 
         em.title = profile.name
-        em.set_author(name='Battle Deck', icon_url=ctx.author.avatar_url)
+        em.set_author(name='Battle Deck', icon_url='https://cdn.discordapp.com/emojis/376367875965059083.png')
         em.description = deck
         em.add_field(name='Average Elixir Cost', value=aoe)
-        em.set_thumbnail(
-            url='https://cdn.discordapp.com/emojis/376367875965059083.png')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
