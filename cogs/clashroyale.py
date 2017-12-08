@@ -174,7 +174,7 @@ class Clash_Royale:
         em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', ''))}")
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
         if profile.clan_role:
-            em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")})
+            em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")}')
             em.add_field(name='Clan Tag', value=f'#{clan.tag}')
             em.add_field(name='Clan Role', value=f'{profile.clan_role} {self.emoji("clan")}')
         else:
