@@ -133,6 +133,7 @@ class Clash_of_Clans:
             em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {bh}")
             em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
             em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
+            em.add_field(name="BH Attacks Won", value=f"{response.json()['versusBattleWins']} {sword}")
         except KeyError:
             em.add_field(name='Builder Base', value='Not unlocked yet')
         em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
