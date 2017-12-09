@@ -110,7 +110,7 @@ class Clash_of_Clans:
         em.add_field(name="Townhall", value=response.json()['townHallLevel'])
         em.add_field(name="Trophies", value=f"{response.json()['trophies']} {self.emoji('coctrophy')}")
         em.add_field(name="All Time Best", value=f"{response.json()['bestTrophies']} {self.emoji('cocpb')}")
-        em.add_field(name="Attacks Won", value=f"{response.json()['attackWins']} :sword:")
+        em.add_field(name="Attacks Won", value=f"{response.json()['attackWins']} {self.emoji('sword')}")
         em.add_field(name="Defenses Won", value=f"{response.json()['defenseWins']} {self.emoji('cocshield')}")
         em.add_field(name="War Stars", value=f"{response.json()['warStars']} :star:")
         try:
