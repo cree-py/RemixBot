@@ -74,24 +74,20 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             welc = json.load(f)
-            try:
-                path = welc[ctx.message.guild.id]
-            except KeyError:
-                pass
 
         if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
-            path['type'] = False
+            welc[ctx.message.guild.id]['type'] = False
             json.dump(welc, f, indent=4)
             return await ctx.send('Welcome messages disabled for this guild.')
         else:
-            path['type'] = True
+            welc[ctx.message.guild.id]['type'] = True
             await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
             channel = await self.bot.wait_for('message', check=pred)
             id = channel.strip('<#').strip('>')
-            path['welcchannel'] = id
+            welc[ctx.message.guild.id]['welcchannel'] = id
             await ctx.send('What do you want the message to be?')
             msg = await self.bot.wait_for('message', check=pred)
-            path['welc'] = msg
+            welc[ctx.message.guild.id]['welc'] = msg
             json.dump(welc, f, indent=4)
             await ctx.send('Your welcome message has been successfully set.')
 
@@ -104,23 +100,19 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             leave = json.load(f)
-            try:
-                path = leave[ctx.message.guild.id]
-            except KeyError:
-                pass
 
         if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
-            path['type'] = False
+            leave[ctx.message.guild.id]['type'] = False
             json.dump(leave, f, indent=4)
         else:
-            path['type'] = True
+            leave[ctx.message.guild.id]['type'] = True
             await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
             channel = await self.bot.wait_for('message', check=pred)
             id = channel.strip('<#').strip('>')
-            path['leavechannel'] = id
+            leave[ctx.message.guild.id]['leavechannel'] = id
             await ctx.send('What do you want the message to be?')
             msg = await self.bot.wait_for('message', check=pred)
-            path['leave'] = msg
+            leave[ctx.message.guild.id]['leave'] = msg
             json.dump(leave, f, indent=4)
             await ctx.send('Your leave message has been successfully set.')
 
