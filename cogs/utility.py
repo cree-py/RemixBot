@@ -74,24 +74,23 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             welc = json.load(f)
+            f.seek(0)
 
-        if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
-            f.seek(0)
-            welc[ctx.message.guild.id]['type'] = False
-            json.dump(welc, f, indent=4)
-            return await ctx.send('Welcome messages disabled for this guild.')
-        else:
-            f.seek(0)
-            welc[ctx.message.guild.id]['type'] = True
-            await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
-            channel = await self.bot.wait_for('message', check=pred)
-            id = channel.strip('<#').strip('>')
-            welc[ctx.message.guild.id]['welcchannel'] = id
-            await ctx.send('What do you want the message to be?')
-            msg = await self.bot.wait_for('message', check=pred)
-            welc[ctx.message.guild.id]['welc'] = msg
-            json.dump(welc, f, indent=4)
-            await ctx.send('Your welcome message has been successfully set.')
+            if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
+                welc[ctx.message.guild.id]['type'] = False
+                json.dump(welc, f, indent=4)
+                return await ctx.send('Welcome messages disabled for this guild.')
+            else:
+                welc[ctx.message.guild.id]['type'] = True
+                await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
+                channel = await self.bot.wait_for('message', check=pred)
+                id = channel.strip('<#').strip('>')
+                welc[ctx.message.guild.id]['welcchannel'] = id
+                await ctx.send('What do you want the message to be?')
+                msg = await self.bot.wait_for('message', check=pred)
+                welc[ctx.message.guild.id]['welc'] = msg
+                json.dump(welc, f, indent=4)
+                await ctx.send('Your welcome message has been successfully set.')
 
     @commands.command(aliases=['setleave', 'leavemsg', 'leavemessage', 'leaveset'], no_pm=True)
     @commands.has_permissions(ban_members=True)
@@ -102,23 +101,22 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             leave = json.load(f)
+            f.seek(0)
 
-        if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
-            f.seek(0)
-            leave[ctx.message.guild.id]['type'] = False
-            json.dump(leave, f, indent=4)
-        else:
-            f.seek(0)
-            leave[ctx.message.guild.id]['type'] = True
-            await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
-            channel = await self.bot.wait_for('message', check=pred)
-            id = channel.strip('<#').strip('>')
-            leave[ctx.message.guild.id]['leavechannel'] = id
-            await ctx.send('What do you want the message to be?')
-            msg = await self.bot.wait_for('message', check=pred)
-            leave[ctx.message.guild.id]['leave'] = msg
-            json.dump(leave, f, indent=4)
-            await ctx.send('Your leave message has been successfully set.')
+            if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
+                leave[ctx.message.guild.id]['type'] = False
+                json.dump(leave, f, indent=4)
+            else:
+                leave[ctx.message.guild.id]['type'] = True
+                await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
+                channel = await self.bot.wait_for('message', check=pred)
+                id = channel.strip('<#').strip('>')
+                leave[ctx.message.guild.id]['leavechannel'] = id
+                await ctx.send('What do you want the message to be?')
+                msg = await self.bot.wait_for('message', check=pred)
+                leave[ctx.message.guild.id]['leave'] = msg
+                json.dump(leave, f, indent=4)
+                await ctx.send('Your leave message has been successfully set.')
 
     @commands.command()
     async def embedsay(self, ctx, *, body: str):
