@@ -74,7 +74,10 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             welc = json.load(f)
-            path = welc[ctx.message.guild.id]
+            try:
+                path = welc[ctx.message.guild.id]
+            except KeyError:
+                pass
 
         if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
             path['type'] = False
@@ -101,7 +104,10 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             leave = json.load(f)
-            path = leave[ctx.message.guild.id]
+            try:
+                path = leave[ctx.message.guild.id]
+            except KeyError:
+                pass
 
         if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
             path['type'] = False
