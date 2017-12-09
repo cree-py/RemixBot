@@ -60,7 +60,7 @@ async def on_member_join(m):
             return
         channel = int(welc[str(m.guild.id)]['welcchannel'])
         msg = welc[str(m.guild.id)]['welc']
-        await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, m=m))
+        await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, m=m, membercount=len(m.guild.members)))
 
 
 @bot.event
@@ -75,7 +75,7 @@ async def on_member_remove(m):
             return
         channel = int(leave[str(m.guild.id)]['leavechannel'])
         msg = leave[str(m.guild.id)]['leave']
-        await bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild))
+        await bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
 
 
 @bot.command()
