@@ -66,7 +66,7 @@ class Utility:
         self.bot = bot
 
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
-    @commands.has_permissions(manage_server=True)
+    @commands.has_permissions(ban_members=True)
     async def welcome(self, ctx, type):
         '''Enable or disable a leave message for your guild'''
         def pred(m):
@@ -93,7 +93,7 @@ class Utility:
             await ctx.send('Your welcome message has been successfully set.')
 
     @commands.command(aliases=['setleave', 'leavemsg', 'leavemessage', 'leaveset'], no_pm=True)
-    @commands.has_permissions(manage_server=True)
+    @commands.has_permissions(ban_members=True)
     async def leave(self, ctx, type):
         '''Enable or disable a leave message for your guild'''
         def pred(m):
