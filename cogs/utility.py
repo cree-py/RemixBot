@@ -81,7 +81,7 @@ class Utility:
                 welc[str(ctx.message.guild.id)]['enabled'] = False
             f.seek(0)
 
-            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
+            if type.lower() in ('n', 'no', 'disabled', 'disable', 'on'):
                 welc[str(ctx.message.guild.id)]['type'] = False
                 json.dump(welc, f, indent=4)
                 return await ctx.send('Welcome messages disabled for this guild.')
@@ -90,6 +90,8 @@ class Utility:
                 await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
                 channel = await self.bot.wait_for('message', check=pred)
                 id = channel.content.strip('<#').strip('>')
+                if id == channel.content:
+                    return await ctx.send('Please mention a channel.')
                 welc[str(ctx.message.guild.id)]['welcchannel'] = id
                 await ctx.send('What do you want the message to be?')
                 msg = await self.bot.wait_for('message', check=pred)
@@ -121,6 +123,8 @@ class Utility:
                 await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
                 channel = await self.bot.wait_for('message', check=pred)
                 id = channel.content.strip('<#').strip('>')
+                if id == channel.content:
+                    return await ctx.send('Please mention a channel.')
                 leave[str(ctx.message.guild.id)]['leavechannel'] = id
                 await ctx.send('What do you want the message to be?')
                 msg = await self.bot.wait_for('message', check=pred)

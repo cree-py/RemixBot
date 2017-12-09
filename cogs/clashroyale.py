@@ -51,9 +51,8 @@ class Clash_Royale:
             json.dump(config, f, indent=4)
 
     def check_tag(self, tag):
-        chars = '0289PYLQGRJCUV'
         for char in tag:
-            if char not in chars:
+            if char.upper() not in '0289PYLQGRJCUV':
                 return False
         return True
 
