@@ -84,7 +84,7 @@ class Utility:
                 welc[str(ctx.message.guild.id)]['type'] = True
                 await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
                 channel = await self.bot.wait_for('message', check=pred)
-                id = channel.strip('<#').strip('>')
+                id = channel.content.strip('<#').strip('>')
                 welc[str(ctx.message.guild.id)]['welcchannel'] = id
                 await ctx.send('What do you want the message to be?')
                 msg = await self.bot.wait_for('message', check=pred)
@@ -110,7 +110,7 @@ class Utility:
                 leave[str(ctx.message.guild.id)]['type'] = True
                 await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
                 channel = await self.bot.wait_for('message', check=pred)
-                id = channel.strip('<#').strip('>')
+                id = channel.content.strip('<#').strip('>')
                 leave[str(ctx.message.guild.id)]['leavechannel'] = id
                 await ctx.send('What do you want the message to be?')
                 msg = await self.bot.wait_for('message', check=pred)
