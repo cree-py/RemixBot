@@ -48,6 +48,36 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | Beta 1.4.0", type=3), afk=True)
 
 
+@bot.event
+async def on_member_join(m):
+    with open('data/welcs.json') as f:
+        welc = json.load(f)
+        try:
+            type = welc[str(m.guild.id)]['welctype']
+        except KeyError:
+            return
+        if type is False:
+            return
+        channel = int(welc[str(m.guild.id)]['welcchannel'])
+        msg = welc[str(m.guild.id)]['welc']
+        await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, m=m))
+
+
+@bot.event
+async def on_member_remove(m):
+    with open('data/welcs.json') as f:
+        leave = json.load(f)
+        try:
+            leave[str(m.guild.id)]['leavetype']
+        except KeyError:
+            return
+        if type is False:
+            return
+        channel = int(leave[str(m.guild.id)]['leavechannel'])
+        msg = leave[str(m.guild.id)]['leave']
+        await bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild))
+
+
 @bot.command()
 async def help(ctx):
     '''Shows this message'''

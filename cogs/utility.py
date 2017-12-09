@@ -72,28 +72,28 @@ class Utility:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('data/welcs.json', 'r+') as f:
+        with open('./data/welcs.json', 'r+') as f:
             welc = json.load(f)
             try:
                 g = welc[str(ctx.message.guild.id)]
             except KeyError:
                 welc[str(ctx.message.guild.id)] = dict()
-                welc[str(ctx.message.guild.id)]['enabled'] = False
+                welc[str(ctx.message.guild.id)]['welctype'] = False
             f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                welc[str(ctx.message.guild.id)]['type'] = False
+                welc[str(ctx.message.guild.id)]['welctype'] = False
                 json.dump(welc, f, indent=4)
                 return await ctx.send('Welcome messages disabled for this guild.')
             else:
-                welc[str(ctx.message.guild.id)]['type'] = True
+                welc[str(ctx.message.guild.id)]['welctype'] = True
                 await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
                 channel = await self.bot.wait_for('message', check=pred)
                 id = channel.content.strip('<#').strip('>')
                 if id == channel.content:
                     return await ctx.send('Please mention a channel.')
                 welc[str(ctx.message.guild.id)]['welcchannel'] = id
-                await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: The number of members in the guild.\n```')
+                await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n```')
                 msg = await self.bot.wait_for('message', check=pred)
                 welc[str(ctx.message.guild.id)]['welc'] = str(msg.content)
                 json.dump(welc, f, indent=4)
@@ -106,27 +106,27 @@ class Utility:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('data/welcs.json', 'r+') as f:
+        with open('./data/welcs.json', 'r+') as f:
             leave = json.load(f)
             try:
                 g = leave[str(ctx.message.guild.id)]
             except KeyError:
                 leave[str(ctx.message.guild.id)] = dict()
-                leave[str(ctx.message.guild.id)]['enabled'] = False
+                leave[str(ctx.message.guild.id)]['leavetype'] = False
             f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                leave[str(ctx.message.guild.id)]['type'] = False
+                leave[str(ctx.message.guild.id)]['leavetype'] = False
                 json.dump(leave, f, indent=4)
             else:
-                leave[str(ctx.message.guild.id)]['type'] = True
+                leave[str(ctx.message.guild.id)]['leavetype'] = True
                 await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
                 channel = await self.bot.wait_for('message', check=pred)
                 id = channel.content.strip('<#').strip('>')
                 if id == channel.content:
                     return await ctx.send('Please mention a channel.')
                 leave[str(ctx.message.guild.id)]['leavechannel'] = id
-                await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: The number of members in the guild.\n```')
+                await ctx.send('What do you want the message to be?\nUsage:```\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n```')
                 msg = await self.bot.wait_for('message', check=pred)
                 leave[str(ctx.message.guild.id)]['leave'] = str(msg.content)
                 json.dump(leave, f, indent=4)
