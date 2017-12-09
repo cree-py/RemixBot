@@ -76,10 +76,12 @@ class Utility:
             welc = json.load(f)
 
         if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
+            f.seek(0)
             welc[ctx.message.guild.id]['type'] = False
             json.dump(welc, f, indent=4)
             return await ctx.send('Welcome messages disabled for this guild.')
         else:
+            f.seek(0)
             welc[ctx.message.guild.id]['type'] = True
             await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
             channel = await self.bot.wait_for('message', check=pred)
@@ -102,9 +104,11 @@ class Utility:
             leave = json.load(f)
 
         if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
+            f.seek(0)
             leave[ctx.message.guild.id]['type'] = False
             json.dump(leave, f, indent=4)
         else:
+            f.seek(0)
             leave[ctx.message.guild.id]['type'] = True
             await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
             channel = await self.bot.wait_for('message', check=pred)
