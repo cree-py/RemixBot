@@ -81,7 +81,7 @@ class Utility:
                 welc[str(ctx.message.guild.id)]['enabled'] = False
             f.seek(0)
 
-            if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
+            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 welc[str(ctx.message.guild.id)]['type'] = False
                 json.dump(welc, f, indent=4)
                 return await ctx.send('Welcome messages disabled for this guild.')
@@ -113,7 +113,7 @@ class Utility:
                 leave[str(ctx.message.guild.id)]['enabled'] = False
             f.seek(0)
 
-            if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
+            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 leave[str(ctx.message.guild.id)]['type'] = False
                 json.dump(leave, f, indent=4)
             else:
