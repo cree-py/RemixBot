@@ -50,9 +50,8 @@ class Clash_of_Clans:
             json.dump(config, f, indent=4)
 
     def check_tag(self, tag):
-        chars = '0289PYLQGRJCUV'
         for char in tag:
-            if char not in chars:
+            if char.upper() not in '0289PYLQGRJCUV':
                 return False
         return True
 
@@ -96,14 +95,6 @@ class Clash_of_Clans:
         status = response.status_code
 
         name = response.json()['name']
-        clan_emoji = self.bot.get_emoji(387281156258922508)
-        trophy_emoji = self.bot.get_emoji(387281233106698241)
-        defense = self.bot.get_emoji(387281145320046592)
-        exp = self.bot.get_emoji(387315278427717643)
-        pb = self.bot.get_emoji(387281346898165761)
-        cc = self.bot.get_emoji(387281270960422922)
-        sword = self.bot.get_emoji(388053082698940416)
-        bh = self.bot.get_emoji(388053155683762176)
         em.title = "CoC Profile"
         em.description = "Clash of Clans Stats: **BETA**"
         try:
@@ -114,27 +105,27 @@ class Clash_of_Clans:
             em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['clan']['badgeUrls']['large'])
         except KeyError:
             em.set_author(name=f"{response.json()['tag']}", icon_url='http://clash-wiki.com/images/progress/leagues/no_league.png')
-        em.add_field(name="Player Name", value=f"{name} {clan_emoji}")
-        em.add_field(name="Exp", value=f"{response.json()['expLevel']} {exp}")
+        em.add_field(name="Player Name", value=f"{name} {self.emoji('clan')}")
+        em.add_field(name="Exp", value=f"{response.json()['expLevel']} {self.emoji('cocexp')}")
         em.add_field(name="Townhall", value=response.json()['townHallLevel'])
-        em.add_field(name="Trophies", value=f"{response.json()['trophies']} {trophy_emoji}")
-        em.add_field(name="All Time Best", value=f"{response.json()['bestTrophies']} {pb}")
-        em.add_field(name="Attacks Won", value=f"{response.json()['attackWins']} {sword}")
-        em.add_field(name="Defenses Won", value=f"{response.json()['defenseWins']} {defense}")
+        em.add_field(name="Trophies", value=f"{response.json()['trophies']} {self.emoji('coctrophy')}")
+        em.add_field(name="All Time Best", value=f"{response.json()['bestTrophies']} {self.emoji('cocpb')}")
+        em.add_field(name="Attacks Won", value=f"{response.json()['attackWins']} :sword:")
+        em.add_field(name="Defenses Won", value=f"{response.json()['defenseWins']} {self.emoji('cocshielf')}")
         em.add_field(name="War Stars", value=f"{response.json()['warStars']} :star:")
         try:
-            em.add_field(name="Clan Name", value=f"{response.json()['clan']['name']}{cc}")
+            em.add_field(name="Clan Name", value=f"{response.json()['clan']['name']}{self.emoji('cc')}")
             em.add_field(name="Clan Role", value=response.json()['role'].title())
             em.add_field(name="Donations", value=f"{response.json()['donations']}")
             em.add_field(name="Donations Received", value=response.json()['donationsReceived'])
         except KeyError:
-            em.add_field(name='Clan', value='No clan')
+            em.add_field(name='Clan', value=f"No clan {self.emoji('cc')}")
         try:
-            em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {bh}")
-            em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {trophy_emoji}")
-            em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {pb}")
+            em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {self.emoji('builderhall')}")
+            em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {self.emoji('coctrophy')}")
+            em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {self.emoji('cocpb')}")
         except KeyError:
-            em.add_field(name='Builder Base', value='Not unlocked yet')
+            em.add_field(name='Builder Base', value=f"Not unlocked yet {self.emoji('builderhall')}")
         em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
         await ctx.send(embed=em)
 
