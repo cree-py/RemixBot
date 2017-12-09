@@ -74,6 +74,11 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             welc = json.load(f)
+            try:
+                g = welc[str(ctx.message.guild.id)]
+            except KeyError:
+                welc[str(ctx.message.guild.id)] = dict()
+                welc[str(ctx.message.guild.id)]['enabled'] = False
             f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
@@ -88,7 +93,7 @@ class Utility:
                 welc[str(ctx.message.guild.id)]['welcchannel'] = id
                 await ctx.send('What do you want the message to be?')
                 msg = await self.bot.wait_for('message', check=pred)
-                welc[str(ctx.message.guild.id)]['welc'] = msg
+                welc[str(ctx.message.guild.id)]['welc'] = msg.content
                 json.dump(welc, f, indent=4)
                 await ctx.send('Your welcome message has been successfully set.')
 
@@ -101,6 +106,11 @@ class Utility:
 
         with open('data/welcs.json', 'r+') as f:
             leave = json.load(f)
+            try:
+                g = leave[str(ctx.message.guild.id)]
+            except KeyError:
+                leave[str(ctx.message.guild.id)] = dict()
+                leave[str(ctx.message.guild.id)]['enabled'] = False
             f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disabled', 'off'):
@@ -114,7 +124,7 @@ class Utility:
                 leave[str(ctx.message.guild.id)]['leavechannel'] = id
                 await ctx.send('What do you want the message to be?')
                 msg = await self.bot.wait_for('message', check=pred)
-                leave[str(ctx.message.guild.id)]['leave'] = msg
+                leave[str(ctx.message.guild.id)]['leave'] = msg.content
                 json.dump(leave, f, indent=4)
                 await ctx.send('Your leave message has been successfully set.')
 
