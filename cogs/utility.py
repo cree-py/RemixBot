@@ -81,7 +81,7 @@ class Utility:
                 welc[str(ctx.message.guild.id)]['enabled'] = False
             f.seek(0)
 
-            if type.lower() in ('n', 'no', 'disabled', 'disable', 'on'):
+            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 welc[str(ctx.message.guild.id)]['type'] = False
                 json.dump(welc, f, indent=4)
                 return await ctx.send('Welcome messages disabled for this guild.')
@@ -93,9 +93,9 @@ class Utility:
                 if id == channel.content:
                     return await ctx.send('Please mention a channel.')
                 welc[str(ctx.message.guild.id)]['welcchannel'] = id
-                await ctx.send('What do you want the message to be?')
+                await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: The number of members in the guild.\n```')
                 msg = await self.bot.wait_for('message', check=pred)
-                welc[str(ctx.message.guild.id)]['welc'] = msg.content
+                welc[str(ctx.message.guild.id)]['welc'] = str(msg.content)
                 json.dump(welc, f, indent=4)
                 await ctx.send('Your welcome message has been successfully set.')
 
@@ -126,9 +126,9 @@ class Utility:
                 if id == channel.content:
                     return await ctx.send('Please mention a channel.')
                 leave[str(ctx.message.guild.id)]['leavechannel'] = id
-                await ctx.send('What do you want the message to be?')
+                await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: The number of members in the guild.\n```')
                 msg = await self.bot.wait_for('message', check=pred)
-                leave[str(ctx.message.guild.id)]['leave'] = msg.content
+                leave[str(ctx.message.guild.id)]['leave'] = str(msg.content)
                 json.dump(leave, f, indent=4)
                 await ctx.send('Your leave message has been successfully set.')
 
