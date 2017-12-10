@@ -6,9 +6,15 @@
 (  ,   (  (  ' ) \  (  ``-.   (  ``-.  (  '     (  \
  )/'._.'   )/   )/   )..-.(    )..-.(   )/       ).'
 ```
+<a href="https://discordbots.org/bot/384044025298026496">
+  <img src="https://discordbots.org/api/widget/upvotes/384044025298026496.png" alt="Discord Bots" />
+</a>
+
+<iframe src="https://discordapp.com/widget?id=384102150109659137&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></iframe>
 
 # CreeperBot
-A multifunctional Discord bot in development that allows you to easily control your discord server
+A multifunctional Discord bot in development that allows you to easily control your discord server.
+
 
 ### Developers:
 - [AJ](https://github.com/aj20418)
