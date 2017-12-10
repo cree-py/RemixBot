@@ -94,9 +94,8 @@ class Mod:
             messages = 99
 
         try:
-            await ctx.channel.delete(limit=messages+1)
+            await ctx.channel.purge(limit=messages + 1)
         except Exception as e:
-            await ctx.send(f'`{e}`')
             await ctx.send("I cannot delete the messages. Make sure I have the manage messages permission.")
 
 
