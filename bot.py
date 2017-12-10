@@ -7,10 +7,13 @@ import inspect
 import aiohttp
 from contextlib import redirect_stdout
 from discord.ext import commands
+from dbl import DBLClient
 import json
 
 
 bot = commands.Bot(command_prefix='c.')
+dbltoken = "token"
+client = DBLClient(token=dbltoken)
 
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
@@ -81,19 +84,13 @@ async def on_member_remove(m):
 
 @bot.event
 async def on_guild_join(g):
-    with open('data/dbltoken.json') as f:
-        token = json.load(f)
-        dbl = token.get('TOKEN')
-        await aiohttp.ClientSession().post(f'https://discordbots.org/api/bots/{bot.user.id}/stats/', json={"server_count": len(bot.guilds)}, headers={'Authorization': dbl})
+    await client.post_stats(jsonObject={"server_count": len(bot.guilds)})
     await g.send("Hello! Thanks for inviting me to your server. If you want to enable welcome messages use `c.welcome enable`. For more help, use `c.help`. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!")
 
 
 @bot.event
 async def on_guild_remove(g):
-    with open('data/dbltoken.json') as f:
-        token = json.load(f)
-        dbl = token.get('TOKEN')
-        await aiohttp.ClientSession().post(f'https://discordbots.org/api/bots/{bot.user.id}/stats/', json={"server_count": len(bot.guilds)}, headers={'Authorization': dbl})
+    await client.post_stats(jsonObject={"server_count": len(bot.guilds)})
 
 
 @bot.command()
