@@ -4,8 +4,6 @@ import io
 import traceback
 import textwrap
 import inspect
-import datetime
-import psutil
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
