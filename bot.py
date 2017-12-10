@@ -246,6 +246,10 @@ async def shutdown(ctx):
 
     await ctx.send("Shutting down....")
     await bot.logout()
+    
+@bot.event
+async def on_server_join(ctx, server):
+    await ctx.send(server, "Hello! Thanks for inviting me to your server. If you want to enable welcome messages do `c.welcome enable`. If you would like to disbale welcome messages do `c.welcome disable`. If you would like to enable leave messages do `c.leave disable`. If you want to suggest anything to be added into the bot do `c.suggest <your suggestion>.")
 
 if __name__ == "__main__":
     if not os.environ.get('TOKEN'):
