@@ -60,7 +60,7 @@ async def on_member_join(m):
             return
         channel = int(welc[str(m.guild.id)]['welcchannel'])
         msg = welc[str(m.guild.id)]['welc']
-        await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, m=m, membercount=len(m.guild.members)))
+        await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
 
 
 @bot.event
