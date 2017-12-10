@@ -60,7 +60,7 @@ async def on_ready():
     }
     async with aiohttp.ClientSession() as session:
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
-            pass
+            print(dblpost.status)
 
 
 @bot.event
