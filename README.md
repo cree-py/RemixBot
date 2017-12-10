@@ -1,3 +1,4 @@
+<div align="center">
 ```
    )\.-.     /`-.   )\.---.   )\.---.     /`-.  )\    /(
  ,' ,-,_)  ,' _  \ (   ,-._( (   ,-._(  ,' _  \ \ (_.' /
@@ -6,6 +7,7 @@
 (  ,   (  (  ' ) \  (  ``-.   (  ``-.  (  '     (  \
  )/'._.'   )/   )/   )..-.(    )..-.(   )/       ).'
 ```
+</div>
 <div align="center">
   <a href="https://discordbots.org/bot/384044025298026496">
     <img src="https://discordbots.org/api/widget/upvotes/384044025298026496.png" alt="Discord Bots" />
