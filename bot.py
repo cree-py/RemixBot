@@ -4,6 +4,8 @@ import io
 import traceback
 import textwrap
 import inspect
+import datetime
+import psutil
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
@@ -116,6 +118,37 @@ async def ping(ctx):
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
+    await ctx.send(embed=em)
+
+
+@bot.command(aliases=['info', 'about'])
+async def bot(ctx):
+    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em.timestamp = datetime.datetime.utcnow()
+    total_online = len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})
+    total_unique = len(bot.users)
+    channels = sum(1 for g in bot.guilds for _ in g.channels)
+    authors = []
+    with open('data/devs.json') as f:
+        devs = json.load(f)
+        for id in devs:
+            m = bot.get_user(id)
+            authors.append(m.name)
+    devs = ', '.join(authors)
+    em.set_author(name='CreeperBot', icon_url='https://cdn.discordapp.com/avatars/384044025298026496/47e6b2fbb89f73c38748e5681b926c7c.png')
+    em.add_field(name='Latency', value=f'{bot.ws.latency * 1000:.3f} ms')
+    em.add_field(name='Guilds', value=len(bot.guilds))
+    em.add_field(name='Members', value=f'{total_online}/{total_unique} online')
+    em.add_field(name='Channels', value=f'{channels} total')
+    memory_usage = bot.process.memory_full_info().uss / 1024 ** 2
+    cpu_usage = bot.process.cpu_percent() / psutil.cpu_count()
+    em.add_field(name='RAM Usage', value=f'{memory_usage:.2f} MiB')
+    em.add_field(name='CPU Usage', value=f'{cpu_usage:.2f}% CPU')
+    em.add_field(name='GitHub', value='[Click Here](https://github.com/cree-py/creepy.py)')
+    em.add_field(name='Invite', value=f'https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542')
+    em.add_field(name='Commands', value=f'{len(bot.commands)}')
+    em.set_footer(text=f'Bot ID: {bot.user.id}')
+
     await ctx.send(embed=em)
 
 
