@@ -148,7 +148,7 @@ class Utility:
     @commands.group(invoke_without_command=True)
     async def math(self, ctx):
         '''A command group for math commands'''
-        await ctx.send('Available commands:\n`c.add <a> <b>`\n`c.subtract <a> <b>`\n`c.multiply <a> <b>`\n`c.divide <a> <b>`\n`c.remainder <a> <b>`\n`c.power <a> <b>`\n`c.factorial <a>`')
+        await ctx.send('Available commands:\n`add <a> <b>`\n`subtract <a> <b>`\n`multiply <a> <b>`\n`divide <a> <b>`\n`remainder <a> <b>`\n`power <a> <b>`\n`factorial <a>`')
 
     @math.command(aliases=['*', 'x'])
     async def multiply(self, ctx, a: int, b: int):
