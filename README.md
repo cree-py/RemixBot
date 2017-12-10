@@ -7,12 +7,13 @@
  )/'._.'   )/   )/   )..-.(    )..-.(   )/       ).'
 ```
 <div align="center">
+  <p>
   <a href="https://discordbots.org/bot/384044025298026496">
     <img src="https://discordbots.org/api/widget/upvotes/384044025298026496.png" alt="Discord Bots" />
   </a>
   <a href="https://discord.gg/4y6Mmrb"></a>
-    <img src="https://discordapp.com/widget?id=384102150109659137&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0">
-</a>
+    <img src="https://discordapp.com/widget?id=384102150109659137&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0"></a>
+  </p>
 </div>
 
 # CreeperBot
