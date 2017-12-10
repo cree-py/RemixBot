@@ -91,12 +91,12 @@ class Mod:
     async def purge(self, ctx, messages: int):
         '''Delete messages'''
         if messages > 99:
-            messages == 99
+            messages = 99
 
         try:
-            await ctx.delete_messages(messages)
+            await ctx.channel.delete(limit=messages+1)
         except Exception as e:
-            await ctx.send(e)
+
             await ctx.send("I cannot delete the messages. Make sure I have the manage messages permission.")
 
 
