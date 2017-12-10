@@ -97,6 +97,8 @@ class Mod:
             await ctx.channel.purge(limit=messages + 1)
         except Exception as e:
             await ctx.send("I cannot delete the messages. Make sure I have the manage messages permission.")
+        else:
+            await ctx.send(f'{messages} messages deleted. 👌', delete_after=3)
 
 
 def setup(bot):
