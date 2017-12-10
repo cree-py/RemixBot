@@ -50,6 +50,17 @@ def cleanup_code(content):
 async def on_ready():
     print("Bot Is Online.")
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | Beta 1.4.0", type=3), afk=True)
+    url = "https://discordbots.org/api/bots/$bot.id/stats"
+    headers = {
+        'Authorization': dbltoken,
+        'content-type': 'application/json'
+    }
+    payload = {
+        'server_count': len(bot.guilds)
+    }
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
+            pass
 
 
 @bot.event
@@ -84,13 +95,7 @@ async def on_member_remove(m):
 
 @bot.event
 async def on_guild_join(g):
-    await client.post_stats(jsonObject={"server_count": len(bot.guilds)})
     await g.send("Hello! Thanks for inviting me to your server. If you want to enable welcome messages use `c.welcome enable`. For more help, use `c.help`. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!")
-
-
-@bot.event
-async def on_guild_remove(g):
-    await client.post_stats(jsonObject={"server_count": len(bot.guilds)})
 
 
 @bot.command()
