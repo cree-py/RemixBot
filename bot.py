@@ -4,6 +4,7 @@ import io
 import traceback
 import textwrap
 import inspect
+import aiohttp
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
@@ -80,7 +81,19 @@ async def on_member_remove(m):
 
 @bot.event
 async def on_guild_join(g):
+    with open('dbltoken.json') as f:
+        token = json.load(f)
+        dbl = token.get('TOKEN')
+        await aiohttp.ClientSession().post(f'https://discordbots.org/api/bots/{bot.user.id}/stats/', json={"server_count": len(bot.guilds)}, headers={'Authorization': dbl})
     await g.send("Hello! Thanks for inviting me to your server. If you want to enable welcome messages use `c.welcome enable`. For more help, use `c.help`. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!")
+
+
+@bot.event
+async def on_guild_remove(g):
+    with open('dbltoken.json') as f:
+        token = json.load(f)
+        dbl = token.get('TOKEN')
+        await aiohttp.ClientSession().post(f'https://discordbots.org/api/bots/{bot.user.id}/stats/', json={"server_count": len(bot.guilds)}, headers={'Authorization': dbl})
 
 
 @bot.command()
