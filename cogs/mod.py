@@ -104,21 +104,21 @@ class Mod:
     async def autorole(self, ctx, enabled: str, role: discord.Role=None):
         '''Assign a role when a member joins the guild.'''
         with open('./data/welcs.json') as f:
-            role = json.load(f)
+            roles = json.load(f)
             try:
-                g = role[str(ctx.message.guild.id)]
+                g = roles[str(ctx.message.guild.id)]
             except KeyError:
-                role[str(ctx.message.guild.id)] = dict()
-                role[str(ctx.message.guild.id)]['roletype'] = False
+                roles[str(ctx.message.guild.id)] = dict()
+                roles[str(ctx.message.guild.id)]['roletype'] = False
             f.seek(0)
             if enabled.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                role[str(ctx.message.guild.id)]['roletype'] = False
-                json.dump(role, f, indent=4)
+                roles[str(ctx.message.guild.id)]['roletype'] = False
+                json.dump(roles, f, indent=4)
                 return await ctx.send('Autoroles have been disabled.')
             else:
-                role[str(ctx.message.guild.id)]['roletype'] = True
-                role[str(ctx.message.guild)]['role'] = role.id
-                json.dump(role, f, indent=4)
+                roles[str(ctx.message.guild.id)]['roletype'] = True
+                roles[str(ctx.message.guild)]['role'] = role.id
+                json.dump(roles, f, indent=4)
                 await ctx.send(f'Set autorole to {discord.utils.get(ctx.guild.roles, id=role.id)}')
 
 
