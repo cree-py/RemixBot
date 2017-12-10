@@ -81,7 +81,7 @@ async def on_member_remove(m):
 
 @bot.event
 async def on_guild_join(g):
-    with open('dbltoken.json') as f:
+    with open('data/dbltoken.json') as f:
         token = json.load(f)
         dbl = token.get('TOKEN')
         await aiohttp.ClientSession().post(f'https://discordbots.org/api/bots/{bot.user.id}/stats/', json={"server_count": len(bot.guilds)}, headers={'Authorization': dbl})
@@ -90,7 +90,7 @@ async def on_guild_join(g):
 
 @bot.event
 async def on_guild_remove(g):
-    with open('dbltoken.json') as f:
+    with open('data/dbltoken.json') as f:
         token = json.load(f)
         dbl = token.get('TOKEN')
         await aiohttp.ClientSession().post(f'https://discordbots.org/api/bots/{bot.user.id}/stats/', json={"server_count": len(bot.guilds)}, headers={'Authorization': dbl})
