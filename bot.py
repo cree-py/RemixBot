@@ -50,7 +50,7 @@ def cleanup_code(content):
 async def on_ready():
     print("Bot Is Online.")
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | Beta 1.4.0", type=3), afk=True)
-    url = f"https://discordbots.org/api/bots/{bot.user.id}}/stats"
+    url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
     headers = {
         'Authorization': dbltoken,
         'content-type': 'application/json'
