@@ -61,13 +61,6 @@ async def on_member_join(m):
         channel = int(welc[str(m.guild.id)]['welcchannel'])
         msg = welc[str(m.guild.id)]['welc']
         await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, m=m, membercount=len(m.guild.members)))
-        try:
-            type = welc[str(m.guild.id)]['roletype']
-        except KeyError:
-            return
-        if type is False:
-            return
-        await m.add_roles(welc[str(m.guild.id)]['role'])
 
 
 @bot.event

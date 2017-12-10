@@ -99,28 +99,6 @@ class Mod:
             await ctx.send(e)
             await ctx.send("I cannot delete the messages. Make sure I have the manage messages permission.")
 
-    @commands.command()
-    @commands.has_permissions(manage_roles=True)
-    async def autorole(self, ctx, enabled: str, role: discord.Role=None):
-        '''Assign a role when a member joins the guild.'''
-        with open('./data/welcs.json') as f:
-            roles = json.load(f)
-            try:
-                g = roles[str(ctx.message.guild.id)]
-            except KeyError:
-                roles[str(ctx.message.guild.id)] = dict()
-                roles[str(ctx.message.guild.id)]['roletype'] = False
-            f.seek(0)
-            if enabled.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                roles[str(ctx.message.guild.id)]['roletype'] = False
-                json.dump(roles, f, indent=4)
-                return await ctx.send('Autoroles have been disabled.')
-            else:
-                roles[str(ctx.message.guild.id)]['roletype'] = True
-                roles[str(ctx.message.guild)]['role'] = role.id
-                json.dump(roles, f, indent=4)
-                await ctx.send(f'Set autorole to {discord.utils.get(ctx.guild.roles, id=role.id)}')
-
 
 def setup(bot):
     bot.add_cog(Mod(bot))
