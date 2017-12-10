@@ -145,7 +145,12 @@ class Utility:
         else:
             await ctx.send(f'No, there are {days_until.days} days left until New Year\'s.')
 
-    @commands.command()
+    @commands.group(invoke_without_command=True)
+    async def math(self, ctx):
+        '''A command group for math commands'''
+        await ctx.send('Available commands:\n`c.add <a> <b>`\n`c.subtract <a> <b>`\n`c.multiply <a> <b>`\n`c.divide <a> <b>`\n`c.remainder <a> <b>`\n`c.power <a> <b>`\n`c.factorial <a>`')
+
+    @math.command()
     async def multiply(self, ctx, a: int, b: int):
         '''Multiply two numbers'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
@@ -153,7 +158,7 @@ class Utility:
         em.description = f'❓ Problem: `{a}*{b}`\n✅ Solution: `{a * b}`'
         await ctx.send(embed=em)
 
-    @commands.command()
+    @math.command()
     async def divide(self, ctx, a: int, b: int):
         '''Divide a number by a number'''
         try:
@@ -167,7 +172,7 @@ class Utility:
             em.description = "You can't divide by zero"
             await ctx.send(embed=em)
 
-    @commands.command()
+    @math.command()
     async def add(self, ctx, a: int, b: int):
         '''Add a number to a number'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
@@ -175,7 +180,7 @@ class Utility:
         em.description = f'❓ Problem: `{a}+{b}`\n✅ Solution: `{a + b}`'
         await ctx.send(embed=em)
 
-    @commands.command()
+    @math.command()
     async def subtract(self, ctx, a: int, b: int):
         '''Substract two numbers'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
@@ -183,7 +188,7 @@ class Utility:
         em.description = f'❓ Problem: `{a}-{b}`\n✅ Solution: `{a - b}`'
         await ctx.send(embed=em)
 
-    @commands.command()
+    @math.command()
     async def remainder(self, ctx, a: int, b: int):
         '''Gets a remainder'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
@@ -191,7 +196,7 @@ class Utility:
         em.description = f'❓ Problem: `{a}%{b}`\n✅ Solution: `{a % b}`'
         await ctx.send(embed=em)
 
-    @commands.command()
+    @math.command()
     async def power(self, ctx, a: int, b: int):
         '''Raise A to the power of B'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
@@ -199,7 +204,7 @@ class Utility:
         em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
         await ctx.send(embed=em)
 
-    @commands.command()
+    @math.command()
     async def factorial(self, ctx, a: int):
         '''Factorial something'''
         if a > 813:
