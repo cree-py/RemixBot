@@ -131,6 +131,28 @@ class Clash_of_Clans:
         em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
         await ctx.send(embed=em)
 
+    @commands.command()
+    async def cocclan(self, ctx, tag=None):
+        '''Get the stats of a clan in CoC'''
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+
+        with open('data/cocapi.json') as f:
+            coc = json.load(f)
+            apikey = coc.get('APIKEY')
+
+        if tag is None:
+            if self.get_tag(str(ctx.author.id)) == 'None':
+                return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
+            tag = self.get_tag(str(ctx.author.id))
+        else:
+            if not self.check_tag(tag):
+                return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
+            tag = tag.strip('#')
+
+        headers = {'Authorization': apikey}
+        response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
+        status = response.status_code
+
 
 def setup(bot):
     bot.add_cog(Clash_of_Clans(bot))
