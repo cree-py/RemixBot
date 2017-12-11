@@ -150,10 +150,10 @@ class Clash_of_Clans:
             tag = tag.strip('#')
 
         headers = {'Authorization': apikey}
-        response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
+        response0 = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
         status = response.status_code
         try:
-            clantag = response.json()['clan']['tag']
+            clantag = response0.json()['clan']['tag'].strip('#')
         except:
             em.title = "Error"
             em.description = "You are not in a clan"
