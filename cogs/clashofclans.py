@@ -152,6 +152,8 @@ class Clash_of_Clans:
         headers = {'Authorization': apikey}
         response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
         status = response.status_code
+        clantag = response.json()['clan']['tag']
+        response = requests.get(f'https://api.clashofclans.com/v1/clans/%23{tag}', headers=headers)
 
 
 def setup(bot):
