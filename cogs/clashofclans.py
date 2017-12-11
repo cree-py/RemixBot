@@ -152,18 +152,19 @@ class Clash_of_Clans:
         headers = {'Authorization': apikey}
         response = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
         status = response.status_code
-        clantag = response.json()['clan']['tag']
+        try:
+            clantag = response.json()['clan']['tag']
+        except:
+            em.title = "Error"
+            em.description = "You are not in a clan"
+            return await ctx.send(embed=em)
         response = requests.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=headers)
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Clan Info"
-        try:
-            em.description = "Basic COC clan info under developement"
-            em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['badgeUrls']['large'])
-            em.add_field(name="Clan Name", value=f"{response.json()['name']} {self.emoji("cc")}")
-            em.add_field(name="Clan Tag", value=response.json()['tag'])
-        except KeyError:
-             em.title = "Error"
-             em.description = "You are not in a clan"
+        em.description = "Basic CoC clan info under developement."
+        em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['badgeUrls']['large'])
+        em.add_field(name="Clan Name", value=f"{response.json()['name']} {self.emoji('cc')}")
+        em.add_field(name="Clan Tag", value=response.json()['tag'])
         await ctx.send(embed=em)
 
 def setup(bot):
