@@ -151,7 +151,7 @@ class Clash_of_Clans:
 
         headers = {'Authorization': apikey}
         response0 = requests.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers)
-        status = response.status_code
+        status = response0.status_code
         try:
             clantag = response0.json()['clan']['tag'].strip('#')
         except:
