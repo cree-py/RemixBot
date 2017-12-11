@@ -162,7 +162,7 @@ class Clash_of_Clans:
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Clan Info"
         em.description = "Basic CoC clan info under developement."
-        em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['badgeUrls']['large'])
+        em.set_author(name=f"#{clantag}", icon_url=response.json()['badgeUrls']['large'])
         em.add_field(name="Clan Name", value=f"{response.json()['name']} {self.emoji('cc')}")
         em.add_field(name="Clan Tag", value=response.json()['tag'])
         await ctx.send(embed=em)
