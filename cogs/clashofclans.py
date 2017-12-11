@@ -158,7 +158,7 @@ class Clash_of_Clans:
         em.title = "Clan Info"
         try:
             em.description = "Basic COC clan info under developement"
-             em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['badgeUrls']['large'])
+            em.set_author(name=f"{response.json()['tag']}", icon_url=response.json()['badgeUrls']['large'])
             em.add_field(name="Clan Name", value=f"{response.json()['name']} {self.emoji("cc")}")
             em.add_field(name="Clan Tag", value=response.json()['tag'])
         except KeyError:
