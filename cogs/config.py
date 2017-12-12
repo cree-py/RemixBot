@@ -3,10 +3,26 @@ from discord.ext import commands
 import json
 
 
-class Guild_Activity:
+class Config:
 
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command()
+    async def prefix(self, ctx, *, pre):
+        '''Set a custom prefix for the guild. Doesn't work yet.'''
+        with open('./data/config.json', 'r+') as f:
+            prefix = json.load(f)
+            try:
+                p = prefix[str(ctx.message.guild.id)]
+            except KeyError:
+                prefix[str(ctx.message.guild.id)] = dict()
+                prefix[str(ctx.message.guild.id)]['prefix'] = 'c.'
+            f.seek(0)
+
+            prefix[str(ctx.message.guild.id)]['prefix'] = str(pre)
+            json.dump(prefix, f, indent=4)
+            await ctx.send('The guild prefix has been set to `{pre}`')
 
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
@@ -15,7 +31,7 @@ class Guild_Activity:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('./data/welcs.json', 'r+') as f:
+        with open('./data/config.json', 'r+') as f:
             welc = json.load(f)
             try:
                 g = welc[str(ctx.message.guild.id)]
@@ -27,7 +43,7 @@ class Guild_Activity:
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 welc[str(ctx.message.guild.id)]['welctype'] = False
                 json.dump(welc, f, indent=4)
-                return await ctx.send('Welcome messages disabled for this guild.')
+                await ctx.send('Welcome messages disabled for this guild.')
             else:
                 welc[str(ctx.message.guild.id)]['welctype'] = True
                 await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
@@ -49,7 +65,7 @@ class Guild_Activity:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('./data/welcs.json', 'r+') as f:
+        with open('./data/config.json', 'r+') as f:
             leave = json.load(f)
             try:
                 g = leave[str(ctx.message.guild.id)]
@@ -61,6 +77,7 @@ class Guild_Activity:
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 leave[str(ctx.message.guild.id)]['leavetype'] = False
                 json.dump(leave, f, indent=4)
+                await ctx.send('Leave messages disabled for this guild.')
             else:
                 leave[str(ctx.message.guild.id)]['leavetype'] = True
                 await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
@@ -77,4 +94,4 @@ class Guild_Activity:
 
 
 def setup(bot):
-    bot.add_cog(Guild_Activity(bot))
+    bot.add_cog(Config(bot))

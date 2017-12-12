@@ -65,7 +65,7 @@ async def on_ready():
 
 @bot.event
 async def on_member_join(m):
-    with open('data/welcs.json') as f:
+    with open('data/config.json') as f:
         welc = json.load(f)
         try:
             type = welc[str(m.guild.id)]['welctype']
@@ -80,7 +80,7 @@ async def on_member_join(m):
 
 @bot.event
 async def on_member_remove(m):
-    with open('data/welcs.json') as f:
+    with open('data/config.json') as f:
         leave = json.load(f)
         try:
             leave[str(m.guild.id)]['leavetype']
