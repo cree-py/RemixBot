@@ -43,8 +43,7 @@ class Info:
         color = discord.Color(value=0x00ff00)
 
         em = discord.Embed(description=created_at, color=color)
-        em.add_field(name='Online Members', value=len(
-            [m for m in guild.members if m.status != discord.Status.online]))
+        em.add_field(name='Online Members', value=len({m.id for m in guild.members if m.status is not discord.Status.offline}))
         em.add_field(name='Total Members', value=len(guild.members))
         em.add_field(name='Text Channels', value=len(guild.text_channels))
         em.add_field(name='Voice Channels', value=len(guild.voice_channels))
