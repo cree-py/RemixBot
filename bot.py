@@ -145,7 +145,7 @@ async def info(ctx):
     em.title = "Info"
     em.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
     em.set_thumbnail(url="https://cdn.discordapp.com/avatars/384044025298026496/47e6b2fbb89f73c38748e5681b926c7c.webp?size=1024")
-    em.description = "A multipurpose bot made by Free TNT, AntonyJoseph03, SharpBit, Victini And Sleedyak \n[Support Server](https://discord.gg/RzsYQ9f)"
+    em.description = "A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini \n[Support Server](https://discord.gg/RzsYQ9f)"
     em.add_field(name="Servers", value=len(bot.guilds))
     em.add_field(name="Library Used", value="discord.py 1.0.0a")
     em.add_field(name="GitHub", value="[Click Here](https://github.com/cree-py/creepy.py)")
