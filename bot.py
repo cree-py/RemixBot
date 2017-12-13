@@ -138,14 +138,14 @@ async def ping(ctx):
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
-@bot.command(aliases=['bot', 'about'])
+@bot.command(alliases=['bot', 'about'])
 async def info(ctx):
     '''Shows info about bot'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Info"
     em.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
     em.set_thumbnail(url="https://cdn.discordapp.com/avatars/384044025298026496/47e6b2fbb89f73c38748e5681b926c7c.webp?size=1024")
-    em.description = "A Multipurpose bot made by Free TNT, AntonyJoseph, SharpBit, Victini And Sledyak \n [Support Server](https://discord.gg/RzsYQ9f)"
+    em.description = "A Multipurpose bot made by Free TNT, AntonyJoseph, SharpBit, Victini And Sledyak \n[Support Server](https://discord.gg/RzsYQ9f)"
     em.add_field(name="Servers", value=len(bot.guilds))
     em.add_field(name="Lib Used", value="discord.py 1.0.0a")
     em.add_field(name="Github", value="[Click Here](https://github.com/cree-py/creepy.py)")
