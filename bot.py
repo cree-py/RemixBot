@@ -138,7 +138,7 @@ async def ping(ctx):
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
-@bot.command(alliases=['bot', 'about'])
+@bot.command(aliases=['bot', 'about'])
 async def info(ctx):
     '''Shows info about bot'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
