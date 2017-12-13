@@ -145,11 +145,11 @@ async def info(ctx):
     em.title = "Info"
     em.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
     em.set_thumbnail(url="https://cdn.discordapp.com/avatars/384044025298026496/47e6b2fbb89f73c38748e5681b926c7c.webp?size=1024")
-    em.description = "A Multipurpose bot made by Free TNT, AntonyJoseph, SharpBit, Victini And Sledyak \n[Support Server](https://discord.gg/RzsYQ9f)"
+    em.description = "A Multipurpose bot made by Free TNT, AntonyJoseph, SharpBit, Victini And Sleedyak \n[Support Server](https://discord.gg/RzsYQ9f)"
     em.add_field(name="Servers", value=len(bot.guilds))
-    em.add_field(name="Lib Used", value="discord.py 1.0.0a")
-    em.add_field(name="Github", value="[Click Here](https://github.com/cree-py/creepy.py)")
-    em.add_field(name="Upvote This Bot", value="[Click Here](https://discordbots.org/bot/384044025298026496#)")
+    em.add_field(name="Library Used", value="discord.py 1.0.0a")
+    em.add_field(name="GitHub", value="[Click Here](https://github.com/cree-py/creepy.py)")
+    em.add_field(name="Upvote this bot!", value="[Click Here](https://discordbots.org/bot/384044025298026496#)")
     em.add_field(name="Total Users", value=len(bot.users))
     em.add_field(name="Bot Latency", value=f"{bot.ws.latency * 1000: .4f}")
     em.set_footer(text="CreeperBot | Powered By discord.py")
