@@ -124,6 +124,7 @@ class Clash_of_Clans:
             em.add_field(name="BH Level", value=f"{response.json()['builderHallLevel']} {self.emoji('builderhall')}")
             em.add_field(name="BH Trophies", value=f"{response.json()['versusTrophies']} {self.emoji('coctrophy')}")
             em.add_field(name="BH Highest Trophies", value=f"{response.json()['bestVersusTrophies']} {self.emoji('cocpb')}")
+            em.add_field(name="BH Attacks Won", value=f"{response.json()['versusBattleWins']} {sword}")
 
         except KeyError:
             em.add_field(name='Builder Base', value=f"Not unlocked yet {self.emoji('builderhall')}")
@@ -160,7 +161,7 @@ class Clash_of_Clans:
         response = requests.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=headers)
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Clan Info"
-        em.description = "Basic CoC clan info under developement."
+        em.description = f"{response.json()['description']}")
         em.set_author(name=f"{response.json()['name']} (#{clantag})", icon_url=response.json()['badgeUrls']['large'])
         await ctx.send(embed=em)
 
