@@ -18,6 +18,8 @@
 # CreeperBot
 A multifunctional Discord bot in development that allows you to easily control your discord server.
 
+### For the website
+This is now closed-sourced due to multiple instances of copying the bot, saying it's their own, and host it on their own instance.
 
 ### Developers:
 - [AJ](https://github.com/aj20418)
