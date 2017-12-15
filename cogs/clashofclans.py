@@ -161,7 +161,7 @@ class Clash_of_Clans:
         response = requests.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=headers)
         em = discord.Embed(color=discord.Color(value=0x00ff00))
         em.title = "Clan Info"
-        em.description = f"{response.json()['description']}")
+        em.description = f"{response.json()['description']}"
         em.set_author(name=f"{response.json()['name']} (#{clantag})", icon_url=response.json()['badgeUrls']['large'])
         await ctx.send(embed=em)
 
