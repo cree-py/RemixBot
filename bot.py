@@ -7,13 +7,11 @@ import inspect
 import aiohttp
 from contextlib import redirect_stdout
 from discord.ext import commands
-from dbl import DBLClient
 import json
 
 
 bot = commands.Bot(command_prefix='c.')
 dbltoken = "token"
-client = DBLClient(token=dbltoken)
 
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
