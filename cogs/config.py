@@ -47,14 +47,14 @@ class Config:
             else:
                 welc[str(ctx.message.guild.id)]['welctype'] = True
                 await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
-                channel = await self.bot.wait_for('message', check=pred)
+                channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
                 id = channel.content.strip('<#').strip('>')
                 if id == channel.content:
                     return await ctx.send('Please mention a channel.')
                 welc[str(ctx.message.guild.id)]['welcchannel'] = id
                 await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
-                msg = await self.bot.wait_for('message', check=pred)
-                welc[str(ctx.message.guild.id)]['welc'] = str(msg.content)
+                msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
+                welc[str(ctx.message.guild.id)]['welc'] = str(msg.content).replace('"', '\"')
                 json.dump(welc, f, indent=4)
                 await ctx.send('Your welcome message has been successfully set.')
 
@@ -81,14 +81,14 @@ class Config:
             else:
                 leave[str(ctx.message.guild.id)]['leavetype'] = True
                 await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
-                channel = await self.bot.wait_for('message', check=pred)
+                channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
                 id = channel.content.strip('<#').strip('>')
                 if id == channel.content:
                     return await ctx.send('Please mention a channel.')
                 leave[str(ctx.message.guild.id)]['leavechannel'] = id
                 await ctx.send('What do you want the message to be?\nUsage:```\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
-                msg = await self.bot.wait_for('message', check=pred)
-                leave[str(ctx.message.guild.id)]['leave'] = str(msg.content)
+                msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
+                leave[str(ctx.message.guild.id)]['leave'] = str(msg.content).replace('"', '\"')
                 json.dump(leave, f, indent=4)
                 await ctx.send('Your leave message has been successfully set.')
 
