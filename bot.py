@@ -182,7 +182,7 @@ async def info(ctx):
     em.add_field(name="Library", value=f"discord.py v{discord.__version__}")
     em.add_field(name="Bot Latency", value=f"{bot.ws.latency * 1000:.3f} ms")
     em.add_field(name="Invite", value=f"[Click Here](https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542)")
-    em.add_field(name="Upvote this bot!", value=f"[Click Here](https://discordbots.org/bot/{bot.user.id})")
+    em.add_field(name="Upvote this bot!", value=f"https://discordbots.org/bot/{bot.user.id} :reminder_ribbon:", inline=False)
 
     em.set_footer(text="CreeperBot | Powered by discord.py")
     await ctx.send(embed=em)
