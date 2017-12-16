@@ -148,16 +148,9 @@ async def help(ctx):
     for c in abc:
         none += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
     em.add_field(name='Bot', value=none)
-    try:
-        await bot.get_user(ctx.message.author.id).send(embed=em)
-    except discord.Forbidden:
-        await ctx.send('You have blocked the bot or disabled DMs for this server.')
-        success = False
-    else:
-        success = True
+    await bot.get_user(ctx.message.author.id).send(embed=em)
     if ctx.message.channel.guild:
-        if success:
-            await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
+        await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
 
 
 @bot.command()
