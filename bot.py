@@ -86,8 +86,10 @@ async def on_guild_join(g):
     i = 0
     while not success:
         try:
-            await g.channels[i].send("Hello! Thanks for inviting me to your server. If you want to enable welcome messages use `c.welcome enable`. For more help, use `c.help`. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!")
+            await g.channels[i].send("Hello! Thanks for inviting me to your server. If you want to enable welcome messages use `c.welcome enable`. For more help, use c.help. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!`")
         except discord.Forbidden:
+            i += 1
+        except AttributeError:
             i += 1
         else:
             success = True
