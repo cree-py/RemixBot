@@ -26,6 +26,8 @@ for cog in cogs:
 
 bot.remove_command('help')
 
+version = "Beta 1.5.0"
+
 
 def dev_check(id):
     with open('data/devs.json') as f:
@@ -47,7 +49,7 @@ def cleanup_code(content):
 @bot.event
 async def on_ready():
     print("Bot Is Online.")
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | Beta 1.4.0", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
 
 
 @bot.event
@@ -104,6 +106,7 @@ async def on_guild_join(g):
     async with aiohttp.ClientSession() as session:
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
 
 
 @bot.event
@@ -119,6 +122,7 @@ async def on_guild_remove(g):
     async with aiohttp.ClientSession() as session:
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
 
 
 @bot.command()
