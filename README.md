@@ -8,7 +8,7 @@
 ```
 <div align="center">
   <a href="https://discordbots.org/bot/384044025298026496">
-    <img src="https://discordbots.org/api/widget/upvotes/384044025298026496.png" alt="Discord Bots" />
+    <img src="https://discordbots.org/api/widget/servers/384044025298026496.svg" alt="Discord Bots" />
   </a>
   <a href="https://discord.gg/4y6Mmrb">
     <img src="https://discordapp.com/api/guilds/384102150109659137/embed.png" alt="CreeperBot Coding and Support" />
