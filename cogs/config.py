@@ -139,7 +139,7 @@ class Config:
                     return False
 
     async def on_raw_message_delete(self, message, ch):
-        msg = self.bot.get_message(message)
+        msg = self.bot.get_channel(ch).get_message(message)
         if not self.logtype(msg)[0]:
             return
         em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in <#{ch}>**\n{msg.content}')
