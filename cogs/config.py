@@ -92,6 +92,60 @@ class Config:
                 json.dump(leave, f, indent=4)
                 await ctx.send('Your leave message has been successfully set.')
 
+    @commands.command(aliases=['mod-log'])
+    async def modlog(self, ctx, type):
+        '''Toggle mod-logs for your guild'''
+        def pred(m):
+            return m.author == ctx.author and m.channel == ctx.message.channel
+
+        with open('./data/config.json', 'r+') as f:
+            logs = json.load(f)
+            try:
+                g = logs[str(ctx.message.guild.id)]
+            except KeyError:
+                logs[str(ctx.message.guild.id)] = dict()
+                logs[str(ctx.message.guild.id)]['logtype'] = False
+            f.seek(0)
+
+            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
+                logs[str(ctx.message.guild.id)]['logtype'] = False
+                json.dump(logs, f, indent=4)
+                await ctx.send('Mod-logs are disabled for this guild.')
+            else:
+                logs[str(ctx.message.guild.id)]['logtype'] = True
+                await ctx.send('Which channel do you want the events to be logged in? Use a channel mention.')
+                channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
+                id = channel.content.strip('<#').strip('>')
+                if id == channel.content:
+                    return await ctx.send('Please mention a channel.')
+                logs[str(ctx.message.guild.id)]['logchannel'] = id
+                json.dump(logs, f, indent=4)
+                await ctx.send(f'Mod-logs have been successfully set in <#{id}>')
+
+    # ------------Mod-log events below-------------
+
+    def logtype(self, item):
+        with open('./data/config.json') as f:
+            type = json.load(f)
+            try:
+                enabled = type[str(item.guild.id)]['logtype']
+                channel = type[str(item.guild.id)]['logchannel']
+            except KeyError:
+                return
+            else:
+                if enabled:
+                    return True, self.bot.get_channel(channel)
+                else:
+                    return False
+
+    async def on_raw_message_delete(self, msg, ch):
+        if not self.logtype(msg)[0]:
+            return
+        em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in <#{ch}>**\n{msg.content}')
+        em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
+        em.set_footer(f'ID: {msg}')
+        await self.logtype(msg)[1].send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Config(bot))
