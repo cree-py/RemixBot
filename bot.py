@@ -17,6 +17,10 @@ directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
 for cog in cogs:
+    members = inspect.getmembers(cog)
+    for name, member in members:
+        if name.startswith('on_'):
+            bot.add_listener(member, name)
     try:
         bot.load_extension(f'{directory}{cog}')
     except Exception as e:
