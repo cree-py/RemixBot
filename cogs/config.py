@@ -94,6 +94,7 @@ class Config:
 
     @commands.command(aliases=['mod-log'])
     async def modlog(self, ctx, type):
+    @commands.has_permissions(view_audit_log = True)
         '''Toggle mod-logs for your guild'''
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
