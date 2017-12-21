@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+import datetime
 import json
 
 
@@ -143,10 +144,26 @@ class Config:
         msg = await self.bot.get_channel(ch).get_message(message)
         if not self.logtype(msg)[0]:
             return
-        em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in <#{ch}>**\n{msg.content}')
+        em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {ch.mention}**\n{msg.content}')
         em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
         em.set_footer(f'ID: {msg.id}')
         await self.logtype(msg)[1].send(embed=em)
+
+    async def on_guild_channel_create(self, channel):
+        if not self.logtype(channel)[0]:
+            return
+        em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.')
+        em.timestamp = datetime.datetime.utcnow()
+        em.set_footer(f'ID: {channel.id}')
+        await self.log_type(channel)[1].send(embed=em)
+
+    async def on_guild_channel_delete(self, channel):
+        if not self.logtype(channel)[0]:
+            return
+        em = discord.Embed(title='Channel Deleted', description=f'Channel {channel.mention} was deleted.')
+        em.timestamp = datetime.datetime.utcnow()
+        em.set_footer(f'ID: {channel.id}')
+        await self.log_type(channel)[1].send(embed=em)
 
 
 def setup(bot):
