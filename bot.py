@@ -97,6 +97,9 @@ async def on_guild_join(g):
             i += 1
         except AttributeError:
             i += 1
+        except IndexError:
+            # if the server has no channels, doesn't let the bot talk, or all vc/categories
+            pass
         else:
             success = True
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
