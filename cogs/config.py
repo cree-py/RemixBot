@@ -93,8 +93,8 @@ class Config:
                 await ctx.send('Your leave message has been successfully set.')
 
     @commands.command(aliases=['mod-log'])
+    @commands.has_permissions(view_audit_log=True)
     async def modlog(self, ctx, type):
-    @commands.has_permissions(view_audit_log = True)
         '''Toggle mod-logs for your guild'''
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
