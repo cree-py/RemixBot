@@ -140,14 +140,14 @@ class Config:
                 else:
                     return False
 
-    async def on_raw_message_delete(self, message, ch):
-        msg = await self.bot.get_channel(ch).get_message(message)
-        if not self.logtype(msg)[0]:
-            return
-        em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {ch.mention}**\n{msg.content}')
-        em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
-        em.set_footer(f'ID: {msg.id}')
-        await self.logtype(msg)[1].send(embed=em)
+    # async def on_raw_message_delete(self, message, ch):
+    #     msg = await self.bot.get_channel(ch).get_message(message)
+    #     if not self.logtype(msg)[0]:
+    #         return
+    #     em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {ch.mention}**\n{msg.content}')
+    #     em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
+    #     em.set_footer(f'ID: {msg.id}')
+    #     await self.logtype(msg)[1].send(embed=em)
 
     async def on_guild_channel_create(self, channel):
         if not self.logtype(channel)[0]:
