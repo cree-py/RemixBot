@@ -23,18 +23,12 @@ SOFTWARE.
 '''
 
 import discord
-import os
-import io
-import traceback
-import textwrap
-import aiohttp
-import inspect
 import random
-from contextlib import redirect_stdout
 from discord.ext import commands
 import json
 import datetime
 import pytz
+import math
 
 
 def dev_check(id):
@@ -128,22 +122,24 @@ class Utility:
         c = datetime.datetime(now.year, 12, 25)
         if now.month == 12 and now.day > 25:
             c = datetime.datetime((now.year + 1), 12, 25)
-        days_until = c - now
-        if days_until.days == 0:
+        until = c - now
+        days_until = math.ceil(until.days)
+        if days_until == 0:
             await ctx.send('Merry Christmas!')
         else:
-            await ctx.send(f'No, there are {days_until.days} more days until Christmas.')
+            await ctx.send(f'No, there are {days_until} more days until Christmas.')
 
     @commands.command()
     async def isitnewyear(self, ctx):
         '''When is the new year?'''
         now = datetime.datetime.now()
         ny = datetime.datetime(now.year + 1, 1, 1)
-        days_until = ny - now
+        until = ny - now
+        days_until = math.ceil(until.days)
         if now.month == 1 and now.day == 1:
             await ctx.send('It\'s New Years today!')
         else:
-            await ctx.send(f'No, there are {days_until.days} days left until New Year\'s.')
+            await ctx.send(f'No, there are {days_until} days left until New Year\'s.')
 
     @commands.group(invoke_without_command=True)
     async def math(self, ctx):
