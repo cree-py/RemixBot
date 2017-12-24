@@ -136,7 +136,7 @@ class Config:
                 return
             else:
                 if enabled:
-                    return True, self.bot.get_channel(channel)
+                    return True, self.bot.get_channel(int(channel))
                 else:
                     return False
 
