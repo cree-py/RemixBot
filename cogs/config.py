@@ -124,6 +124,34 @@ class Config:
                 json.dump(logs, f, indent=4)
                 await ctx.send(f'Mod-logs have been successfully set in <#{id}>')
 
+    # ------------Welcome and leave----------------
+
+    async def on_member_join(self, m):
+        with open('data/config.json') as f:
+            welc = json.load(f)
+            try:
+                type = welc[str(m.guild.id)]['welctype']
+            except KeyError:
+                return
+            if type is False:
+                return
+            channel = int(welc[str(m.guild.id)]['welcchannel'])
+            msg = welc[str(m.guild.id)]['welc']
+            await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
+
+    async def on_member_remove(self, m):
+        with open('data/config.json') as f:
+            leave = json.load(f)
+            try:
+                leave[str(m.guild.id)]['leavetype']
+            except KeyError:
+                return
+            if type is False:
+                return
+            channel = int(leave[str(m.guild.id)]['leavechannel'])
+            msg = leave[str(m.guild.id)]['leave']
+            await bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
+
     # ------------Mod-log events below-------------
 
     def logtype(self, item):
@@ -140,14 +168,13 @@ class Config:
                 else:
                     return False
 
-    # async def on_raw_message_delete(self, message, ch):
-    #     msg = await self.bot.get_channel(ch).get_message(message)
-    #     if not self.logtype(msg)[0]:
-    #         return
-    #     em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {ch.mention}**\n{msg.content}')
-    #     em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
-    #     em.set_footer(f'ID: {msg.id}')
-    #     await self.logtype(msg)[1].send(embed=em)
+    async def on_message_delete(self, msg):
+        if not self.logtype(msg)[0]:
+            return
+        em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {msg.channel.mention}**\n{msg.content}', color=0xff0000)
+        em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
+        em.set_footer(f'ID: {msg.id}')
+        await self.logtype(msg)[1].send(embed=em)
 
     async def on_guild_channel_create(self, channel):
         if not self.logtype(channel)[0]:
@@ -164,6 +191,14 @@ class Config:
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
         await self.logtype(channel)[1].send(embed=em)
+
+    async def on_member_ban(self, guild, user):
+        if not self.logtype(user)[0]:
+            return
+        em = discord.Embed(description=f'`{user.name}` was banned from {guild.name}.', color=0xff0000)
+        em.set_author(name=user.name, icon_url=user.avatar_url)
+        em.set_footer(text=f'User ID: {user.id}')
+        await self.logtype(user)[1].send(embed=em)
 
 
 def setup(bot):
