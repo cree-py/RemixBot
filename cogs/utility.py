@@ -123,11 +123,10 @@ class Utility:
         if now.month == 12 and now.day > 25:
             c = datetime.datetime((now.year + 1), 12, 25)
         until = c - now
-        days_until = math.ceil(until.days)
-        if days_until == 0:
+        if now.month == 12 and now.day == 25:
             await ctx.send('Merry Christmas!')
         else:
-            await ctx.send(f'No, there are {days_until} more days until Christmas.')
+            await ctx.send(f'No, there are {until.days + 1} more days until Christmas.')
 
     @commands.command()
     async def isitnewyear(self, ctx):
@@ -135,11 +134,10 @@ class Utility:
         now = datetime.datetime.now()
         ny = datetime.datetime(now.year + 1, 1, 1)
         until = ny - now
-        days_until = math.ceil(until.days)
         if now.month == 1 and now.day == 1:
             await ctx.send('It\'s New Years today!')
         else:
-            await ctx.send(f'No, there are {days_until} days left until New Year\'s.')
+            await ctx.send(f'No, there are {until.days + 1} days left until New Year\'s.')
 
     @commands.group(invoke_without_command=True)
     async def math(self, ctx):
