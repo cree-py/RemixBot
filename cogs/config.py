@@ -168,13 +168,13 @@ class Config:
                 else:
                     return False
 
-    async def on_message_delete(self, msg):
-        if not self.logtype(msg)[0]:
-            return
-        em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {msg.channel.mention}**\n{msg.content}', color=0xff0000)
-        em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
-        em.set_footer(f'ID: {msg.id}')
-        await self.logtype(msg)[1].send(embed=em)
+    # async def on_message_delete(self, msg):
+    #     if not self.logtype(msg)[0]:
+    #         return
+    #     em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {msg.channel.mention}**\n{msg.content}', color=0xff0000)
+    #     em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
+    #     em.set_footer(f'ID: {msg.id}')
+    #     await self.logtype(msg)[1].send(embed=em)
 
     async def on_guild_channel_create(self, channel):
         if not self.logtype(channel)[0]:
@@ -217,6 +217,20 @@ class Config:
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
         await channel.send(embed=em)
+
+    async def on_guild_role_create(self, role):
+        if not self.logtype(role)[0]:
+            return
+        em = discord.Embed(title='Role created', color=0x00ff00, description=f'Role `{role.name}` was created.')
+        em.set_footer(text=f'Role ID: {role.id}')
+        await self.logtype(role)[1].send(embed=em)
+
+    async def on_guild_role_delete(self, role):
+        if not self.logtype(role)[0]:
+            return
+        em = discord.Embed(title='Role deleted', color=0xff0000, description=f'Role `{role.name}` was deleted.')
+        em.set_footer(text=f'Role ID: {role.id}')
+        await self.logtype(role)[1].send(embed=em)
 
 
 def setup(bot):
