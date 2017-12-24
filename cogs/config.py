@@ -155,7 +155,7 @@ class Config:
         em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.')
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
-        await self.log_type(channel)[1].send(embed=em)
+        await self.logtype(channel)[1].send(embed=em)
 
     async def on_guild_channel_delete(self, channel):
         if not self.logtype(channel)[0]:
@@ -163,7 +163,7 @@ class Config:
         em = discord.Embed(title='Channel Deleted', description=f'Channel {channel.mention} was deleted.')
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
-        await self.log_type(channel)[1].send(embed=em)
+        await self.logtype(channel)[1].send(embed=em)
 
 
 def setup(bot):
