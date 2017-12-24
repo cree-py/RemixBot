@@ -57,45 +57,13 @@ async def on_ready():
 
 
 @bot.event
-async def on_member_join(m):
-    with open('data/config.json') as f:
-        welc = json.load(f)
-        try:
-            type = welc[str(m.guild.id)]['welctype']
-        except KeyError:
-            return
-        if type is False:
-            return
-        channel = int(welc[str(m.guild.id)]['welcchannel'])
-        msg = welc[str(m.guild.id)]['welc']
-        await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
-
-
-@bot.event
-async def on_member_remove(m):
-    with open('data/config.json') as f:
-        leave = json.load(f)
-        try:
-            leave[str(m.guild.id)]['leavetype']
-        except KeyError:
-            return
-        if type is False:
-            return
-        channel = int(leave[str(m.guild.id)]['leavechannel'])
-        msg = leave[str(m.guild.id)]['leave']
-        await bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
-
-
-@bot.event
 async def on_guild_join(g):
     success = False
     i = 0
     while not success:
         try:
             await g.channels[i].send("Hello! Thanks for inviting me to your server. If you want to enable welcome messages use `c.welcome enable`. For more help, use c.help. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!`")
-        except discord.Forbidden:
-            i += 1
-        except AttributeError:
+        except (discord.Forbidden, AttributeError):
             i += 1
         except IndexError:
             # if the server has no channels, doesn't let the bot talk, or all vc/categories
