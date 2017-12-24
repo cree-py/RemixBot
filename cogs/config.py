@@ -200,6 +200,14 @@ class Config:
         em.set_footer(text=f'User ID: {user.id}')
         await self.logtype(user)[1].send(embed=em)
 
+    async def on_member_unban(self, guild, user):
+        if not self.logtype(user)[0]:
+            return
+        em = discord.Embed(description=f'`{user.name}` was unbanned from {guild.name}.', color=0x00ff00)
+        em.set_author(name=user.name, icon_url=user.avatar_url)
+        em.set_footer(text=f'User ID: {user.id}')
+        await self.logtype(user)[1].send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Config(bot))
