@@ -115,8 +115,13 @@ class Utility:
                 return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
-    @commands.command()
-    async def isithalloween(self, ctx):
+    @commmands.group(invoke_without_command=True)
+    async def isit(self, ctx):
+        '''A command group to see the number of days until a holiday'''
+        await ctx.send('`c.isit halloween` Find the number of days until this spooky holiday!\n`c.isit christmas` Are you naughty or nice?\n`c.isit newyear` When is next year coming already?')
+
+    @isit.command()
+    async def halloween(self, ctx):
         now = datetime.datetime.now()
         h = datetime.datetime(now.year, 10, 31)
         if now.month > 10:
@@ -127,8 +132,8 @@ class Utility:
         else:
             await ctx.send(f'No, there are {until.days + 1} more days until Halloween.')
 
-    @commands.command()
-    async def isitchristmas(self, ctx):
+    @isit.command()
+    async def christmas(self, ctx):
         '''Is it Christmas?'''
         now = datetime.datetime.now()
         c = datetime.datetime(now.year, 12, 25)
@@ -140,8 +145,8 @@ class Utility:
         else:
             await ctx.send(f'No, there are {until.days + 1} more days until Christmas.')
 
-    @commands.command()
-    async def isitnewyear(self, ctx):
+    @isit.command()
+    async def newyear(self, ctx):
         '''When is the new year?'''
         now = datetime.datetime.now()
         ny = datetime.datetime(now.year + 1, 1, 1)
