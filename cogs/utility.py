@@ -115,7 +115,7 @@ class Utility:
                 return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
-    @commmands.group(invoke_without_command=True)
+    @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
         '''A command group to see the number of days until a holiday'''
         await ctx.send('`c.isit halloween` Find the number of days until this spooky holiday!\n`c.isit christmas` Are you naughty or nice?\n`c.isit newyear` When is next year coming already?')
