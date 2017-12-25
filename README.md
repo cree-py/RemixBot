@@ -44,7 +44,7 @@ If you need support with the bot or would like to *contribute to CreeperBot*, jo
 - [ ] Clash of Clans Stats
 - [x] Brawl Stars Box Simulator
 - [ ] Utility (Embed, Urban Dictionary, Wikipedia)
-- [ ] Mod-log
+- [x] Mod-log
 
 ### BETA
 This bot is under development. If you would like to contribute, join [the discord server](https://discord.gg/hEPxEX6). If you need help with any of the commands, just hop in the server and ask the developers there!
