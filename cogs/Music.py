@@ -1,5 +1,7 @@
 '''
-This entire file is by Ice, or IceeMC. We, as the cree-py organization, do NOT take any credit for this program. However, any bugs or fixes can be made by us and the MIT License for all work in this repository still applies.
+This entire file is by Ice, or IceeMC.
+We, as the cree-py organization, do NOT take any credit for this program.
+However, any bugs or fixes can be made by us and the MIT License for all work in this repository still applies.
 '''
 
 import asyncio
