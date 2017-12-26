@@ -137,7 +137,7 @@ class Music:
         The list of supported sites can be found here:
         https://rg3.github.io/youtube-dl/supportedsites.html
         """
-        state = self.get_voice_state(ctx.guild)
+        state = self.get_voice_state(ctx, ctx.guild)
         opts = {
             'default_search': 'auto',
             'quiet': True,
