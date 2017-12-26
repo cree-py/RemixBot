@@ -78,10 +78,10 @@ class Music:
         self.bot = bot
         self.voice_states = {}
 
-    def get_voice_state(self, server):
+    def get_voice_state(self, ctx, server):
         state = self.voice_states.get(server.id)
         if state is None:
-            state = VoiceState(self.bot)
+            state = VoiceState(self.bot, ctx)
             self.voice_states[server.id] = state
 
         return state
