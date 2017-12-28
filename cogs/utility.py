@@ -119,6 +119,7 @@ class Utility:
     @commands.command()
     async def ud(self, ctx, searchresult):
         """Search terms with urbandictionary.com"""
+        var = ""
         defs = ud.define(searchresult)
         for d in defs:
             d = d.definition
