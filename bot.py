@@ -266,7 +266,7 @@ async def say(ctx, *, message: str):
 async def shutdown(ctx):
     '''Shut down the bot'''
     if not dev_check(ctx.author.id):
-        return
+        await ctx.send("You can't use this command because you are not a Creeper bot developer!")
 
     await ctx.send("Shutting down....")
     await bot.logout()
