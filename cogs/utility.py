@@ -140,7 +140,7 @@ class Utility:
             result = wikipedia.summary(query)
             em.description = result
             await ctx.send(embed=em)
-        except wikipedia.exceptions.DisambiguationError as e:
+        except wikipedia.exceptions.PageError as e:
             em.color = 0xff0000
             await ctx.send(embed=em)
 
