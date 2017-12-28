@@ -122,7 +122,7 @@ class Utility:
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         defs = ud.define(query)
         res = defs[0]
-        em.description = f'Definition:\n{res.definition}\n\nUsage: {res.example}\n\nVotes: {res.upvotes}:thumbs_up:{res.downvotes}:thumbs_down:'
+        em.description = f'**Definition:** {res.definition}\n**Usage:** {res.example}\n**Votes:** {res.upvotes}:thumbsup:{res.downvotes}:thumbsdown:'
         em.set_footer(text='Powered by urbandictionary.com')
         await ctx.send(embed=em)
 
