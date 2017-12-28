@@ -29,6 +29,7 @@ import urbandictionary as ud
 import json
 import datetime
 import pytz
+import wikipedia
 
 
 def dev_check(id):
