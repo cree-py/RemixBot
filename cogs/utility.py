@@ -137,7 +137,7 @@ class Utility:
         try:
             result = wikipedia.summary(result)
             await ctx.send(f"```{result}```")
-        except wikipedia.exceptions.DisambiguationError:
+        except wikipedia.exceptions.DisambiguationError as e:
             await ctx.send("Didn't find any results")
 
     @commands.group(invoke_without_command=True)
