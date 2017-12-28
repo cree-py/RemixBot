@@ -122,8 +122,8 @@ class Clash_Royale:
         except ValueError:
             pass
 
-        if profile.global_rank is not None:
-            global_rank = f"{profile.global_rank} {self.emoji('global')}"
+        if profile.rank is not None:
+            global_rank = f"{profile.rank} {self.emoji('global')}"
         else:
             global_rank = f'Unranked {self.emoji("global")}'
 
@@ -147,13 +147,6 @@ class Clash_Royale:
             season = None
 
         special = self.get_chests(ctx, profile)[1]
-        shop_offers = ''
-        if profile.shop_offers.legendary:
-            shop_offers += f"{self.emoji('chestlegendary')}{profile.shop_offers.legendary} "
-        if profile.shop_offers.epic:
-            shop_offers += f"{self.emoji('chestepic')}{profile.shop_offers.epic} "
-        if profile.shop_offers.arena:
-            shop_offers += f"{self.emoji('arena11')}{profile.shop_offers.arena}"
 
         deck = ''
         for card in profile.deck:
@@ -188,7 +181,6 @@ class Clash_Royale:
         em.add_field(name='Battle Deck', value=deck, inline=False)
         em.add_field(name=f'Chests (Total {pos} opened)', value=chests, inline=False)
         em.add_field(name='Chests Until', value=special, inline=False)
-        em.add_field(name='Shop Offers (Days)', value=shop_offers, inline=False)
         if s:
             em.add_field(name=f'Previous Season Results (Season {s.number})', value=season, inline=False)
         else:
