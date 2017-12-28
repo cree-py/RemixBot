@@ -134,14 +134,15 @@ class Utility:
     @commands.command(aliases=['wikipedia'])
     async def wiki(self, ctx, *, query):
         '''Search up something on wikipedia'''
-        em = discord.Embed(title=str(query), color=0x00ff00)
+        em = discord.Embed(title=str(query))
         em.set_footer(text='Powered by wikipedia.org')
         try:
             result = wikipedia.summary(query)
             em.description = result
             await ctx.send(embed=em)
-        except wikipedia.exceptions.PageError as e:
+        except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError) as e:
             em.color = 0xff0000
+            em.description = f'{e.options}'
             await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
