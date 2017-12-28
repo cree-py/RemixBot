@@ -145,10 +145,14 @@ class Utility:
             em.color = 0x00ff00
             em.description = result
             await ctx.send(embed=em)
-        except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError) as e:
+        except wikipedia.exceptions.DisambiguationError as e:
             em.color = 0xff0000
             options = '\n'.join(e.options)
             em.description = f"**Options:**\n\n{options}"
+            await ctx.send(embed=em)
+        except wikipedia.exceptions.PageError:
+            em.color = 0x00ff00
+            em.description = 'Error: Page not found.'
             await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
