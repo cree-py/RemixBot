@@ -132,13 +132,17 @@ class Utility:
         await ctx.send(embed=em)
 
     @commands.command(aliases=['wikipedia'])
-    async def wiki(self, ctx, *, result):
+    async def wiki(self, ctx, *, query):
         '''Search up something on wikipedia'''
+        em = discord.Embed(title=str(query), color=0x00ff00)
+        em.set_footer(text='Powered by wikipedia.org')
         try:
-            result = wikipedia.summary(result)
-            await ctx.send(f"```{result}```")
-        except wikipedia.exceptions.DisambiguationError:
-            await ctx.send("Didn't find any results")
+            result = wikipedia.summary(query)
+            em.description = result
+            await ctx.send(embed=em)
+        except (wikipedia.exceptions.DisambiguationError, wikipedia.exceptions.PageError):
+            em.color = 0xff0000
+            await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
