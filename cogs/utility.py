@@ -120,12 +120,11 @@ class Utility:
     async def ud(self, ctx, searchresult):
         """Search terms with urbandictionary.com"""
         defs = ud.define(searchresult)
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
-        em.title = "Search result"
-        em.description = for d in defs:
-                            await ctx.send(d.definition)
-        em.add_field(name = "Link to the result: ", value = f"https://www.urbandictionary.com/define.php?term={searchresult}")
-        await ctx.send(embed=em)      
+        for d in defs:
+            d = d.definition
+            d = str(d) 
+            var += d
+        await ctx.send(f"```{var}```")
 
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
