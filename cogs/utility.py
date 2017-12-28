@@ -147,7 +147,8 @@ class Utility:
             await ctx.send(embed=em)
         except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError) as e:
             em.color = 0xff0000
-            em.description = f'{e.options}'
+            options = '\n'.join(e.options)
+            em.description = f"**Options:**\n\n{options}"
             await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
