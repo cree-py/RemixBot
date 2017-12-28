@@ -129,15 +129,15 @@ class Utility:
             return await ctx.send(embed=em)
         em.description = f'**Definition:** {res.definition}\n**Usage:** {res.example}\n**Votes:** {res.upvotes}:thumbsup:{res.downvotes}:thumbsdown:'
         await ctx.send(embed=em)
-        
+
     @commands.command()
     async def wiki(self, ctx, result):
-    """Serach up something on wikipedia"""
-    try:
-       r2 = wikipedia.summary(result)
-       await ctx.send(f"```{r2}```")
-    except wikipedia.exceptions.DisambiguationError:
-        await ctx.send("Didn't find any results")
+        '''Search up something on wikipedia'''
+        try:
+            r2 = wikipedia.summary(result)
+            await ctx.send(f"```{r2}```")
+        except wikipedia.exceptions.DisambiguationError:
+            await ctx.send("Didn't find any results")
 
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
