@@ -3,3 +3,4 @@ crasync
 psutil
 pytz
 urbandictionary
+wikipedia
