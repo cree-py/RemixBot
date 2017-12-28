@@ -131,12 +131,12 @@ class Utility:
         em.description = f'**Definition:** {res.definition}\n**Usage:** {res.example}\n**Votes:** {res.upvotes}:thumbsup:{res.downvotes}:thumbsdown:'
         await ctx.send(embed=em)
 
-    @commands.command()
-    async def wiki(self, ctx, result):
+    @commands.command(aliases=['wikipedia'])
+    async def wiki(self, ctx, *, result):
         '''Search up something on wikipedia'''
         try:
-            r2 = wikipedia.summary(result)
-            await ctx.send(f"```{r2}```")
+            result = wikipedia.summary(result)
+            await ctx.send(f"```{result}```")
         except wikipedia.exceptions.DisambiguationError:
             await ctx.send("Didn't find any results")
 
