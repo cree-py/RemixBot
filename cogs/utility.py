@@ -151,7 +151,7 @@ class Utility:
             em.description = f"**Options:**\n\n{options}"
             await ctx.send(embed=em)
         except wikipedia.exceptions.PageError:
-            em.color = 0x00ff00
+            em.color = 0xff0000
             em.description = 'Error: Page not found.'
             await ctx.send(embed=em)
 
