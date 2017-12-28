@@ -29,7 +29,7 @@ import json
 import datetime
 import pytz
 import math
-import urbandictionary
+import urbandictionary as ud
 
 
 def dev_check(id):
