@@ -25,14 +25,17 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
-import crasync
+import clashroyale
 import json
 
 
 class Clash_Royale:
     def __init__(self, bot):
         self.bot = bot
-        self.client = crasync.Client(timeout=3)
+        with open('./data/auths.json') as f:
+            auth = json.load(f)
+            self.token = auth.get('CR-API')
+        self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
 
     def get_tag(self, userid):
         with open('./data/tags/tags.json') as f:
@@ -103,14 +106,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
@@ -207,14 +210,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
@@ -243,7 +246,7 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
@@ -313,7 +316,7 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
@@ -361,7 +364,7 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
@@ -409,14 +412,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
@@ -440,14 +443,14 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
-                profile = await self.client.get_profile(tag)
+                profile = await self.client.get_player(tag)
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
-                profile = await self.client.get_profile(tag.strip('#').replace('O', '0'))
+                profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
             except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 

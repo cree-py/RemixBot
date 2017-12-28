@@ -77,9 +77,9 @@ class Clash_of_Clans:
         '''Get a Clash of Clans profile by tag'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
 
-        with open('data/cocapi.json') as f:
+        with open('data/auths.json') as f:
             coc = json.load(f)
-            apikey = coc.get('APIKEY')
+            apikey = coc.get('COC-API')
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
@@ -137,9 +137,9 @@ class Clash_of_Clans:
         '''Get the stats of a clan in CoC'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
 
-        with open('data/cocapi.json') as f:
+        with open('data/auths.json') as f:
             coc = json.load(f)
-            apikey = coc.get('APIKEY')
+            apikey = coc.get('COC-API')
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
