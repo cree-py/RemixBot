@@ -138,6 +138,11 @@ class Utility:
         em.set_footer(text='Powered by wikipedia.org')
         try:
             result = wikipedia.summary(query)
+            if len(result) > 2000:
+                em.color = 0xff0000
+                em.description = f"Result is too long. View the website [here](https://wikipedia.org/{query.replace(' ', '_')}), or just google the subject."
+                return await ctx.send(embed=em)
+            em.color = 0x00ff00
             em.description = result
             await ctx.send(embed=em)
         except (wikipedia.exceptions.PageError, wikipedia.exceptions.DisambiguationError) as e:
