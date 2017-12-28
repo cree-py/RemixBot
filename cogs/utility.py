@@ -25,11 +25,10 @@ SOFTWARE.
 import discord
 import random
 from discord.ext import commands
+import urbandictionary as ud
 import json
 import datetime
 import pytz
-import math
-import urbandictionary as ud
 
 
 def dev_check(id):
@@ -115,17 +114,17 @@ class Utility:
                 em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
                 return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
-        
-    @commands.command()
-    async def ud(self, ctx, searchresult):
-        """Search terms with urbandictionary.com"""
-        var = ""
-        defs = ud.define(searchresult)
-        for d in defs:
-            d = d.definition
-            d = str(d) 
-            var += d
-        await ctx.send(f"```{var}```")
+
+    @commands.command(aliases=['urban'])
+    async def ud(self, ctx, *, query):
+        '''Search terms with urbandictionary.com'''
+        em = discord.Embed(title=f'{query}', color=0x00ff00)
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        defs = ud.define(query)
+        res = defs[0]
+        em.description = f'Definition:\n{res.definition}\n\nUsage: {res.example}\n\nVotes: {res.upvotes}:thumbs_up:{res.downvotes}:thumbs_down:'
+        em.set_footer(text='Powered by urbandictionary.com')
+        await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
