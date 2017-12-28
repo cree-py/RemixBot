@@ -137,7 +137,7 @@ class Config:
                 return
             channel = int(welc[str(m.guild.id)]['welcchannel'])
             msg = welc[str(m.guild.id)]['welc']
-            await bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
+            await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
 
     async def on_member_remove(self, m):
         with open('data/config.json') as f:
@@ -150,7 +150,7 @@ class Config:
                 return
             channel = int(leave[str(m.guild.id)]['leavechannel'])
             msg = leave[str(m.guild.id)]['leave']
-            await bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
+            await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
 
     # ------------Mod-log events below-------------
 
