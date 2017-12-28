@@ -163,6 +163,8 @@ class Clash_of_Clans:
         em.title = "Clan Info"
         em.description = f"{response.json()['description']}"
         em.set_author(name=f"{response.json()['name']} (#{clantag})", icon_url=response.json()['badgeUrls']['large'])
+        em.add_field(name="Clan Level", value=response.json()['clanLevel'])
+        em.add_field(name="Location", value=response.json()['location']['name'])
         await ctx.send(embed=em)
 
 
