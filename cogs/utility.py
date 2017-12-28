@@ -29,6 +29,7 @@ import json
 import datetime
 import pytz
 import math
+import urbandictionary
 
 
 def dev_check(id):
@@ -114,6 +115,17 @@ class Utility:
                 em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
                 return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
+        
+    @commands.command()
+    async def ud(self, ctx, searchresult):
+        """Search terms with urbandictionary.com"""
+        defs = ud.define(searchresult)
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "Search result"
+        em.description = for d in defs:
+                            await ctx.send(d.definition)
+        em.add_field(name = "Link to the result: ", value = f"https://www.urbandictionary.com/define.php?term={searchresult}")
+        await ctx.send(embed=em)      
 
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
