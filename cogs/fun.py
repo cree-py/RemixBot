@@ -135,13 +135,13 @@ class Fun:
       await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
       
       
-#     @commands.command()
-#     async def joke(self, ctx):
-#         url = "http://api.icndb.com/jokes/random"
-#         async with aiohttp.ClientSession() as session:
-#             async with session.get(url) as resp:
-#                  data = await resp.json()
-#                  await ctx.send(data['value']['joke'])
+  @commands.command(aliases=['cnjoke'])
+  async def chucknorris(self, ctx):
+    url = "http://api.icndb.com/jokes/random"
+    async with aiohttp.ClientSession() as session:
+      async with session.get(url) as resp:
+        data = await resp.json()
+        await ctx.send(data['value']['joke'])
 
   @commands.command(aliases=['xkcd','comic'])
   async def randomcomic(self, ctx):
