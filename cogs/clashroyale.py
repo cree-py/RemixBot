@@ -128,7 +128,7 @@ class Clash_Royale:
             global_rank = f'Unranked {self.emoji("global")}'
 
         record = f'{profile.games.wins}/{profile.games.draws}/{profile.games.losses}'
-        av = profile.clan.badge_url or 'https://i.imgur.com/Y3uXsgj.png'
+        av = profile.clan.image or 'https://i.imgur.com/Y3uXsgj.png'
 
         chests = self.get_chests(ctx, profile)[0]
         cycle = profile.chest_cycle
@@ -273,9 +273,9 @@ class Clash_Royale:
                 ccc.append(
                     f"**{contributors[i].name}**\n{contributors[i].crowns} {self.emoji('crownred')}\n#{contributors[i].tag}")
 
-        em.set_author(name="Clan Info", icon_url=clan.badge_url or None)
+        em.set_author(name="Clan Info", icon_url=clan.image or None)
         em.title = f"{clan.name} (#{clan.tag})"
-        em.set_thumbnail(url=clan.badge_url)
+        em.set_thumbnail(url=clan.image)
         em.description = f"{clan.description}"
         em.add_field(name="Score", value=f"{clan.score} {self.emoji('trophy')}")
         em.add_field(name="Members", value=f"{len(clan.members)}/50 {self.emoji('clan')}")
@@ -333,7 +333,7 @@ class Clash_Royale:
 
             em.description = 'Here are the least valuable members of the clan currently.'
             em.set_author(name=clan)
-            em.set_thumbnail(url=clan.badge_url)
+            em.set_thumbnail(url=clan.image)
             em.set_footer(text='Stats made by Cree-Py | Powered by cr-api.com',
                           icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
@@ -381,7 +381,7 @@ class Clash_Royale:
 
         em.description = 'Here are the most valuable members of the clan currently.'
         em.set_author(name=clan)
-        em.set_thumbnail(url=clan.badge_url)
+        em.set_thumbnail(url=clan.image)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api.com',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
