@@ -107,14 +107,14 @@ class Clash_Royale:
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
                 profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         try:
@@ -202,14 +202,14 @@ class Clash_Royale:
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
                 profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         chests = self.get_chests(ctx, profile)[0]
@@ -239,7 +239,7 @@ class Clash_Royale:
             try:
                 profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             with open('./data/clans.json') as f:
@@ -250,7 +250,7 @@ class Clash_Royale:
                 tag = tag.strip('#').replace('O', '0')
             try:
                 clan = await self.client.get_clan(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         if clan.rank == 0:
@@ -309,7 +309,7 @@ class Clash_Royale:
             try:
                 profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             with open('./data/clans.json') as f:
@@ -320,7 +320,7 @@ class Clash_Royale:
                 tag = tag.strip('#').replace('O', '0')
             try:
                 clan = await self.client.get_clan(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         if len(clan.members) < 4:
@@ -357,7 +357,7 @@ class Clash_Royale:
             try:
                 profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             with open('./data/clans.json') as f:
@@ -368,7 +368,7 @@ class Clash_Royale:
                 tag = tag.strip('#').replace('O', '0')
             try:
                 clan = await self.client.get_clan(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         if len(clan.members) < 4:
@@ -404,14 +404,14 @@ class Clash_Royale:
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
                 profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         em.title = profile.name
@@ -435,14 +435,14 @@ class Clash_Royale:
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
             if not self.check_tag(tag):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
                 profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
-            except (crasync.errors.NotResponding, crasync.errors.ServerError) as e:
+            except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         deck = ''
