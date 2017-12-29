@@ -249,7 +249,7 @@ class Clash_Royale:
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
-        if clan.rank == 0:
+        if not clan.rank:
             rank = f"Unranked {self.emoji('global')}"
         else:
             rank = f"{clan.rank} {self.emoji('global')}"
