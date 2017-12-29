@@ -72,17 +72,9 @@ class Clash_Royale:
 
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
-        pos = cycle.position
-        chests = f'| {self.emoji("chest" + p.get_chest(0).lower())} | '
-        chests += ''.join([f'{self.emoji("chest" + p.get_chest(x).lower())}' for x in range(1, 8)])
-        special = ''
-        for i, attr in enumerate(self.cdir(cycle)):
-            if attr != 'position':
-                e = attr.replace('_', '')
-                if getattr(cycle, attr):
-                    c_pos = int(getattr(cycle, attr))
-                    until = c_pos - pos
-                    special += f'{self.emoji("chest" + e.lower())}{until} '
+        chests = f'| {self.emoji("chest" + cycle.upcoming[0].lower())} | '
+        chests += ''.join([f'{self.emoji("chest" + cycle.upcoming[x].lower())}' for x in range(1, 8)])
+        special = f'{self.emoji("chestsupermagical")}{cycle.super_magical} {self.emoji("chestmagical")}{cycle.magical} {self.emoji("chestlegendary")}{cycle.legendary} {self.emoji("chestepic")}{cycle.epic} {self.emoji("chestgiant")}{cycle.giant}'
         return (chests, special)
 
     @commands.command()
@@ -117,11 +109,13 @@ class Clash_Royale:
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
+        # Gets the player's clan, ValueError if no clan, ignores it.
         try:
             clan = await profile.get_clan()
         except ValueError:
             pass
 
+        # If global rank is 0, then replace it with "Unranked"
         if profile.rank is not None:
             global_rank = f"{profile.rank} {self.emoji('global')}"
         else:
@@ -131,10 +125,8 @@ class Clash_Royale:
         av = profile.clan.badge.image or 'https://i.imgur.com/Y3uXsgj.png'
 
         chests = self.get_chests(ctx, profile)[0]
-        cycle = profile.chest_cycle
-        pos = cycle.position
-        special = ''
 
+        # Gets the most recent season info, otherwise none
         s = None
         if profile.seasons:
             s = profile.seasons[0]
@@ -147,6 +139,7 @@ class Clash_Royale:
 
         special = self.get_chests(ctx, profile)[1]
 
+        # Gets the emoji of level of all cards in a deck
         deck = ''
         for card in profile.deck:
             deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
@@ -213,12 +206,9 @@ class Clash_Royale:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
 
         chests = self.get_chests(ctx, profile)[0]
-        cycle = profile.chest_cycle
-        pos = cycle.position
         special = self.get_chests(ctx, profile)[1]
 
-        em.description = f'{pos} total chests opened.'
-        em.url = f'http://cr-api.com/profile/{tag}'
+        em.url = f'http://cr-api.com/player/{tag}'
         em.add_field(name='Upcoming', value=chests, inline=False)
         em.add_field(name='Chests Until', value=special, inline=False)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
