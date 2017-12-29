@@ -128,7 +128,7 @@ class Clash_Royale:
             global_rank = f'Unranked {self.emoji("global")}'
 
         record = f'{profile.games.wins}/{profile.games.draws}/{profile.games.losses}'
-        av = profile.clan_badge_url or 'https://i.imgur.com/Y3uXsgj.png'
+        av = profile.clan.badge_url or 'https://i.imgur.com/Y3uXsgj.png'
 
         chests = self.get_chests(ctx, profile)[0]
         cycle = profile.chest_cycle
@@ -167,10 +167,10 @@ class Clash_Royale:
         em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins} {self.emoji("cards")}')
         em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', ''))}")
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
-        if profile.clan_role:
+        if profile.clan.role:
             em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")}')
             em.add_field(name='Clan Tag', value=f"#{clan.tag} {self.emoji('clan')}")
-            em.add_field(name='Clan Role', value=f'{profile.clan_role} {self.emoji("clan")}')
+            em.add_field(name='Clan Role', value=f'{profile.clan.role} {self.emoji("clan")}')
         else:
             em.add_field(name='Clan Info', value=f'No clan {self.emoji("clan")}')
         em.add_field(name='Win Streak', value=f"{profile.win_streak} {self.emoji('crownblue')}")
@@ -258,7 +258,7 @@ class Clash_Royale:
         else:
             rank = f"{clan.rank} {self.emoji('global')}"
 
-        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} {self.emoji("chestclan")}'
+        chest = f'{clan.clan.chest.crowns}/{clan.clan.chest.required} {self.emoji("chestclan")}'
 
         pushers = []
         if len(clan.members) >= 3:
@@ -293,7 +293,7 @@ class Clash_Royale:
     @commands.group(invoke_without_command=True)
     async def members(self, ctx):
         '''A command group that finds the worst and best members in a clan'''
-        await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan_tag>`')
+        await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan.tag>`')
 
     @members.command()
     async def worst(self, ctx, tag=None):
