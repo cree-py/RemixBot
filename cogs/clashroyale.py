@@ -127,7 +127,7 @@ class Clash_Royale:
         else:
             global_rank = f'Unranked {self.emoji("global")}'
 
-        record = f'{profile.wins}/{profile.draws}/{profile.losses}'
+        record = f'{profile.games.wins}/{profile.draws}/{profile.games.losses}'
         av = profile.clan_badge_url or 'https://i.imgur.com/Y3uXsgj.png'
 
         chests = self.get_chests(ctx, profile)[0]
@@ -163,7 +163,7 @@ class Clash_Royale:
         em.add_field(name='Global Rank', value=global_rank)
         em.add_field(name='Total Donations', value=f'{profile.total_donations} {self.emoji("cards")}')
         em.add_field(name='Win Percentage',
-                     value=f'{(profile.wins / (profile.wins + profile.losses) * 100):.3f}% {self.emoji("crownblue")}')
+                     value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji("crownblue")}')
         em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins} {self.emoji("cards")}')
         em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', ''))}")
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
