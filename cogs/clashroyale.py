@@ -258,7 +258,7 @@ class Clash_Royale:
         else:
             rank = f"{clan.rank} {self.emoji('global')}"
 
-        chest = f'{clan.clan.chest.crowns}/{clan.clan.chest.required} {self.emoji("chestclan")}'
+        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} {self.emoji("chestclan")}'
 
         pushers = []
         if len(clan.members) >= 3:
@@ -293,7 +293,7 @@ class Clash_Royale:
     @commands.group(invoke_without_command=True)
     async def members(self, ctx):
         '''A command group that finds the worst and best members in a clan'''
-        await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan.tag>`')
+        await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan_tag>`')
 
     @members.command()
     async def worst(self, ctx, tag=None):
