@@ -152,7 +152,7 @@ class Clash_Royale:
         # Gets the emoji of level of all cards in a deck
         deck = ''
         for card in profile.current_deck:
-            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
+            deck += f"{self.emoji(card.name.lower().replace('.', '').replace('-', '').replace(' ', ''))}{card.level}"
 
         em.title = profile.name
         em.description = f'#{tag}'
@@ -168,7 +168,7 @@ class Clash_Royale:
         em.add_field(name='Win Percentage',
                      value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji("crownblue")}')
         em.add_field(name='Max Challenge Wins', value=f'{profile.stats.challenge_max_wins} {self.emoji("cards")}')
-        em.add_field(name='Favorite Card', value=f"{profile.stats.favorite_card.name.replace('_', ' ')}{self.emoji(profile.stats.favorite_card.name.lower().strip('.').strip('-').replace(' ', ''))}")
+        em.add_field(name='Favorite Card', value=f"{profile.stats.favorite_card.name.replace('_', ' ')}{self.emoji(profile.stats.favorite_card.name.lower().replace('.', '').replace('-', '').replace(' ', ''))}")
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
         if profile.clan.role:
             em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")}')
@@ -419,7 +419,7 @@ class Clash_Royale:
         em.title = profile.name
         em.set_author(
             name='Trophies', icon_url=ctx.author.avatar_url)
-        em.description = f'Trophies: {profile.trophies} {self.emoji("trophy")}\nPersonal Best: {profile.stats.max_trophies} {self.emoji("trophy")}'
+        em.description = f'Trophies: {profile.trophies} {self.emoji("trophy")}\nPersonal Best: {profile.stats.wmax_trophies} {self.emoji("trophy")}'
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         await ctx.send(embed=em)
@@ -450,7 +450,7 @@ class Clash_Royale:
         deck = ''
         aoe = 0
         for card in profile.current_deck:
-            deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
+            deck += f"{self.emoji(card.name.lower().replace('.', '').replace('-', '').replace(' ', ''))}{card.level}"
             aoe += card.elixir
         aoe = f'{(aoe / 8):.3f}'
 
