@@ -154,7 +154,7 @@ class Clash_Royale:
 
         em.title = profile.name
         em.description = f'#{tag}'
-        em.url = f'http://cr-api.com/player/{tag}'
+        em.url = f'http://cr-api.com/profile/{tag}'
         em.set_author(name='Profile', icon_url=av)
 
         em.add_field(name='Level', value=f'{profile.stats.level} {self.emoji("xp")}')
@@ -212,7 +212,7 @@ class Clash_Royale:
         chests = self.get_chests(ctx, profile)[0]
         special = self.get_chests(ctx, profile)[1]
 
-        em.url = f'http://cr-api.com/player/{tag}'
+        em.url = f'http://cr-api.com/profile/{tag}'
         em.add_field(name='Upcoming', value=chests, inline=False)
         em.add_field(name='Chests Until', value=special, inline=False)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
@@ -470,9 +470,9 @@ class Clash_Royale:
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             tag = tag.strip('#').replace('O', '0')
 
-        em.url = f'http://cr-api.com/player/{tag}'
+        em.url = f'http://cr-api.com/profile/{tag}'
         em.title = ctx.author.name
-        em.add_field(name='URL', value=f'http://cr-api.com/player/{tag}')
+        em.add_field(name='URL', value=f'http://cr-api.com/profile/{tag}')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
