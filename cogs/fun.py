@@ -137,6 +137,7 @@ class Fun:
       
   @commands.command(aliases=['cnjoke'])
   async def chucknorris(self, ctx):
+    '''Facts about Chuck Norris.'''
     url = "http://api.icndb.com/jokes/random"
     async with aiohttp.ClientSession() as session:
       async with session.get(url) as resp:
