@@ -60,7 +60,7 @@ async def on_ready():
     
 @bot.event
 async def on_reaction_add(reaction, user):
-    if str(reaction.emoji) == ":pushpin:":
+    if reaction.emoji == "\U0001f4cc":
         await user.send(f"Here's the message you pinned :pushpin: ```{reaction.message.content}```")    
 
 
