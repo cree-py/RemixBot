@@ -127,7 +127,7 @@ class Clash_Royale:
         else:
             global_rank = f'Unranked {self.emoji("global")}'
 
-        record = f'{profile.games.wins}/{profile.draws}/{profile.games.losses}'
+        record = f'{profile.games.wins}/{profile.games.drawss}/{profile.games.losses}'
         av = profile.clan_badge_url or 'https://i.imgur.com/Y3uXsgj.png'
 
         chests = self.get_chests(ctx, profile)[0]
