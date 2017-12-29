@@ -42,8 +42,8 @@ class Clash_Royale:
     all_cap_re = re.compile('([a-z0-9])([A-Z])')
 
     def _to_snake_case(self, name):
-        s1 = self.first_cap_re.sub(r'\1_\2', name)
-        return self.all_cap_re.sub(r'\1_\2', s1).title()
+        s1 = self.first_cap_re.sub(r'\1-\2', name)
+        return self.all_cap_re.sub(r'\1-\2', s1).title()
 
     def get_tag(self, userid):
         with open('./data/tags/tags.json') as f:
