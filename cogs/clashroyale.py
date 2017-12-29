@@ -139,7 +139,7 @@ class Clash_Royale:
         # Gets the most recent season info, otherwise none
         s = None
         if profile.league_statistics:
-            s = profile.league_statistics.current_season
+            s = profile.league_statistics.previous_season
             global_r = s.rank
             season = f"Highest: {s.best_trophies} {self.emoji('trophy')}\n" \
                      f"Finish: {s.trophies} {self.emoji('trophy')}\n" \
