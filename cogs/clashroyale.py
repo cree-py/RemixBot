@@ -38,12 +38,14 @@ class Clash_Royale:
             self.token = auth.get('CR-API')
         self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
 
+    # _to_snake_case is from the wrapper we use, clashroyale, from kyb3r
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
     all_cap_re = re.compile('([a-z0-9])([A-Z])')
 
     def _to_snake_case(self, name):
         s1 = self.first_cap_re.sub(r'\1-\2', name)
         return self.all_cap_re.sub(r'\1-\2', s1).title()
+    # _to_snake_case is from the wrapper we use, clashroyale, from kyb3r
 
     def get_tag(self, userid):
         with open('./data/tags/tags.json') as f:
@@ -252,20 +254,23 @@ class Clash_Royale:
         else:
             rank = f"{clan.rank} {self.emoji('global')}"
 
-        chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} {self.emoji("chestclan")}'
+        if clan.clan_chest.status == 'inactive':
+            chest = f"Inactive {self.emoji('chestclan')}"
+        else:
+            chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} {self.emoji("chestclan")}'
 
         pushers = []
         if len(clan.members) >= 3:
             for i in range(3):
                 pushers.append(
                     f"**{clan.members[i].name}**\n{clan.members[i].trophies} {self.emoji('trophy')}\n#{clan.members[i].tag}")
-        contributors = list(reversed(sorted(clan.members, key=lambda x: x.crowns)))
+        contributors = list(reversed(sorted(clan.members, key=lambda x: x.clan_chest_crowns)))
 
         ccc = []
         if len(clan.members) >= 3:
             for i in range(3):
                 ccc.append(
-                    f"**{contributors[i].name}**\n{contributors[i].crowns} {self.emoji('crownred')}\n#{contributors[i].tag}")
+                    f"**{contributors[i].name}**\n{contributors[i].clan_chest_crowns} {self.emoji('crownred')}\n#{contributors[i].tag}")
 
         em.set_author(name="Clan Info", icon_url=clan.badge.image or None)
         em.title = f"{clan.name} (#{clan.tag})"
@@ -273,12 +278,12 @@ class Clash_Royale:
         em.description = f"{clan.description}"
         em.add_field(name="Score", value=f"{clan.score} {self.emoji('trophy')}")
         em.add_field(name="Members", value=f"{len(clan.members)}/50 {self.emoji('clan')}")
-        em.add_field(name="Type", value=f"{clan.type_name} :envelope_with_arrow:")
-        em.add_field(name="Region", value=f"{clan.region} :earth_americas:")
+        em.add_field(name="Type", value=f"{clan.type.title()} :envelope_with_arrow:")
+        em.add_field(name="Region", value=f"{clan.location.name} :earth_americas:")
         em.add_field(name="Global Rank", value=rank)
         em.add_field(name="Chest Progress", value=chest)
         em.add_field(name="Donations", value=f"{clan.donations} {self.emoji('cards')}")
-        em.add_field(name="Required Trophies", value=f"{clan.required_trophies} {self.emoji('trophy')}")
+        em.add_field(name="Required Trophies", value=f"{clan.required_score} {self.emoji('trophy')}")
         em.add_field(name='Top Players', value='\n\n'.join(pushers))
         em.add_field(name='Top Contributors', value='\n\n'.join(ccc))
         em.set_footer(text="Stats made by Cree-Py | Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
