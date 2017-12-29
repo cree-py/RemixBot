@@ -257,7 +257,10 @@ class Clash_Royale:
         if clan.clan_chest.status == 'inactive':
             chest = f"Inactive {self.emoji('chestclan')}"
         else:
-            chest = f'{clan.clan_chest.crowns}/{clan.clan_chest.required} {self.emoji("chestclan")}'
+            crowns = 0
+            for m in clan.members:
+                crowns += m.clan_chest_crowns
+            chest = f'{crowns}/1600 {self.emoji("chestclan")}'
 
         pushers = []
         if len(clan.members) >= 3:
