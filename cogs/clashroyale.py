@@ -27,6 +27,7 @@ import discord
 from discord.ext import commands
 import clashroyale
 import json
+import re
 
 
 class Clash_Royale:
@@ -36,6 +37,13 @@ class Clash_Royale:
             auth = json.load(f)
             self.token = auth.get('CR-API')
         self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
+
+    first_cap_re = re.compile('(.)([A-Z][a-z]+)')
+    all_cap_re = re.compile('([a-z0-9])([A-Z])')
+
+    def _to_snake_case(self, name):
+        s1 = self.first_cap_re.sub(r'\1_\2', name)
+        return self.all_cap_re.sub(r'\1_\2', s1).title()
 
     def get_tag(self, userid):
         with open('./data/tags/tags.json') as f:
@@ -163,7 +171,7 @@ class Clash_Royale:
         if profile.clan.role:
             em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")}')
             em.add_field(name='Clan Tag', value=f"#{clan.tag} {self.emoji('clan')}")
-            em.add_field(name='Clan Role', value=f'{profile.clan.role} {self.emoji("clan")}')
+            em.add_field(name='Clan Role', value=f'{self._to_snake_case(profile.clan.role)} {self.emoji("clan")}')
         else:
             em.add_field(name='Clan Info', value=f'No clan {self.emoji("clan")}')
         em.add_field(name='Win Streak', value=f"{profile.win_streak} {self.emoji('crownblue')}")
