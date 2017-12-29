@@ -8,7 +8,7 @@ import aiohttp
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-
+import inspect
 
 bot = commands.Bot(command_prefix='c.')
 dbltoken = "token"
@@ -54,6 +54,8 @@ def cleanup_code(content):
 async def on_ready():
     print("Bot Is Online.")
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
+    bot._last_result = None
+    bot.session = aiohttp.ClientSession()
 
 
 @bot.event
@@ -200,33 +202,48 @@ async def suggest(ctx, *, idea: str):
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
 
-@bot.command(hidden=True, name='eval')
-async def _eval(ctx, *, body: str):
-    '''Evaluate python code'''
-
+@bot.command(name='eval')
+async def _eval(ctx, *, body):
+    """Evaluates python code"""
     if not dev_check(ctx.author.id):
         return
-
     env = {
-        'bot': bot,
         'ctx': ctx,
         'channel': ctx.channel,
         'author': ctx.author,
         'guild': ctx.guild,
         'message': ctx.message,
+        '_': bot._last_result,
+        'source': inspect.getsource,
+        'session':bot.session
     }
 
     env.update(globals())
 
     body = cleanup_code(body)
     stdout = io.StringIO()
+    err = out = None
 
     to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
 
+    def paginate(text: str):
+        '''Simple generator that paginates text.'''
+        last = 0
+        pages = []
+        for curr in range(0, len(text)):
+            if curr % 1980 == 0:
+                pages.append(text[last:curr])
+                last = curr
+                appd_index = curr
+        if appd_index != len(text)-1:
+            pages.append(text[last:curr])
+        return list(filter(lambda a: a != '', pages))
+    
     try:
         exec(to_compile, env)
     except Exception as e:
-        return await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+        err = await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+        return await ctx.message.add_reaction('\u2049')
 
     func = env['func']
     try:
@@ -234,20 +251,39 @@ async def _eval(ctx, *, body: str):
             ret = await func()
     except Exception as e:
         value = stdout.getvalue()
-        await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
     else:
         value = stdout.getvalue()
-        try:
-            await ctx.message.add_reaction('\u2705')
-        except:
-            pass
-
         if ret is None:
             if value:
-                await ctx.send(f'```py\n{value}\n```')
+                try:
+                    
+                    out = await ctx.send(f'```py\n{value}\n```')
+                except:
+                    paginated_text = paginate(value)
+                    for page in paginated_text:
+                        if page == paginated_text[-1]:
+                            out = await ctx.send(f'```py\n{page}\n```')
+                            break
+                        await ctx.send(f'```py\n{page}\n```')
         else:
-            await ctx.send(f'```py\n{value}{ret}\n```')
+            bot._last_result = ret
+            try:
+                out = await ctx.send(f'```py\n{value}{ret}\n```')
+            except:
+                paginated_text = paginate(f"{value}{ret}")
+                for page in paginated_text:
+                    if page == paginated_text[-1]:
+                        out = await ctx.send(f'```py\n{page}\n```')
+                        break
+                    await ctx.send(f'```py\n{page}\n```')
 
+    if out:
+        await ctx.message.add_reaction('\u2705')  # tick
+    elif err:
+        await ctx.message.add_reaction('\u2049')  # x
+    else:
+        await ctx.message.add_reaction('\u2705')
 
 @bot.command()
 async def invite(ctx):
