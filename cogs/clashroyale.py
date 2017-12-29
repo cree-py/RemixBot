@@ -141,7 +141,7 @@ class Clash_Royale:
 
         # Gets the emoji of level of all cards in a deck
         deck = ''
-        for card in profile.deck:
+        for card in profile.current_deck:
             deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
 
         em.title = profile.name
@@ -171,12 +171,10 @@ class Clash_Royale:
         em.add_field(name='Tournament Cards Won', value=f"{profile.tournament_cards_won} {self.emoji('cards')}")
         em.add_field(name='Challenge Cards Won', value=f"{profile.challenge_cards_won} {self.emoji('cards')}")
         em.add_field(name='Battle Deck', value=deck, inline=False)
-        em.add_field(name=f'Chests (Total {pos} opened)', value=chests, inline=False)
+        em.add_field(name=f'Upcoming Chests', value=chests, inline=False)
         em.add_field(name='Chests Until', value=special, inline=False)
         if s:
             em.add_field(name=f'Previous Season Results (Season {s.number})', value=season, inline=False)
-        else:
-            pass
 
         em.set_thumbnail(url=profile.arena.image_url)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
