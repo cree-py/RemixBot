@@ -157,15 +157,15 @@ class Clash_Royale:
         em.url = f'http://cr-api.com/player/{tag}'
         em.set_author(name='Profile', icon_url=av)
 
-        em.add_field(name='Level', value=f'{profile.level} {self.emoji("xp")}')
+        em.add_field(name='Level', value=f'{profile.stats.level} {self.emoji("xp")}')
         em.add_field(name='Arena', value=profile.arena.name)
         em.add_field(
-            name='Trophies', value=f'{profile.current_trophies}/{profile.highest_trophies} {self.emoji("trophy")}')
+            name='Trophies', value=f'{profile.trophies}/{profile.stats.max_trophies} {self.emoji("trophy")}')
         em.add_field(name='Global Rank', value=global_rank)
-        em.add_field(name='Total Donations', value=f'{profile.total_donations} {self.emoji("cards")}')
+        em.add_field(name='Total Donations', value=f'{profile.stats.total_donations} {self.emoji("cards")}')
         em.add_field(name='Win Percentage',
                      value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji("crownblue")}')
-        em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins} {self.emoji("cards")}')
+        em.add_field(name='Max Challenge Wins', value=f'{profile.stats.challenge_max_wins} {self.emoji("cards")}')
         em.add_field(name='Favorite Card', value=f"{profile.stats.favorite_card.name.replace('_', ' ')}{self.emoji(profile.stats.favorite_card.name.lower().strip('.').strip('-').replace(' ', ''))}")
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
         if profile.clan.role:
@@ -174,10 +174,8 @@ class Clash_Royale:
             em.add_field(name='Clan Role', value=f'{self._to_snake_case(profile.clan.role)} {self.emoji("clan")}')
         else:
             em.add_field(name='Clan Info', value=f'No clan {self.emoji("clan")}')
-        em.add_field(name='Win Streak', value=f"{profile.win_streak} {self.emoji('crownblue')}")
-        em.add_field(name='Legendary Trophies', value=f"{profile.legend_trophies} {self.emoji('legendtrophy')}")
-        em.add_field(name='Tournament Cards Won', value=f"{profile.tournament_cards_won} {self.emoji('cards')}")
-        em.add_field(name='Challenge Cards Won', value=f"{profile.challenge_cards_won} {self.emoji('cards')}")
+        em.add_field(name='Tournament Cards Won', value=f"{profile.stats.tournament_cards_won} {self.emoji('cards')}")
+        em.add_field(name='Challenge Cards Won', value=f"{profile.stats.challenge_cards_won} {self.emoji('cards')}")
         em.add_field(name='Battle Deck', value=deck, inline=False)
         em.add_field(name=f'Upcoming Chests', value=chests, inline=False)
         em.add_field(name='Chests Until', value=special, inline=False)
