@@ -56,6 +56,12 @@ async def on_ready():
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
+    
+    
+@bot.event
+async def on_reaction_add(reaction, user):
+    if reaction.emoji == ":pushpin:":
+        await user.send(f"Here's the message you pinned :pushpin: ```{reaction.message.content}```")    
 
 
 @bot.event
