@@ -158,7 +158,7 @@ class Clash_Royale:
         em.add_field(name='Win Percentage',
                      value=f'{(profile.games.wins / (profile.games.wins + profile.games.losses) * 100):.3f}% {self.emoji("crownblue")}')
         em.add_field(name='Max Challenge Wins', value=f'{profile.max_wins} {self.emoji("cards")}')
-        em.add_field(name='Favorite Card', value=f"{profile.favourite_card.replace('_', ' ')}{self.emoji(profile.favourite_card.lower().strip('.').strip('-').replace(' ', ''))}")
+        em.add_field(name='Favorite Card', value=f"{profile.stats.favorite_card.name.replace('_', ' ')}{self.emoji(profile.stats.favorite_card.name.lower().strip('.').strip('-').replace(' ', ''))}")
         em.add_field(name='Game Record', value=f'{record} {self.emoji("clashswords")}')
         if profile.clan.role:
             em.add_field(name='Clan Name', value=f'{clan.name} {self.emoji("clan")}')
