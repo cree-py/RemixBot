@@ -419,7 +419,7 @@ class Clash_Royale:
         em.title = profile.name
         em.set_author(
             name='Trophies', icon_url=ctx.author.avatar_url)
-        em.description = f'Trophies: {profile.trophies} {self.emoji("trophy")}\nPersonal Best: {profile.max_trophies} {self.emoji("trophy")}'
+        em.description = f'Trophies: {profile.trophies} {self.emoji("trophy")}\nPersonal Best: {profile.stats.max_trophies} {self.emoji("trophy")}'
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         await ctx.send(embed=em)
