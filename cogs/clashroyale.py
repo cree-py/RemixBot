@@ -329,7 +329,7 @@ class Clash_Royale:
             return await ctx.send('Clan must have more than 4 players for stats.')
         else:
             for m in clan.members:
-                m.score = ((m.donations / 5) + (m.crowns * 10) + (m.trophies / 7)) / 3
+                m.score = ((m.donations / 5) + (m.clan_chest_crowns * 10) + (m.trophies / 7)) / 3
 
             to_kick = sorted(clan.members, key=lambda m: m.score)[:4]
 
@@ -340,8 +340,8 @@ class Clash_Royale:
                           icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
             for m in reversed(to_kick):
-                em.add_field(name=f'{m.name} ({m.role_name})',
-                             value=f"#{m.tag}\n{m.trophies} {self.emoji('trophy')}\n{m.crowns} {self.emoji('crownblue')}\n{m.donations} {self.emoji('cards')}")
+                em.add_field(name=f'{m.name} ({self._to_snake_case(m.role)})',
+                             value=f"#{m.tag}\n{m.trophies} {self.emoji('trophy')}\n{m.clan_chest_crowns} {self.emoji('crownblue')}\n{m.donations} {self.emoji('cards')}")
 
             await ctx.send(embed=em)
 
@@ -377,7 +377,7 @@ class Clash_Royale:
             return await ctx.send('Clan must have more than 4 players for stats.')
         else:
             for m in clan.members:
-                m.score = ((m.donations / 5) + (m.crowns * 10) + (m.trophies / 7)) / 3
+                m.score = ((m.donations / 5) + (m.clan_chest_crowns * 10) + (m.trophies / 7)) / 3
 
         best = sorted(clan.members, key=lambda m: m.score, reverse=True)[:4]
 
@@ -388,8 +388,8 @@ class Clash_Royale:
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         for m in reversed(best):
-            em.add_field(name=f'{m.name} ({m.role_name})',
-                         value=f"#{m.tag}\n{m.trophies} {self.emoji('trophy')}\n{m.crowns} {self.emoji('crownblue')}\n{m.donations} {self.emoji('cards')}")
+            em.add_field(name=f'{m.name} ({self._to_snake_case(m.role)})',
+                         value=f"#{m.tag}\n{m.trophies} {self.emoji('trophy')}\n{m.clan_chest_crowns} {self.emoji('crownblue')}\n{m.donations} {self.emoji('cards')}")
 
         await ctx.send(embed=em)
 
@@ -419,7 +419,7 @@ class Clash_Royale:
         em.title = profile.name
         em.set_author(
             name='Trophies', icon_url=ctx.author.avatar_url)
-        em.description = f'Trophies: {profile.current_trophies} {self.emoji("trophy")}\nPersonal Best: {profile.highest_trophies} {self.emoji("trophy")}\nLegend Trophies: {profile.legend_trophies} {self.emoji("legendtrophy")}'
+        em.description = f'Trophies: {profile.trophies} {self.emoji("trophy")}\nPersonal Best: {profile.max_trophies} {self.emoji("trophy")}'
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
         await ctx.send(embed=em)
@@ -449,7 +449,7 @@ class Clash_Royale:
 
         deck = ''
         aoe = 0
-        for card in profile.deck:
+        for card in profile.current_deck:
             deck += f"{self.emoji(card.name.lower().strip('.').strip('-').replace(' ', ''))}{card.level}"
             aoe += card.elixir
         aoe = f'{(aoe / 8):.3f}'
