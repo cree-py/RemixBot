@@ -135,13 +135,30 @@ class Fun:
       await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
       
       
-    @commands.command()
-    async def joke(self, ctx):
-        url = "http://api.icndb.com/jokes/random"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as resp:
-                 data = await resp.json()
-                 await ctx.send(data['value']['joke'])
+#     @commands.command()
+#     async def joke(self, ctx):
+#         url = "http://api.icndb.com/jokes/random"
+#         async with aiohttp.ClientSession() as session:
+#             async with session.get(url) as resp:
+#                  data = await resp.json()
+#                  await ctx.send(data['value']['joke'])
+
+  @commands.command(aliases=['xkcd','comic'])
+  async def randomcomic(self, ctx):
+    '''Get a comic from xkcd.'''
+    async with aiohttp.ClientSession() as session:
+      async with session.get(f'http://xkcd.com/info.0.json') as resp:
+        data = await resp.json()
+        currentcomic = data['num']
+    rand = random.randint(0, currentcomic) # max = current comic
+    async with aiohttp.ClientSession() as session:
+      async with session.get(f'http://xkcd.com/{rand}/info.0.json') as resp:
+        data = await resp.json()
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = f"XKCD Number {data['num']}- \"{data['title']}\""
+        em.set_footer(text=f"Published on {data['month']}/{data['day']}/{data['year']}")
+        em.set_image(url=data['img'])
+        await ctx.send(embed=em)
 
 
 def setup(bot):
