@@ -182,7 +182,7 @@ class Clash_Royale:
         em.add_field(name=f'Upcoming Chests', value=chests, inline=False)
         em.add_field(name='Chests Until', value=special, inline=False)
         if s:
-            em.add_field(name=f'Previous Season Results (Season {s.number})', value=season, inline=False)
+            em.add_field(name=f'Previous Season Results ({s.id})', value=season, inline=False)
 
         em.set_thumbnail(url=profile.stats.favorite_card.icon)
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
@@ -409,7 +409,7 @@ class Clash_Royale:
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
-            if not self.check_tag(tag):
+            if not self.check_tag(tag.strip('#').replace('O', '0')):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
                 profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
@@ -440,7 +440,7 @@ class Clash_Royale:
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
                 return await ctx.send(f'`Error {e.code}: {e.error}`')
         else:
-            if not self.check_tag(tag):
+            if not self.check_tag(tag.strip('#').replace('O', '0')):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             try:
                 profile = await self.client.get_player(tag.strip('#').replace('O', '0'))
@@ -474,7 +474,7 @@ class Clash_Royale:
                 return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
         else:
-            if not self.check_tag(tag):
+            if not self.check_tag(tag.strip('#').replace('O', '0')):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             tag = tag.strip('#').replace('O', '0')
 
