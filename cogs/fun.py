@@ -132,6 +132,15 @@ class Fun:
       await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
     else:
       await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
+      
+      
+    @commands.command()
+    async def joke(self, ctx):
+        url = "http://api.icndb.com/jokes/random"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                 data = await resp.json()
+                 await ctx.send(data['value']['joke'])
 
 
 def setup(bot):
