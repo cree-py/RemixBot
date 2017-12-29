@@ -26,6 +26,7 @@ SOFTWARE.
 import discord
 import random
 from discord.ext import commands
+import aiohttp
 
 
 class Fun:
