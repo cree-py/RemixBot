@@ -1,5 +1,5 @@
 <div align="center">
-  <p> <img src="https://i.imgur.com/B4eLRGu.png"/> </p>
+  <p> <img src="https://i.imgur.com/rUWe7kE.png"/> </p>
   <p>
     <a href="https://discordbots.org/bot/384044025298026496">
       <img src="https://discordbots.org/api/widget/servers/384044025298026496.svg" alt="Discord Bots" />
