@@ -1,14 +1,41 @@
+'''
+MIT License
+
+Copyright (c) 2017 Cree-py
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+'''
+
+# Import dependencies
 import discord
 from discord.ext import commands
 import datetime
 import json
 
-
+# Declare Config class
 class Config:
 
+    # Initialization method
     def __init__(self, bot):
         self.bot = bot
 
+    # Prefix command (broken)
     @commands.command()
     async def prefix(self, ctx, *, pre):
         '''Set a custom prefix for the guild. Doesn't work yet.'''
@@ -25,6 +52,7 @@ class Config:
             json.dump(prefix, f, indent=4)
             await ctx.send('The guild prefix has been set to `{pre}`')
 
+    # Welcome command
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
     async def welcome(self, ctx, type):
@@ -59,6 +87,7 @@ class Config:
                 json.dump(welc, f, indent=4)
                 await ctx.send('Your welcome message has been successfully set.')
 
+    # Leave command
     @commands.command(aliases=['setleave', 'leavemsg', 'leavemessage', 'leaveset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
     async def leave(self, ctx, type):
@@ -93,6 +122,7 @@ class Config:
                 json.dump(leave, f, indent=4)
                 await ctx.send('Your leave message has been successfully set.')
 
+    # Modlog command
     @commands.command(aliases=['mod-log'])
     @commands.has_permissions(view_audit_log=True)
     async def modlog(self, ctx, type):
@@ -126,6 +156,7 @@ class Config:
 
     # ------------Welcome and leave----------------
 
+    # Listener for welcoming a new member
     async def on_member_join(self, m):
         with open('data/config.json') as f:
             welc = json.load(f)
@@ -139,6 +170,7 @@ class Config:
             msg = welc[str(m.guild.id)]['welc']
             await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
 
+    # Listener for saying goodbye to a leaving member
     async def on_member_remove(self, m):
         with open('data/config.json') as f:
             leave = json.load(f)
@@ -153,7 +185,9 @@ class Config:
             await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
 
     # ------------Mod-log events below-------------
-
+    # Don't look below this line. It's a graveyard down there.
+    #----------------------------------------------
+    
     def logtype(self, item):
         with open('./data/config.json') as f:
             type = json.load(f)
@@ -232,6 +266,6 @@ class Config:
         em.set_footer(text=f'Role ID: {role.id}')
         await self.logtype(role)[1].send(embed=em)
 
-
+# Setup cog into bot
 def setup(bot):
     bot.add_cog(Config(bot))
