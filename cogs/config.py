@@ -163,15 +163,16 @@ class Config:
             msg = welc[str(m.guild.id)]['welc']
             success = False
             i = 0
-            try:
-                await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
-            except (discord.Forbidden, AttributeError):
-                i += 1
-            except IndexError:
-                # the channel set doesn't allow creeperbot to send messages
-                pass
-            else:
-                success = True
+            while not success:
+                try:
+                    await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
+                except (discord.Forbidden, AttributeError):
+                    i += 1
+                except IndexError:
+                    # the channel set doesn't allow creeperbot to send messages
+                    pass
+                else:
+                    success = True
 
     async def on_member_remove(self, m):
         with open('data/config.json') as f:
@@ -186,15 +187,16 @@ class Config:
             msg = leave[str(m.guild.id)]['leave']
             success = False
             i = 0
-            try:
-                await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
-            except (discord.Forbidden, AttributeError):
-                i += 1
-            except IndexError:
-                # the channel set doesn't allow creeperbot to send messages
-                pass
-            else:
-                success = True
+            while not success:
+                try:
+                    await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
+                except (discord.Forbidden, AttributeError):
+                    i += 1
+                except IndexError:
+                    # the channel set doesn't allow creeperbot to send messages
+                    pass
+                else:
+                    success = True
 
     # ------------Mod-log events below-------------
 
