@@ -22,17 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# Import dependencies
+
 import discord
 from discord.ext import commands
 import clashroyale
 import json
 import re
 
-# Define class
+
 class Clash_Royale:
-    
-    # Initialization method
+
     def __init__(self, bot):
         self.bot = bot
         with open('./data/auths.json') as f:
@@ -40,37 +39,15 @@ class Clash_Royale:
             self.token = auth.get('CR-API')
         self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
 
-    # WARNING
-    #
-    #  _    _  ___  ______ _   _ _____ _   _ _____ 
-    # | |  | |/ _ \ | ___ \ \ | |_   _| \ | |  __ \
-    # | |  | / /_\ \| |_/ /  \| | | | |  \| | |  \/
-    # | |/\| |  _  ||    /| . ` | | | | . ` | | __ 
-    # \  /\  / | | || |\ \| |\  |_| |_| |\  | |_\ \
-    #  \/  \/\_| |_/\_| \_\_| \_/\___/\_| \_/\____/
-    #                                         
-    # Convert characters to snakecase
-    #
-    # The following lines of code are copied from the clashroyale wrapper for cr-api by kyber, 4jr and kwug     
+    # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
     all_cap_re = re.compile('([a-z0-9])([A-Z])')
 
     def _to_snake_case(self, name):
         s1 = self.first_cap_re.sub(r'\1-\2', name)
         return self.all_cap_re.sub(r'\1-\2', s1).title()
-    # 
-    # Warning
-    # 
-    #  _    _  ___  ______ _   _ _____ _   _ _____ 
-    # | |  | |/ _ \ | ___ \ \ | |_   _| \ | |  __ \
-    # | |  | / /_\ \| |_/ /  \| | | | |  \| | |  \/
-    # | |/\| |  _  ||    /| . ` | | | | . ` | | __ 
-    # \  /\  / | | || |\ \| |\  |_| |_| |\  | |_\ \
-    #  \/  \/\_| |_/\_| \_\_| \_/\___/\_| \_/\____/
-    #       
-    # This marks the end of copied code.
-    
-    # Method for getting a playertag
+    # This marks the end of that code. We give full credit to Kyber
+
     def get_tag(self, userid):
         with open('./data/tags/tags.json') as f:
             config = json.load(f)
@@ -80,7 +57,6 @@ class Clash_Royale:
                 return 'None'
         return tag
 
-    # Method for saving a playertag
     def save_tag(self, userid, tag):
         with open('./data/tags/tags.json', 'r+') as f:
             config = json.load(f)
@@ -88,14 +64,12 @@ class Clash_Royale:
             config[userid] = tag
             json.dump(config, f, indent=4)
 
-    # Method for checking the validity of a playertag
     def check_tag(self, tag):
         for char in tag:
             if char.upper() not in '0289PYLQGRJCUV':
                 return False
         return True
 
-    # Method for getting emoji from emojis.json
     def emoji(self, emoji):
         if emoji == 'chestmagic':
             emoji = 'chestmagical'
@@ -104,11 +78,9 @@ class Clash_Royale:
             e = emojis[emoji]
         return self.bot.get_emoji(e)
 
-    # Method for obtaining objects in a directory
     def cdir(self, obj):
         return [x for x in dir(obj) if not x.startswith('_')]
 
-    # Method for getting chests
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
         chests = f'| {self.emoji("chest" + cycle.upcoming[0].lower())} | '
@@ -116,7 +88,6 @@ class Clash_Royale:
         special = f'{self.emoji("chestsupermagical")}{cycle.super_magical} {self.emoji("chestmagical")}{cycle.magical} {self.emoji("chestlegendary")}{cycle.legendary} {self.emoji("chestepic")}{cycle.epic} {self.emoji("chestgiant")}{cycle.giant}'
         return (chests, special)
 
-    # Save command
     @commands.command()
     async def save(self, ctx, tag=None):
         '''Save a tag to your discord profile'''
@@ -128,7 +99,6 @@ class Clash_Royale:
         self.save_tag(str(ctx.author.id), tag)
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
-    # Profile command
     @commands.command()
     async def profile(self, ctx, tag=None):
         '''Fetch a profile by tag'''
@@ -221,7 +191,6 @@ class Clash_Royale:
 
         await ctx.send(embed=em)
 
-    # Chests command
     @commands.command()
     async def chests(self, ctx, tag=None):
         '''Get a profile's chest cycle'''
@@ -255,7 +224,6 @@ class Clash_Royale:
 
         await ctx.send(embed=em)
 
-    # Clan command
     @commands.command()
     async def clan(self, ctx, tag=None):
         '''Gets a clan's info by clan tag'''
@@ -325,13 +293,11 @@ class Clash_Royale:
         em.set_footer(text="Stats made by Cree-Py | Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await ctx.send(embed=em)
 
-    # Members command group
     @commands.group(invoke_without_command=True)
     async def members(self, ctx):
         '''A command group that finds the worst and best members in a clan'''
         await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan_tag>`')
 
-    # Worst Members command
     @members.command()
     async def worst(self, ctx, tag=None):
         '''Find the worst members in a clan'''
@@ -380,7 +346,6 @@ class Clash_Royale:
 
             await ctx.send(embed=em)
 
-    # Best members command
     @members.command()
     async def best(self, ctx, tag=None):
         '''Find the best members in a clan'''
@@ -429,7 +394,6 @@ class Clash_Royale:
 
         await ctx.send(embed=em)
 
-    # Trophies command
     @commands.command()
     async def trophies(self, ctx, tag=None):
         '''Get your current, record, and legend trophies'''
@@ -461,7 +425,6 @@ class Clash_Royale:
 
         await ctx.send(embed=em)
 
-    # Deck command
     @commands.command()
     async def deck(self, ctx, tag=None):
         '''View a player's current battle deck'''
@@ -501,7 +464,6 @@ class Clash_Royale:
 
         await ctx.send(embed=em)
 
-    # WebURL command
     @commands.command()
     async def weburl(self, ctx, tag=None):
         '''Get the cr-api.com url for a player tag'''
@@ -525,6 +487,6 @@ class Clash_Royale:
 
         await ctx.send(embed=em)
 
-# Load cog into bot
+
 def setup(bot):
     bot.add_cog(Clash_Royale(bot))
