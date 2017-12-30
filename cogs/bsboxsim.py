@@ -22,16 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-
+# Import dependencies
 import discord
 from discord.ext import commands
 import random
 
-
+# Define class
 class Brawl_Stars_Box_Simulator:
+    
+    # Initialization method
     def __init__(self, bot):
         self.bot = bot
 
+    # Boxsim command
     @commands.command(aliases=['open', 'box'])
     async def boxsim(self, ctx):
         '''Simulate a box opening in Brawl Stars'''
@@ -83,6 +86,6 @@ class Brawl_Stars_Box_Simulator:
             except Exception as e:
                 print(e)
 
-
+# Add cog to bot
 def setup(bot):
     bot.add_cog(Brawl_Stars_Box_Simulator(bot))
