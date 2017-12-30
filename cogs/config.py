@@ -22,22 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# Import dependencies
 import discord
 from discord.ext import commands
 import datetime
 import json
 
-# Declare Config class
-
 
 class Config:
 
-    # Initialization method
     def __init__(self, bot):
         self.bot = bot
 
-    # Prefix command (broken)
     @commands.command()
     async def prefix(self, ctx, *, pre):
         '''Set a custom prefix for the guild. Doesn't work yet.'''
@@ -88,7 +83,6 @@ class Config:
                 json.dump(welc, f, indent=4)
                 await ctx.send('Your welcome message has been successfully set.')
 
-    # Leave command
     @commands.command(aliases=['setleave', 'leavemsg', 'leavemessage', 'leaveset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
     async def leave(self, ctx, type):
@@ -123,7 +117,6 @@ class Config:
                 json.dump(leave, f, indent=4)
                 await ctx.send('Your leave message has been successfully set.')
 
-    # Modlog command
     @commands.command(aliases=['mod-log'])
     @commands.has_permissions(view_audit_log=True)
     async def modlog(self, ctx, type):
@@ -157,7 +150,6 @@ class Config:
 
     # ------------Welcome and leave----------------
 
-    # Listener for welcoming a new member
     async def on_member_join(self, m):
         with open('data/config.json') as f:
             welc = json.load(f)
@@ -169,9 +161,18 @@ class Config:
                 return
             channel = int(welc[str(m.guild.id)]['welcchannel'])
             msg = welc[str(m.guild.id)]['welc']
-            await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
+            success = False
+            i = 0
+            try:
+                await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
+            except (discord.Forbidden, AttributeError):
+                i += 1
+            except IndexError:
+                # the channel set doesn't allow creeperbot to send messages
+                pass
+            else:
+                success = True
 
-    # Listener for saying goodbye to a leaving member
     async def on_member_remove(self, m):
         with open('data/config.json') as f:
             leave = json.load(f)
@@ -183,11 +184,19 @@ class Config:
                 return
             channel = int(leave[str(m.guild.id)]['leavechannel'])
             msg = leave[str(m.guild.id)]['leave']
-            await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
+            success = False
+            i = 0
+            try:
+                await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
+            except (discord.Forbidden, AttributeError):
+                i += 1
+            except IndexError:
+                # the channel set doesn't allow creeperbot to send messages
+                pass
+            else:
+                success = True
 
     # ------------Mod-log events below-------------
-    # Don't look below this line. It's a graveyard down there.
-    #----------------------------------------------
 
     def logtype(self, item):
         with open('./data/config.json') as f:
@@ -266,8 +275,6 @@ class Config:
         em = discord.Embed(title='Role deleted', color=0xff0000, description=f'Role `{role.name}` was deleted.')
         em.set_footer(text=f'Role ID: {role.id}')
         await self.logtype(role)[1].send(embed=em)
-
-# Setup cog into bot
 
 
 def setup(bot):
