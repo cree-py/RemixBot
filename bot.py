@@ -315,6 +315,4 @@ async def shutdown(ctx):
 
 
 if __name__ == "__main__":
-    if not os.environ.get('TOKEN'):
-        print("No token found REEEE!")
     bot.run(os.environ.get('TOKEN').strip('\"'))
