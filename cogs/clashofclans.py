@@ -22,17 +22,20 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-
+# Import dependencies
 import requests
 import json
 import discord
 from discord.ext import commands
 
-
+# Define class 
 class Clash_of_Clans:
+    
+    # Initialization method
     def __init__(self, bot):
         self.bot = bot
 
+    # Method for getting player tag from json file
     def get_tag(self, userid):
         with open('./data/tags/coctags.json') as f:
             config = json.load(f)
@@ -42,6 +45,7 @@ class Clash_of_Clans:
                 return 'None'
         return tag
 
+    # Method for writing the tag to the json file
     def save_tag(self, userid, tag):
         with open('./data/tags/coctags.json', 'r+') as f:
             config = json.load(f)
@@ -49,18 +53,21 @@ class Clash_of_Clans:
             config[userid] = tag
             json.dump(config, f, indent=4)
 
+    # Method for checking the validity of a tag
     def check_tag(self, tag):
         for char in tag:
             if char.upper() not in '0289PYLQGRJCUV':
                 return False
         return True
 
+    # Method for returning an emoji
     def emoji(self, emoji):
         with open('data/emojis.json') as f:
             emojis = json.load(f)
             e = emojis[emoji]
         return self.bot.get_emoji(e)
 
+    # Cocsave command
     @commands.command()
     async def cocsave(self, ctx, tag=None):
         '''Save a Clash of Clans tag to your discord profile'''
@@ -72,6 +79,7 @@ class Clash_of_Clans:
         self.save_tag(str(ctx.author.id), tag)
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
+    # Cocprofile command
     @commands.command()
     async def cocprofile(self, ctx, tag=None):
         '''Get a Clash of Clans profile by tag'''
@@ -132,6 +140,7 @@ class Clash_of_Clans:
         em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
         await ctx.send(embed=em)
 
+    # Cocclan command
     @commands.command()
     async def cocclan(self, ctx, tag=None):
         '''Get the stats of a clan in CoC'''
@@ -167,6 +176,6 @@ class Clash_of_Clans:
         em.add_field(name="Location", value=response.json()['location']['name'])
         await ctx.send(embed=em)
 
-
+# Method to add cog to bot
 def setup(bot):
     bot.add_cog(Clash_of_Clans(bot))
