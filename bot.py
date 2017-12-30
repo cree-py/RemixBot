@@ -1,3 +1,6 @@
+# Don't copy this code. We have a MIT license on it.
+
+# Import dependencies
 import discord
 import os
 import io
@@ -8,14 +11,14 @@ import aiohttp
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
-import inspect
 
+# Initialize Bot object, DBL token, and Cogs Directory
 bot = commands.Bot(command_prefix='c.')
-dbltoken = "token"
-
+dbltoken = "token" # mwahahaha
 directory = 'cogs.'
 cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
+# Load all cogs
 for cog in cogs:
     members = inspect.getmembers(cog)
     for name, member in members:
@@ -27,12 +30,11 @@ for cog in cogs:
         print(f'LoadError: {cog}\n'
               f'{type(e).__name__}: {e}')
 
-
+# Override default help and define version
 bot.remove_command('help')
-
 version = "Beta 1.5.0"
 
-
+# Check if developer for dev-only commands
 def dev_check(id):
     with open('data/devs.json') as f:
         devs = json.load(f)
@@ -40,16 +42,15 @@ def dev_check(id):
         return True
     return False
 
-
+# Method for removing code blocks
 def cleanup_code(content):
     '''Automatically removes code blocks from the code.'''
     # remove ```py\n```
     if content.startswith('```') and content.endswith('```'):
         return '\n'.join(content.split('\n')[1:-1])
-
     return content.strip('` \n')
 
-
+# Set presence on initialization and create aiohttp session
 @bot.event
 async def on_ready():
     print("Bot Is Online.")
@@ -57,13 +58,13 @@ async def on_ready():
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
     
-    
+# Listener for :pushpin: command
 @bot.event
 async def on_reaction_add(reaction, user):
     if reaction.emoji == "\U0001f4cc":
         await user.send(f"Here's the message you pinned :pushpin: ```{reaction.message.author.name}: {reaction.message.content}```")    
 
-
+# Default message for new servers, refresh presence and update dbl info
 @bot.event
 async def on_guild_join(g):
     success = False
@@ -91,7 +92,7 @@ async def on_guild_join(g):
             print(dblpost.status)
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
 
-
+# Update DBL info and presence
 @bot.event
 async def on_guild_remove(g):
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
@@ -107,7 +108,7 @@ async def on_guild_remove(g):
             print(dblpost.status)
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
 
-
+# Embedded help command
 @bot.command()
 async def help(ctx):
     '''Shows this message'''
@@ -139,7 +140,7 @@ async def help(ctx):
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
 
-
+# Ping command
 @bot.command()
 async def ping(ctx):
     '''Pong! Get the bot's response time'''
@@ -148,7 +149,7 @@ async def ping(ctx):
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
 
-
+# Info command
 @bot.command(aliases=['bot', 'about'])
 async def info(ctx):
     '''Shows info about bot'''
@@ -167,7 +168,7 @@ async def info(ctx):
     em.set_footer(text="CreeperBot | Powered by discord.py")
     await ctx.send(embed=em)
 
-
+# Presence command
 @bot.command(name='presence', hidden=True)
 async def _presence(ctx, type=None, *, game=None):
     '''Change the bot's presence'''
@@ -195,7 +196,7 @@ async def _presence(ctx, type=None, *, game=None):
         else:
             await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
-
+# Suggest command
 @bot.command()
 async def suggest(ctx, *, idea: str):
     """Suggest an idea. The idea will be sent to developer server"""
@@ -207,11 +208,12 @@ async def suggest(ctx, *, idea: str):
     await suggest.send(embed=em)
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
-
+# Eval command
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
     if not dev_check(ctx.author.id):
+        await ctx.send("You cannot use this because you are not a developer.")
         return
     env = {
         'ctx': ctx,
@@ -291,19 +293,20 @@ async def _eval(ctx, *, body):
     else:
         await ctx.message.add_reaction('\u2705')
 
+# Invite command
 @bot.command()
 async def invite(ctx):
     '''Invite the bot to your server'''
     await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542")
 
-
+# Say command
 @bot.command()
 async def say(ctx, *, message: str):
     '''Say something as the bot'''
     await ctx.message.delete()
     await ctx.send(message)
 
-
+# Shutdown command
 @bot.command(hidden=True)
 async def shutdown(ctx):
     '''Shut down the bot'''
@@ -313,6 +316,6 @@ async def shutdown(ctx):
     await ctx.send("Shutting down....")
     await bot.logout()
 
-
+# Login to client session using token
 if __name__ == "__main__":
     bot.run(os.environ.get('TOKEN').strip('\"'))
