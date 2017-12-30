@@ -29,6 +29,8 @@ import datetime
 import json
 
 # Declare Config class
+
+
 class Config:
 
     # Initialization method
@@ -52,11 +54,10 @@ class Config:
             json.dump(prefix, f, indent=4)
             await ctx.send('The guild prefix has been set to `{pre}`')
 
-    # Welcome command
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
     async def welcome(self, ctx, type):
-        '''Enable or disable a leave message for your guild'''
+        '''Enable or disable a welcome message for your guild'''
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
@@ -187,7 +188,7 @@ class Config:
     # ------------Mod-log events below-------------
     # Don't look below this line. It's a graveyard down there.
     #----------------------------------------------
-    
+
     def logtype(self, item):
         with open('./data/config.json') as f:
             type = json.load(f)
@@ -267,5 +268,7 @@ class Config:
         await self.logtype(role)[1].send(embed=em)
 
 # Setup cog into bot
+
+
 def setup(bot):
     bot.add_cog(Config(bot))
