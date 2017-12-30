@@ -1,18 +1,13 @@
-```
-   )\.-.     /`-.   )\.---.   )\.---.     /`-.  )\    /(
- ,' ,-,_)  ,' _  \ (   ,-._( (   ,-._(  ,' _  \ \ (_.' /
-(  .   _  (  '-' (  \  '-,    \  '-,   (  '-' (  )  _.'
- ) '..' )  ) ,_ .'   ) ,-`     ) ,-`    ) ,._.'  / /
-(  ,   (  (  ' ) \  (  ``-.   (  ``-.  (  '     (  \
- )/'._.'   )/   )/   )..-.(    )..-.(   )/       ).'
-```
 <div align="center">
-  <a href="https://discordbots.org/bot/384044025298026496">
-    <img src="https://discordbots.org/api/widget/servers/384044025298026496.svg" alt="Discord Bots" />
-  </a>
-  <a href="https://discord.gg/4y6Mmrb">
-    <img src="https://discordapp.com/api/guilds/384102150109659137/embed.png" alt="CreeperBot Coding and Support" />
-  </a>
+  <p> <img src="https://i.imgur.com/B4eLRGu.png"/> </p>
+  <p>
+    <a href="https://discordbots.org/bot/384044025298026496">
+      <img src="https://discordbots.org/api/widget/servers/384044025298026496.svg" alt="Discord Bots" />
+    </a>
+    <a href="https://discord.gg/4y6Mmrb">
+      <img src="https://discordapp.com/api/guilds/384102150109659137/embed.png" alt="CreeperBot Coding and Support" />
+    </a>
+  </p>
 </div>
 
 # CreeperBot
