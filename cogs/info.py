@@ -22,17 +22,19 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-
+# Import dependencies
 import discord
 from discord.ext import commands
 
-
+# Declare info class
 class Info:
     '''Get info for a user, server, or role'''
 
+    # Initialization method
     def __init__(self, bot):
         self.bot = bot
 
+    # Serverinfo command
     @commands.command(aliases=['si', 'server'])
     @commands.guild_only()
     async def serverinfo(self, ctx):
@@ -54,6 +56,7 @@ class Info:
         em.set_author(name=guild.name, icon_url=None or guild.icon_url)
         await ctx.send(embed=em)
 
+    # Userinfo command
     @commands.command(aliases=['ui', 'user'])
     async def userinfo(self, ctx, user: discord.Member = None):
         '''Get user info for yourself or someone in the guild'''
@@ -82,6 +85,6 @@ class Info:
         em.set_thumbnail(url=avi or None)
         await ctx.send(embed=em)
 
-
+# Add cog to bot
 def setup(bot):
     bot.add_cog(Info(bot))
