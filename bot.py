@@ -191,14 +191,16 @@ async def info(ctx):
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Bot Info"
     em.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-    em.description = "A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\nNote: The GitHub repo is currently private because of recent plagiarism cases.\n[Support Server](https://discord.gg/RzsYQ9f)"
+    em.description = "A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)"
     em.add_field(name="Servers", value=len(bot.guilds))
-    em.add_field(name="Total Users", value=f'{len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})}/{len(bot.users)} online')
+    em.add_field(name="Online Users", value=str(len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})))
+    em.add_field(name='Total Users', value=len(bot.users))
     em.add_field(name='Channels', value=f"{sum(1 for g in bot.guilds for _ in g.channels)}")
     em.add_field(name="Library", value=f"discord.py")
     em.add_field(name="Bot Latency", value=f"{bot.ws.latency * 1000:.3f} ms")
     em.add_field(name="Invite", value=f"[Click Here](https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542)")
-    em.add_field(name="Upvote this bot!", value=f"https://discordbots.org/bot/{bot.user.id} :reminder_ribbon:", inline=False)
+    em.add_field(name='GitHub', value='[Click here](https://github.com/cree-py/creepy.py)')
+    em.add_field(name="Upvote this bot!", value=f"[Click here](https://discordbots.org/bot/{bot.user.id}) :reminder_ribbon:")
 
     em.set_footer(text="CreeperBot | Powered by discord.py")
 
