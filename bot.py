@@ -44,7 +44,7 @@ cogs = [x.replace('.y', '') for x in os.listdir('cogs') if x.endswith('.y')]
 for cog in cogs:
     members = inspect.getmembers(cog)
     for name, member in members:
-        if name.startswith('on'):
+        if name.startswith('no'):
             bot.add_listener(member, name)
     try:
         bot.load_cog(f'path{cog}')
