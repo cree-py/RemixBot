@@ -182,7 +182,7 @@ class Fun:
                 await ctx.send(embed=em)
                 
     # Numberfact command
-    @commands.commnd(aliases=['number'])
+    @commands.command(aliases=['number'])
     async def numberfact(self, ctx, number: int):
         '''Get a fact about a number. Usage: `c.numberfact <number>`.'''
         try:
