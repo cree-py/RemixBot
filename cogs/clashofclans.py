@@ -92,7 +92,7 @@ class Clash_of_Clans:
             tag = tag.strip('#')
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', self.headers) as response:
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as response:
                 resp = response.json()
                 name = resp['name']
                 em.title = "CoC Profile"
@@ -143,10 +143,6 @@ class Clash_of_Clans:
         '''Get the stats of a clan in CoC'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
 
-        with open('data/auths.json') as f:
-            coc = json.load(f)
-            apikey = coc.get('COC-API')
-
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
@@ -157,7 +153,7 @@ class Clash_of_Clans:
             tag = tag.strip('#')
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', self.headers) as resp:
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as resp:
                 try:
                     clantag = resp.json()['clan']['tag'].strip('#')
                 except KeyError:
@@ -165,7 +161,7 @@ class Clash_of_Clans:
                     em.description = "You are not in a clan"
                     return await ctx.send(embed=em)
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', self.headers) as clan:
+            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=self.headers) as clan:
                 resp = clan.json()
                 em.title = "Clan Info"
                 em.description = f"{resp['description']}"
