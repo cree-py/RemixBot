@@ -90,6 +90,12 @@ def cleanup_code(content):
 
 
 @bot.event
+async def on_message(msg):
+    if msg.content == 'whatistheprefix':
+        await msg.channel.send(f'The prefix for this guild is `{ctx.prefix}`')
+
+
+@bot.event
 async def onready():
     print("Bot Is Online.")
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | {version}", type=3), afk=True)
