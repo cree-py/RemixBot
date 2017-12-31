@@ -213,6 +213,21 @@ class Fun:
         except:
             await ctx.send("No facts are available for that number.")
             
+    # Trumpquote command
+    @commands.command(aliases=['trump', 'trumpquote'])
+    async def asktrump(self, ctx, question):
+        '''Ask Donald Trump a question! Usage: c.asktrump <yourquestion>'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}') as resp:
+                file = await resp.json()
+                quote = file['message']
+                em = discord.Embed(color=discord.Color(value=0x00ff00))
+                em.title = "What does Trump say?"
+                em.description = quote
+                em.set_footer(text="Made possible by whatdoestrumpthink.com", icon_url="http://www.stickpng.com/assets/images/5841c17aa6515b1e0ad75aa1.png")
+                await ctx.send(embed=em)
+
+
 # Setup bot
 def setup(bot):
   bot.add_cog(Fun(bot))
