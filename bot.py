@@ -102,7 +102,7 @@ async def on_message(msg):
     channel = msg.channel
 
     if msg.content.lower() == 'what is the prefix':
-        await channel.send(f'The prefix for this guild is {get_pre(bot, msg)}')
+        await channel.send(f'The prefix for this guild is {await get_pre(bot, msg)}')
 
 
 # Listener for :pushpin: command
