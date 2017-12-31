@@ -27,6 +27,7 @@ import discord
 from discord.ext import commands
 import aiohttp
 import json
+import re
 
 
 class Clash_of_Clans:
@@ -37,6 +38,15 @@ class Clash_of_Clans:
             coc = json.load(f)
             apikey = coc.get('COC-API')
         self.headers = {'Authorization': apikey}
+
+    # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
+    first_cap_re = re.compile('(.)([A-Z][a-z]+)')
+    all_cap_re = re.compile('([a-z0-9])([A-Z])')
+
+    def _to_snake_case(self, name):
+        s1 = self.first_cap_re.sub(r'\1 \2', name)
+        return self.all_cap_re.sub(r'\1 \2', s1).title()
+    # This marks the end of that code. We give full credit to Kyber
 
     def get_tag(self, userid):
         with open('./data/tags/coctags.json') as f:
@@ -170,7 +180,7 @@ class Clash_of_Clans:
                 em.set_thumbnail(url=resp['badgeUrls']['large'])
                 em.add_field(name="Clan Level", value=f"{resp['clanLevel']} {self.emoji('cocexp')}")
                 em.add_field(name="Location", value=f"{resp['location']['name']} :earth_americas:")
-                em.add_field(name="Type", value=f"{resp['type']} :envelope_with_arrow:")
+                em.add_field(name="Type", value=f"{self._to_snake_case(resp['type'])} :envelope_with_arrow:")
                 em.add_field(name='Required Trophies', value=f"{resp['requiredTrophies']} {self.emoji('coctrophy')}")
                 em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
 
