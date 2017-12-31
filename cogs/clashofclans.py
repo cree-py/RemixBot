@@ -33,6 +33,10 @@ class Clash_of_Clans:
 
     def __init__(self, bot):
         self.bot = bot
+        with open('data/auths.json') as f:
+            coc = json.load(f)
+            apikey = coc.get('COC-API')
+        self.headers = {'Authorization': apikey}
 
     def get_tag(self, userid):
         with open('./data/tags/coctags.json') as f:
@@ -78,10 +82,6 @@ class Clash_of_Clans:
         '''Get a Clash of Clans profile by tag'''
         em = discord.Embed(color=discord.Color(value=0x00ff00))
 
-        with open('data/auths.json') as f:
-            coc = json.load(f)
-            apikey = coc.get('COC-API')
-
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
@@ -91,9 +91,8 @@ class Clash_of_Clans:
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
             tag = tag.strip('#')
 
-        headers = {'Authorization': apikey}
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers) as resp:
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as resp:
                 resp = resp.json()
                 name = resp['name']
                 em.title = "CoC Profile"
@@ -159,7 +158,7 @@ class Clash_of_Clans:
 
         headers = {'Authorization': apikey}
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers) as resp:
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as resp:
                 try:
                     clantag = resp['clan']['tag'].strip('#')
                 except KeyError:
@@ -167,7 +166,7 @@ class Clash_of_Clans:
                     em.description = "You are not in a clan"
                     return await ctx.send(embed=em)
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=headers) as resp:
+            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=self.headers) as resp:
                 resp = resp.json()
                 em.title = "Clan Info"
                 em.description = f"{resp['description']}"
