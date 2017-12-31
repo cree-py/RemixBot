@@ -167,6 +167,7 @@ class Clash_of_Clans:
                 em.title = "Clan Info"
                 em.description = f"{resp['description']}"
                 em.set_author(name=f"{resp['name']} (#{clantag})", icon_url=resp['badgeUrls']['large'])
+                em.set_thumbnail(url=resp['badgeUrls']['large'])
                 em.add_field(name="Clan Level", value=f"{resp['clanLevel']} {self.emoji('cocexp')}")
                 em.add_field(name="Location", value=f"{resp['location']['name']} :earth_americas:")
                 em.add_field(name="Type", value=f"{resp['type']} :envelope_with_arrow:")
