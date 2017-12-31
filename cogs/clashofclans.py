@@ -93,7 +93,7 @@ class Clash_of_Clans:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as response:
-                resp = response.json()
+                resp = await response.json()
                 name = resp['name']
                 em.title = "CoC Profile"
                 em.description = "Clash of Clans Stats"
@@ -155,14 +155,14 @@ class Clash_of_Clans:
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as resp:
                 try:
-                    clantag = resp.json()['clan']['tag'].strip('#')
+                    clantag = await (resp.json()['clan']['tag']).strip('#')
                 except KeyError:
                     em.title = "Error"
                     em.description = "You are not in a clan"
                     return await ctx.send(embed=em)
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=self.headers) as clan:
-                resp = clan.json()
+                resp = await clan.json()
                 em.title = "Clan Info"
                 em.description = f"{resp['description']}"
                 em.set_author(name=f"{resp['name']} (#{clantag})", icon_url=resp['badgeUrls']['large'])
