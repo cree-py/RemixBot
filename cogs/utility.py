@@ -32,45 +32,25 @@ import datetime
 import pytz
 import wikipedia
 
-# Method for checking if the invoker is a dev
-def dev_check(id):
-    with open('data/devs.json') as f:
-        devs = json.load(f)
-    if id in devs:
-        return True
-    return False
 
-# Method for cleaning up code
-def cleanup_code(content):
-    '''Automatically removes code blocks from the code.'''
-    # remove ```py\n```
-    if content.startswith('```') and content.endswith('```'):
-        return '\n'.join(content.split('\n')[1:-1])
-
-    return content.strip('` \n')
-
-# Method to return a random color
 def random_color():
     color = ('#%06x' % random.randint(8, 0xFFFFFF))
     color = int(color[1:], 16)
     color = discord.Color(value=color)
     return color
 
-# Define the Utility Class
+
 class Utility:
-    
-    # Initialization Method
+
     def __init__(self, bot):
         self.bot = bot
 
-    # Embedsay command
     @commands.command()
     async def embedsay(self, ctx, *, body: str):
         '''Send a simple embed'''
         em = discord.Embed(description=body, color=random_color())
         await ctx.send(embed=em)
 
-    # Tinyurl command
     @commands.command()
     async def tinyurl(self, ctx, *, link: str):
         '''Makes a link shorter using the tinyurl api'''
@@ -85,7 +65,6 @@ class Utility:
                        icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         await ctx.send(embed=emb)
 
-    # Hastebin command
     @commands.command()
     async def hastebin(self, ctx, *, code):
         '''Hastebin-ify your code!'''
@@ -94,7 +73,6 @@ class Utility:
             key = data['key']
         await ctx.message.edit(content=f"Hastebin-ified! <https://hastebin.com/{key}.py>")
 
-    # Date command
     @commands.command()
     async def date(self, ctx, tz=None):
         """Get the current date for a time zone or UTC."""
@@ -109,7 +87,6 @@ class Utility:
                 return await ctx.send(embed=em)
         await ctx.send(f'The current date is {now:%A, %B %d, %Y}.')
 
-    # Time command
     @commands.command()
     async def time(self, ctx, tz=None):
         """Get the current time for a timezone or UTC."""
@@ -124,7 +101,6 @@ class Utility:
                 return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
 
-    # Urbandictionary Command
     @commands.command(aliases=['urban'])
     async def ud(self, ctx, *, query):
         '''Search terms with urbandictionary.com'''
@@ -140,7 +116,6 @@ class Utility:
         em.description = f'**Definition:** {res.definition}\n**Usage:** {res.example}\n**Votes:** {res.upvotes}:thumbsup:{res.downvotes}:thumbsdown:'
         await ctx.send(embed=em)
 
-    # Wikipedia Command
     @commands.command(aliases=['wikipedia'])
     async def wiki(self, ctx, *, query):
         '''Search up something on wikipedia'''
@@ -165,13 +140,11 @@ class Utility:
             em.description = 'Error: Page not found.'
             await ctx.send(embed=em)
 
-    # Isit command group
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
         '''A command group to see the number of days until a holiday'''
         await ctx.send('`c.isit halloween` Find the number of days until this spooky holiday!\n`c.isit christmas` Are you naughty or nice?\n`c.isit newyear` When is next year coming already?')
 
-    # Isit Halloween command
     @isit.command()
     async def halloween(self, ctx):
         now = datetime.datetime.now()
@@ -182,9 +155,10 @@ class Utility:
         if now.month == 10 and now.day == 31:
             await ctx.send('It is Halloween! :jack_o_lantern: :ghost:')
         else:
+            if until.days + 1 == 1:
+                return await ctx.send('No, tomorrow is Halloween!')
             await ctx.send(f'No, there are {until.days + 1} more days until Halloween.')
 
-    # Isit Christmas command
     @isit.command()
     async def christmas(self, ctx):
         '''Is it Christmas?'''
@@ -196,9 +170,10 @@ class Utility:
         if now.month == 12 and now.day == 25:
             await ctx.send('Merry Christmas! :christmas_tree: :snowman2:')
         else:
+            if until.days + 1 == 1:
+                return await ctx.send('No, tomorrow is Christmas!')
             await ctx.send(f'No, there are {until.days + 1} more days until Christmas.')
 
-    # Isit newyear command
     @isit.command()
     async def newyear(self, ctx):
         '''When is the new year?'''
@@ -208,15 +183,15 @@ class Utility:
         if now.month == 1 and now.day == 1:
             await ctx.send('It\'s New Years today! :tada:')
         else:
-            await ctx.send(f'No, there are {until.days + 1} days left until New Year\'s.')
+            if until.days + 1 == 1:
+                return await ctx.send('No, tomorrow is New Year\'s Day!')
+            await ctx.send(f'No, there are {until.days + 1} days left until New Year\'s Day.')
 
-    # Math command group
     @commands.group(invoke_without_command=True)
     async def math(self, ctx):
         '''A command group for math commands'''
         await ctx.send('Available commands:\n`add <a> <b>`\n`subtract <a> <b>`\n`multiply <a> <b>`\n`divide <a> <b>`\n`remainder <a> <b>`\n`power <a> <b>`\n`factorial <a>`')
 
-    # Math multiply command
     @math.command(aliases=['*', 'x'])
     async def multiply(self, ctx, a: int, b: int):
         '''Multiply two numbers'''
@@ -225,7 +200,6 @@ class Utility:
         em.description = f'❓ Problem: `{a}*{b}`\n✅ Solution: `{a * b}`'
         await ctx.send(embed=em)
 
-    # Math divide command
     @math.command(aliases=['/', '÷'])
     async def divide(self, ctx, a: int, b: int):
         '''Divide a number by a number'''
@@ -240,7 +214,6 @@ class Utility:
             em.description = "You can't divide by zero"
             await ctx.send(embed=em)
 
-    # Math add command
     @math.command(aliases=['+'])
     async def add(self, ctx, a: int, b: int):
         '''Add a number to a number'''
@@ -249,7 +222,6 @@ class Utility:
         em.description = f'❓ Problem: `{a}+{b}`\n✅ Solution: `{a + b}`'
         await ctx.send(embed=em)
 
-    # Math subtract command
     @math.command(aliases=['-'])
     async def subtract(self, ctx, a: int, b: int):
         '''Substract two numbers'''
@@ -258,7 +230,6 @@ class Utility:
         em.description = f'❓ Problem: `{a}-{b}`\n✅ Solution: `{a - b}`'
         await ctx.send(embed=em)
 
-    # Math remainder command
     @math.command(aliases=['%'])
     async def remainder(self, ctx, a: int, b: int):
         '''Gets a remainder'''
@@ -267,7 +238,6 @@ class Utility:
         em.description = f'❓ Problem: `{a}%{b}`\n✅ Solution: `{a % b}`'
         await ctx.send(embed=em)
 
-    # Math power command
     @math.command(aliases=['^', '**'])
     async def power(self, ctx, a: int, b: int):
         '''Raise A to the power of B'''
@@ -276,7 +246,6 @@ class Utility:
         em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
         await ctx.send(embed=em)
 
-    # Math factorial command
     @math.command(aliases=['!'])
     async def factorial(self, ctx, a: int):
         '''Factorial something'''
@@ -293,6 +262,6 @@ class Utility:
             em.description = f'❓ Problem: `{problem}!`\n✅ Solution: `{result}`'
             await ctx.send(embed=em)
 
-# Setup cog
+
 def setup(bot):
     bot.add_cog(Utility(bot))
