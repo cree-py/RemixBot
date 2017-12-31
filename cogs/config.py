@@ -34,8 +34,9 @@ class Config:
         self.bot = bot
 
     @commands.command()
+    @commands.has_permissions(manage_guild=True)
     async def prefix(self, ctx, *, pre):
-        '''Set a custom prefix for the guild. Doesn't work yet.'''
+        '''Set a custom prefix for the guild.'''
         with open('./data/config.json', 'r+') as f:
             prefix = json.load(f)
             try:
