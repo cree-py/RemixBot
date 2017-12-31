@@ -183,8 +183,11 @@ class Fun:
                 
     # Numberfact command
     @commands.command(aliases=['number'])
-    async def numberfact(self, ctx, number: int):
+    async def numberfact(self, ctx, *, number: int):
         '''Get a fact about a number. Usage: `c.numberfact <number>`.'''
+        if not number:
+            await ctx.send('Usage: `c.numberfact <number>`')
+            return
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'http://numbersapi.com/{number}?json') as resp:
@@ -194,6 +197,22 @@ class Fun:
         except:
             await ctx.send("No facts are available for that number.")
 
+    # Mathfact command
+    @commands.command()
+    async def mathfact(self, ctx, number: int):
+        '''Get a math fact about a number. Usage: `c.mathfact <number>`.'''
+        if not number:
+            await ctx.send('Usage: `c.mathfact <number>`')
+            return
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'http://numbersapi.com/{number}/math?json') as resp:
+                    file = await resp.json()
+                    fact = file['text']
+                    await ctx.send(f"**Did you know?**\n*{fact}*")
+        except:
+            await ctx.send("No facts are available for that number.")
+            
 # Setup bot
 def setup(bot):
   bot.add_cog(Fun(bot))
