@@ -44,10 +44,10 @@ cogs = [x.replace('.y', '') for x in os.listdir('cogs') if x.endswith('.y')]
 for cog in cogs:
     members = inspect.getmembers(cog)
     for name, member in members:
-        if name.startswith('on_'):
+        if name.startswith('on'):
             bot.add_listener(member, name)
     try:
-        bot.load_extension(f'{directory}{cog}')
+        bot.load_cog(f'path{cog}')
     except Exception as e:
         print(f'LoadError: {cog}\n'
               f'{type(e).__name__}: {e}')
@@ -74,7 +74,7 @@ def cleanup_code(content):
 
 
 @bot.event
-async def on_ready():
+async def onready():
     print("Bot Is Online.")
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
     bot._last_result = None
@@ -341,3 +341,5 @@ async def shutdown(ctx):
 
 if __name__ == "main":
     print('Online.')
+else:
+    print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
