@@ -223,24 +223,33 @@ class Config:
     #     await self.logtype(msg)[1].send(embed=em)
 
     async def on_guild_channel_create(self, channel):
-        if not self.logtype(channel)[0]:
-            return
+        try:
+            if not self.logtype(channel)[0]:
+                return
+        except TypeError:
+            pass
         em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=0x00ff00)
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
         await self.logtype(channel)[1].send(embed=em)
 
     async def on_guild_channel_delete(self, channel):
-        if not self.logtype(channel)[0]:
-            return
+        try:
+            if not self.logtype(channel)[0]:
+                return
+        except TypeError:
+            pass
         em = discord.Embed(title='Channel Deleted', description=f'Channel {channel.mention} was deleted.', color=0xff0000)
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
         await self.logtype(channel)[1].send(embed=em)
 
     async def on_member_ban(self, guild, user):
-        if not self.logtype(user)[0]:
-            return
+        try:
+            if not self.logtype(user)[0]:
+                return
+        except TypeError:
+            pass
         em = discord.Embed(description=f'`{user.name}` was banned from {guild.name}.', color=0xff0000)
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
@@ -265,15 +274,21 @@ class Config:
         await channel.send(embed=em)
 
     async def on_guild_role_create(self, role):
-        if not self.logtype(role)[0]:
-            return
+        try:
+            if not self.logtype(role)[0]:
+                return
+        except TypeError:
+            pass
         em = discord.Embed(title='Role created', color=0x00ff00, description=f'Role `{role.name}` was created.')
         em.set_footer(text=f'Role ID: {role.id}')
         await self.logtype(role)[1].send(embed=em)
 
     async def on_guild_role_delete(self, role):
-        if not self.logtype(role)[0]:
-            return
+        try:
+            if not self.logtype(role)[0]:
+                return
+        except TypeError:
+            pass
         em = discord.Embed(title='Role deleted', color=0xff0000, description=f'Role `{role.name}` was deleted.')
         em.set_footer(text=f'Role ID: {role.id}')
         await self.logtype(role)[1].send(embed=em)
