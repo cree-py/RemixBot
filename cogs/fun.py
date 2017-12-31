@@ -227,7 +227,7 @@ class Fun:
                 em.set_image(url=img)
                 await ctx.send(embed=em)
 
-    @commands.command(alilases=['joke'])
+    @commands.command(aliases=['joke'])
     async def badjoke(self, ctx):
         '''Get a bad joke.'''
         async with aiohttp.ClientSession() as session:
