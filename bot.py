@@ -97,6 +97,14 @@ async def onready():
     bot.session = aiohttp.ClientSession()
 
 
+@bot.event
+async def on_message(msg):
+    channel = msg.channel
+
+    if msg.content.lower() == 'what is the prefix':
+        await channel.send(f'The prefix for this guild is {get_pre}')
+
+
 # Listener for :pushpin: command
 @bot.event
 async def on_reaction_add(reaction, user):
