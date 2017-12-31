@@ -45,7 +45,10 @@ async def get_pre(bot, message):
     except:
         pass
     else:
-        return config[str(message.guild.id)]['prefix']
+        try:
+            return config[str(message.guild.id)]['prefix']
+        except KeyError:
+            return 'c.'
 
 
 bot = commands.Bot(command_prefix=get_pre)
