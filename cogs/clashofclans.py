@@ -92,8 +92,8 @@ class Clash_of_Clans:
             tag = tag.strip('#')
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', self.headers) as resp:
-                resp = resp.json()
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', self.headers) as response:
+                resp = response.json()
                 name = resp['name']
                 em.title = "CoC Profile"
                 em.description = "Clash of Clans Stats"
@@ -156,18 +156,17 @@ class Clash_of_Clans:
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
             tag = tag.strip('#')
 
-        headers = {'Authorization': apikey}
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', self.headers) as resp:
                 try:
-                    clantag = resp['clan']['tag'].strip('#')
+                    clantag = resp.json()['clan']['tag'].strip('#')
                 except KeyError:
                     em.title = "Error"
                     em.description = "You are not in a clan"
                     return await ctx.send(embed=em)
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', self.headers) as resp:
-                resp = resp.json()
+            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', self.headers) as clan:
+                resp = clan.json()
                 em.title = "Clan Info"
                 em.description = f"{resp['description']}"
                 em.set_author(name=f"{resp['name']} (#{clantag})", icon_url=resp['badgeUrls']['large'])
