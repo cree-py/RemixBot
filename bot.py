@@ -37,8 +37,8 @@ import json
 
 bot = commands.Bot(command_prefix='c.')
 dbltoken = "token"
-directory = 'cogs.'
-cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
+directory = 'cogs'
+cogs = [x.replace('.y', '') for x in os.listdir('cogs') if x.endswith('.y')]
 
 
 for cog in cogs:
@@ -115,8 +115,6 @@ async def on_guild_join(g):
             print(dblpost.status)
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
 
-# Update DBL info and presence
-
 
 @bot.event
 async def on_guild_remove(g):
@@ -132,8 +130,6 @@ async def on_guild_remove(g):
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | c.help | {version}", type=3), afk=True)
-
-# Embedded help command
 
 
 @bot.command()
@@ -167,8 +163,6 @@ async def help(ctx):
     if ctx.message.channel.guild:
         await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
 
-# Ping command
-
 
 @bot.command()
 async def ping(ctx):
@@ -177,8 +171,6 @@ async def ping(ctx):
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
-
-# Info command
 
 
 @bot.command(aliases=['bot', 'about'])
@@ -198,8 +190,6 @@ async def info(ctx):
 
     em.set_footer(text="CreeperBot | Powered by discord.py")
     await ctx.send(embed=em)
-
-# Presence command
 
 
 @bot.command(name='presence', hidden=True)
@@ -229,8 +219,6 @@ async def _presence(ctx, type=None, *, game=None):
         else:
             await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
-# Suggest command
-
 
 @bot.command()
 async def suggest(ctx, *, idea: str):
@@ -243,15 +231,12 @@ async def suggest(ctx, *, idea: str):
     await suggest.send(embed=em)
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
-# Eval command
-
 
 @bot.command(name='eval')
 async def _eval(ctx, *, body):
     """Evaluates python code"""
     if not dev_check(ctx.author.id):
-        await ctx.send("You cannot use this because you are not a developer.")
-        return
+        return await ctx.send("You cannot use this because you are not a developer.")
     env = {
         'ctx': ctx,
         'channel': ctx.channel,
@@ -330,15 +315,11 @@ async def _eval(ctx, *, body):
     else:
         await ctx.message.add_reaction('\u2705')
 
-# Invite command
-
 
 @bot.command()
 async def invite(ctx):
     '''Invite the bot to your server'''
-    await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542")
-
-# Say command
+    await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542")
 
 
 @bot.command()
@@ -347,18 +328,16 @@ async def say(ctx, *, message: str):
     await ctx.message.delete()
     await ctx.send(message)
 
-# Shutdown command
-
 
 @bot.command(hidden=True)
 async def shutdown(ctx):
     '''Shut down the bot'''
     if not dev_check(ctx.author.id):
-        await ctx.send("You can't use this command because you are not a Creeper bot developer!")
+        return await ctx.send("You can't use this command because you are not a CreeperBot developer!")
 
     await ctx.send("Shutting down....")
     await bot.logout()
 
-# Login to client session using token
-if __name__ == "__main__":
-    bot.run(os.environ.get('TOKEN').strip('\"'))
+
+if __name__ == "main":
+    print('Online.')
