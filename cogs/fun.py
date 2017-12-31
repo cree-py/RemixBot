@@ -180,6 +180,19 @@ class Fun:
                 em.set_footer(text="Powered by random.cat")
                 em.set_image(url=data['file'])
                 await ctx.send(embed=em)
+                
+    # Numberfact command
+    @commands.commnd(aliases=['number'])
+    async def numberfact(self, ctx, number: int):
+        '''Get a fact about a number. Usage: `c.numberfact <number>`.'''
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get('http://numbersapi.com/1?json') as resp:
+                    file = await resp.json()
+                    fact = file['text']
+                    await ctx.send(f"**Did you know?**\n*{fact}*")
+        except:
+            await ctx.send("No facts are available for that number.")
 
 # Setup bot
 def setup(bot):
