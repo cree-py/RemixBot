@@ -187,7 +187,7 @@ class Fun:
         '''Get a fact about a number. Usage: `c.numberfact <number>`.'''
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.get('http://numbersapi.com/1?json') as resp:
+                async with session.get(f'http://numbersapi.com/{number}?json') as resp:
                     file = await resp.json()
                     fact = file['text']
                     await ctx.send(f"**Did you know?**\n*{fact}*")
