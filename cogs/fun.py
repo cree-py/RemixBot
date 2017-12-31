@@ -29,8 +29,10 @@ from discord.ext import commands
 import aiohttp
 
 # Initialize Fun class
+
+
 class Fun:
-  
+
     # Initialization method
     def __init__(self, bot):
         self.bot = bot
@@ -62,13 +64,13 @@ class Fun:
         em.title = f"🎱{question}"
         em.description = response
         await ctx.send(embed=em)
-        
+
     # Randomnumber command
     @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
     async def randomnumber(self, ctx, min=1, max=100):
         '''Get a random number between two numbers, or 1 and 100'''
         await ctx.send(f'Your random number is: {random.randint(min, max)}')
-        
+
     # Flipcoin command
     @commands.command(aliases=['coin'])
     async def flipcoin(self, ctx):
@@ -77,7 +79,7 @@ class Fun:
         color = discord.Color(value=0x00ff00)
         em = discord.Embed(color=color, title='Coinflip:', description=random.choice(choices))
         await ctx.send(embed=em)
-        
+
     # Dice command
     @commands.command()
     async def dice(self, ctx, number=1):
@@ -91,7 +93,7 @@ class Fun:
             color = discord.Color(value=0x00ff00)
         em = discord.Embed(color=color, title='Roll a certain number of dice', description=fmt)
         await ctx.send(embed=em)
-        
+
     # Randomquote command
     @commands.command(aliases=['randquote', 'quote'])
     async def randomquote(self, ctx):
@@ -139,7 +141,7 @@ class Fun:
             await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
         else:
             await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
-      
+
     # Chucknorris command
     @commands.command(aliases=['cnjoke'])
     async def chucknorris(self, ctx):
@@ -151,14 +153,14 @@ class Fun:
                 await ctx.send(data['value']['joke'])
 
     # Randomcomic command
-    @commands.command(aliases=['xkcd','comic'])
+    @commands.command(aliases=['xkcd', 'comic'])
     async def randomcomic(self, ctx):
         '''Get a comic from xkcd.'''
         async with aiohttp.ClientSession() as session:
             async with session.get(f'http://xkcd.com/info.0.json') as resp:
                 data = await resp.json()
                 currentcomic = data['num']
-        rand = random.randint(0, currentcomic) # max = current comic
+        rand = random.randint(0, currentcomic)  # max = current comic
         async with aiohttp.ClientSession() as session:
             async with session.get(f'http://xkcd.com/{rand}/info.0.json') as resp:
                 data = await resp.json()
@@ -169,5 +171,7 @@ class Fun:
                 await ctx.send(embed=em)
 
 # Setup bot
+
+
 def setup(bot):
-  bot.add_cog(Fun(bot))
+    bot.add_cog(Fun(bot))

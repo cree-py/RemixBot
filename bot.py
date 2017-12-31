@@ -153,15 +153,12 @@ async def help(ctx):
     nonec = []
     for c in bot.commands:
         if not c.hidden:
-            if type(c.instance).__name__ == 'NoneType':
+            if type(c.instance).__name__ == 'none':
                 nonec.append(c)
     abc = sorted(nonec, key=lambda x: x.name)
     for c in abc:
         none += f'`{ctx.prefix}{c.name}:\t{c.short_doc}`\n'
     em.add_field(name='Bot', value=none)
-    await bot.get_user(ctx.message.author.id).send(embed=em)
-    if ctx.message.channel.guild:
-        await ctx.send(f"{ctx.message.author.mention}, I DMed you a list of commands.")
 
 
 @bot.command()
@@ -169,8 +166,7 @@ async def ping(ctx):
     '''Pong! Get the bot's response time'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Pong!"
-    em.description = f'{bot.ws.latency * 1000:.4f} ms'
-    await ctx.send(embed=em)
+    em.description = f'{bot.latency * 1000:} s'
 
 
 @bot.command(aliases=['bot', 'about'])
@@ -189,7 +185,6 @@ async def info(ctx):
     em.add_field(name="Upvote this bot!", value=f"https://discordbots.org/bot/{bot.user.id} :reminder_ribbon:", inline=False)
 
     em.set_footer(text="CreeperBot | Powered by discord.py")
-    await ctx.send(embed=em)
 
 
 @bot.command(name='presence', hidden=True)
@@ -323,9 +318,9 @@ async def invite(ctx):
 
 
 @bot.command()
-async def say(ctx, *, message: str):
+async def say(ctx, message: str):
     '''Say something as the bot'''
-    await ctx.message.delete()
+    await ctx.message.delete
     await ctx.send(message)
 
 
