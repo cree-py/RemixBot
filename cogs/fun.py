@@ -227,6 +227,16 @@ class Fun:
                 em.set_image(url=img)
                 await ctx.send(embed=em)
 
+    @commands.command(alilases=['joke'])
+    async def badjoke(self, ctx):
+        '''Get a bad joke.'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as resp:
+                data = await resp.json()
+                em = discord.Embed(color=discord.Color(value=0x00ff00))
+                em.title = data['setup']
+                em.description = data['punchline']
+                await ctx.send(embed=em)
 
 def setup(bot):
     bot.add_cog(Fun(bot))
