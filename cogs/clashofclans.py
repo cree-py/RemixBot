@@ -154,8 +154,9 @@ class Clash_of_Clans:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as resp:
+                response = await resp.json()
                 try:
-                    clantag = await (resp.json()['clan']['tag']).strip('#')
+                    clantag = response['clan']['tag'].strip('#')
                 except KeyError:
                     em.title = "Error"
                     em.description = "You are not in a clan"
