@@ -169,7 +169,7 @@ class Fun:
                 await ctx.send(embed=em)
                 
     # Randomcat command
-    @commands.command(aliases['cat'])
+    @commands.command(aliases=['cat'])
     async def randomcat(self, ctx):
         '''Meow.'''
         async with aiohttp.ClientSession() as session:
