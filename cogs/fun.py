@@ -227,7 +227,23 @@ class Fun:
                 em.set_footer(text="Made possible by whatdoestrumpthink.com", icon_url="http://www.stickpng.com/assets/images/5841c17aa6515b1e0ad75aa1.png")
                 await ctx.send(embed=em)
 
+    # Randomdog command
+    @commands.command(aliases=['dog'])
+    async def randomdog(self, ctx):
+        '''Woof.'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get('https://dog.ceo/api/breeds/image/random') as resp:
+                file = await resp.json()
+                img = file['message']
+                em = discord.Embed(color=discord.Color(value=0x00ff00))
+                em.title = "Here's your dog!"
+                em.set_footer(text="Powered by dog.ceo")
+                em.set_image(url=img)
+                await ctx.send(embed=em)
 
+    
+        
+                
 # Setup bot
 def setup(bot):
   bot.add_cog(Fun(bot))
