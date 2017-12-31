@@ -93,6 +93,7 @@ class Clash_of_Clans:
         headers = {'Authorization': apikey}
         async with self.bot.session as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers) as resp:
+                resp = resp.json()
                 name = resp['name']
                 em.title = "CoC Profile"
                 em.description = "Clash of Clans Stats"
@@ -166,6 +167,7 @@ class Clash_of_Clans:
                     return await ctx.send(embed=em)
         async with self.bot.session as session:
             async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=headers) as resp:
+                resp = resp.json()
                 em.title = "Clan Info"
                 em.description = f"{resp['description']}"
                 em.set_author(name=f"{resp['name']} (#{clantag})", icon_url=resp['badgeUrls']['large'])
