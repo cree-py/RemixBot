@@ -22,20 +22,18 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# Import dependencies
+
 import discord
 import random
 from discord.ext import commands
 import aiohttp
 
-# Initialize Fun class
+
 class Fun:
-  
-    # Initialization method
+
     def __init__(self, bot):
         self.bot = bot
 
-    # eightball command
     @commands.command(aliases=['8ball'])
     async def eightball(self, ctx, *, question: str):
         '''Ask the 8 ball a question'''
@@ -62,14 +60,12 @@ class Fun:
         em.title = f"🎱{question}"
         em.description = response
         await ctx.send(embed=em)
-        
-    # Randomnumber command
+
     @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
     async def randomnumber(self, ctx, min=1, max=100):
         '''Get a random number between two numbers, or 1 and 100'''
         await ctx.send(f'Your random number is: {random.randint(min, max)}')
-        
-    # Flipcoin command
+
     @commands.command(aliases=['coin'])
     async def flipcoin(self, ctx):
         '''Flips a coin'''
@@ -77,8 +73,7 @@ class Fun:
         color = discord.Color(value=0x00ff00)
         em = discord.Embed(color=color, title='Coinflip:', description=random.choice(choices))
         await ctx.send(embed=em)
-        
-    # Dice command
+
     @commands.command()
     async def dice(self, ctx, number=1):
         '''Rolls a certain number of dice'''
@@ -91,8 +86,7 @@ class Fun:
             color = discord.Color(value=0x00ff00)
         em = discord.Embed(color=color, title='Roll a certain number of dice', description=fmt)
         await ctx.send(embed=em)
-        
-    # Randomquote command
+
     @commands.command(aliases=['randquote', 'quote'])
     async def randomquote(self, ctx):
         '''Get a random inspirational quote!'''
@@ -121,7 +115,6 @@ class Fun:
         quote = quotes[num]
         await ctx.send(quote)
 
-    # Lottery command
     @commands.command(aliases=['lotto'])
     async def lottery(self, ctx, *, guesses):
         '''Enter the lottery and see if you win!'''
@@ -139,8 +132,7 @@ class Fun:
             await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
         else:
             await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
-      
-    # Chucknorris command
+
     @commands.command(aliases=['cnjoke'])
     async def chucknorris(self, ctx):
         '''Facts about Chuck Norris.'''
@@ -150,15 +142,14 @@ class Fun:
                 data = await resp.json()
                 await ctx.send(data['value']['joke'])
 
-    # Randomcomic command
-    @commands.command(aliases=['xkcd','comic'])
+    @commands.command(aliases=['xkcd', 'comic'])
     async def randomcomic(self, ctx):
         '''Get a comic from xkcd.'''
         async with aiohttp.ClientSession() as session:
             async with session.get(f'http://xkcd.com/info.0.json') as resp:
                 data = await resp.json()
                 currentcomic = data['num']
-        rand = random.randint(0, currentcomic) # max = current comic
+        rand = random.randint(0, currentcomic)  # max = current comic
         async with aiohttp.ClientSession() as session:
             async with session.get(f'http://xkcd.com/{rand}/info.0.json') as resp:
                 data = await resp.json()
@@ -167,8 +158,7 @@ class Fun:
                 em.set_footer(text=f"Published on {data['month']}/{data['day']}/{data['year']}")
                 em.set_image(url=data['img'])
                 await ctx.send(embed=em)
-                
-    # Randomcat command
+
     @commands.command(aliases=['cat'])
     async def randomcat(self, ctx):
         '''Meow.'''
@@ -180,13 +170,12 @@ class Fun:
                 em.set_footer(text="Powered by random.cat")
                 em.set_image(url=data['file'])
                 await ctx.send(embed=em)
-                
-    # Numberfact command
+
     @commands.command(aliases=['number'])
     async def numberfact(self, ctx, *, number: int):
-        '''Get a fact about a number. Usage: `c.numberfact <number>`.'''
+        '''Get a fact about a number. Usage: {p}numberfact <number>.'''
         if not number:
-            await ctx.send('Usage: `c.numberfact <number>`')
+            await ctx.send(f'Usage: `{ctx.prefix}numberfact <number>`')
             return
         try:
             async with aiohttp.ClientSession() as session:
@@ -197,12 +186,11 @@ class Fun:
         except:
             await ctx.send("No facts are available for that number.")
 
-    # Mathfact command
     @commands.command()
     async def mathfact(self, ctx, number: int):
-        '''Get a math fact about a number. Usage: `c.mathfact <number>`.'''
+        '''Get a math fact about a number. Usage: {p}mathfact <number>.'''
         if not number:
-            await ctx.send('Usage: `c.mathfact <number>`')
+            await ctx.send(f'Usage: `{ctx.prefix}mathfact <number>`')
             return
         try:
             async with aiohttp.ClientSession() as session:
@@ -212,11 +200,10 @@ class Fun:
                     await ctx.send(f"**Did you know?**\n*{fact}*")
         except:
             await ctx.send("No facts are available for that number.")
-            
-    # Trumpquote command
+
     @commands.command(aliases=['trump', 'trumpquote'])
     async def asktrump(self, ctx, question):
-        '''Ask Donald Trump a question! Usage: c.asktrump <yourquestion>'''
+        '''Ask Donald Trump a question! Usage: {p}asktrump <yourquestion>'''
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}') as resp:
                 file = await resp.json()
@@ -227,7 +214,6 @@ class Fun:
                 em.set_footer(text="Made possible by whatdoestrumpthink.com", icon_url="http://www.stickpng.com/assets/images/5841c17aa6515b1e0ad75aa1.png")
                 await ctx.send(embed=em)
 
-    # Randomdog command
     @commands.command(aliases=['dog'])
     async def randomdog(self, ctx):
         '''Woof.'''
@@ -241,9 +227,6 @@ class Fun:
                 em.set_image(url=img)
                 await ctx.send(embed=em)
 
-    
-        
-                
-# Setup bot
+
 def setup(bot):
-  bot.add_cog(Fun(bot))
+    bot.add_cog(Fun(bot))

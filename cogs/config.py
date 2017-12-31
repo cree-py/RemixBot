@@ -47,7 +47,7 @@ class Config:
 
             prefix[str(ctx.message.guild.id)]['prefix'] = str(pre)
             json.dump(prefix, f, indent=4)
-            await ctx.send('The guild prefix has been set to `{pre}`')
+            await ctx.send(f'The guild prefix has been set to `{pre}`. Use `{pre}prefix <prefix>` to change it again.')
 
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)

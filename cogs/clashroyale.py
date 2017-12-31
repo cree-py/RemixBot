@@ -92,7 +92,7 @@ class Clash_Royale:
     async def save(self, ctx, tag=None):
         '''Save a tag to your discord profile'''
         if tag is None:
-            return await ctx.send('Please enter a tag.\nExample: `c.save #CY8G8VVQ`')
+            return await ctx.send(f'Please enter a tag.\nExample: `{ctx.prefix}save #CY8G8VVQ`')
         tag = tag.strip('#').replace('O', '0')
         if not self.check_tag(tag):
             return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
@@ -106,7 +106,7 @@ class Clash_Royale:
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -198,7 +198,7 @@ class Clash_Royale:
         em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -231,7 +231,7 @@ class Clash_Royale:
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -307,7 +307,7 @@ class Clash_Royale:
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -355,7 +355,7 @@ class Clash_Royale:
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -403,7 +403,7 @@ class Clash_Royale:
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -434,7 +434,7 @@ class Clash_Royale:
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
@@ -472,7 +472,7 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.save <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(tag.strip('#').replace('O', '0')):

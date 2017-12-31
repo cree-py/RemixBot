@@ -143,7 +143,7 @@ class Utility:
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
         '''A command group to see the number of days until a holiday'''
-        await ctx.send('`c.isit halloween` Find the number of days until this spooky holiday!\n`c.isit christmas` Are you naughty or nice?\n`c.isit newyear` When is next year coming already?')
+        await ctx.send(f'`{ctx.prefix}isit halloween` Find the number of days until this spooky holiday!\n`{ctx.prefix}isit christmas` Are you naughty or nice?\n`{ctx.prefix}isit newyear` When is next year coming already?')
 
     @isit.command()
     async def halloween(self, ctx):

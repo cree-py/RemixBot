@@ -80,7 +80,7 @@ class Clash_of_Clans:
     async def cocsave(self, ctx, tag=None):
         '''Save a Clash of Clans tag to your discord profile'''
         if tag is None:
-            return await ctx.send('Please enter a tag.\nExample: `c.save #92CP9Y8PC`')
+            return await ctx.send(f'Please enter a tag.\nExample: `{ctx.prefix}save #92CP9Y8PC`')
         tag = tag.strip('#').replace('O', '0')
         if not self.check_tag(tag):
             return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
@@ -94,7 +94,7 @@ class Clash_of_Clans:
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}cocsave <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(tag):
@@ -155,7 +155,7 @@ class Clash_of_Clans:
 
         if tag is None:
             if self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send('No tag found. Please use `c.cocsave <tag>` to save a tag to your discord profile.')
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}cocsave <tag>` to save a tag to your discord profile.')
             tag = self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(tag):
