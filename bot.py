@@ -35,7 +35,20 @@ from discord.ext import commands
 import json
 
 
-bot = commands.Bot(command_prefix='c.')
+async def get_pre(bot, message):
+    '''Gets the prefix for the guild'''
+    with open('data/config.json') as f:
+        config = json.load(f)
+    try:
+        if str(message.guild.id) not in config:
+            return 'c.'
+    except:
+        pass
+    else:
+        return config[str(message.guild.id)]['prefix']
+
+
+bot = commands.Bot(command_prefix=get_pre)
 dbltoken = "token"
 directory = 'cogs'
 cogs = [x.replace('.y', '') for x in os.listdir('cogs') if x.endswith('.y')]
