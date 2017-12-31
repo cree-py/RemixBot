@@ -25,6 +25,7 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
+import aiohttp
 import json
 
 
@@ -91,7 +92,7 @@ class Clash_of_Clans:
             tag = tag.strip('#')
 
         headers = {'Authorization': apikey}
-        async with self.bot.session as session:
+        async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers) as resp:
                 resp = resp.json()
                 name = resp['name']
@@ -157,7 +158,7 @@ class Clash_of_Clans:
             tag = tag.strip('#')
 
         headers = {'Authorization': apikey}
-        async with self.bot.session as session:
+        async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=headers) as resp:
                 try:
                     clantag = resp['clan']['tag'].strip('#')
@@ -165,7 +166,7 @@ class Clash_of_Clans:
                     em.title = "Error"
                     em.description = "You are not in a clan"
                     return await ctx.send(embed=em)
-        async with self.bot.session as session:
+        async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=headers) as resp:
                 resp = resp.json()
                 em.title = "Clan Info"
