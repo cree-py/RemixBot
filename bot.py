@@ -97,6 +97,23 @@ async def onready():
     bot.session = aiohttp.ClientSession()
 
 
+@bot.event
+async def on_message(message):
+    channel = message.channel
+    if commands.errors.MissingPermissions:
+        await channel.send(commands.errors.MissingPermissions.message)
+    if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
+        with open('data/config.json') as f:
+            config = json.load(f)
+            try:
+                prefix = config[str(message.guild.id)]['prefix']
+            except KeyError:
+                prefix = 'c.'
+            await channel.send(f'The guild prefix is `{prefix}`')
+
+    await bot.process_commands(message)
+
+
 # Listener for :pushpin: command
 @bot.event
 async def on_reaction_add(reaction, user):
