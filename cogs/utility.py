@@ -186,6 +186,20 @@ class Utility:
             if until.days + 1 == 1:
                 return await ctx.send('No, tomorrow is New Year\'s Day!')
             await ctx.send(f'No, there are {until.days + 1} days left until New Year\'s Day.')
+            
+    @isit.command()
+    async def victinisbirthday(self, ctx):
+        now = datetime.datetime.now()
+        vb = datetime.datetime(now.year, 7, 13)
+        if now.month > 7:
+            vb = datetime.datetime(now.year + 1, 7, 13)
+        until = vb - now
+        if now.month == 7 and now.day == 13:
+            await ctx.send('It is Victini\'s Birthday! Make sure to wish them a happy birthday!')
+        else:
+            if until.days + 1 == 1:
+                return await ctx.send('No, tomorrow is Victini\'s Birthday!')
+            await ctx.send(f'No, there are {until.days + 1} more days until Victini\'s birthday.')
 
     @commands.group(invoke_without_command=True)
     async def math(self, ctx):
