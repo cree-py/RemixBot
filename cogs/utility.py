@@ -143,7 +143,7 @@ class Utility:
     @commands.group(invoke_without_command=True)
     async def isit(self, ctx):
         '''A command group to see the number of days until a holiday'''
-        await ctx.send(f'`{ctx.prefix}isit halloween` Find the number of days until this spooky holiday!\n`{ctx.prefix}isit christmas` Are you naughty or nice?\n`{ctx.prefix}isit newyear` When is next year coming already?')
+        await ctx.send(f'`{ctx.prefix}isit halloween` Find the number of days until this spooky holiday!\n`{ctx.prefix}isit christmas` Are you naughty or nice?\n`{ctx.prefix}isit newyear` When is next year coming already?\n`{ctx.prefix}isit victinisbirthday` When do I need to go buy presents for Victini?')
 
     @isit.command()
     async def halloween(self, ctx):
@@ -186,6 +186,20 @@ class Utility:
             if until.days + 1 == 1:
                 return await ctx.send('No, tomorrow is New Year\'s Day!')
             await ctx.send(f'No, there are {until.days + 1} days left until New Year\'s Day.')
+            
+    @isit.command()
+    async def victinisbirthday(self, ctx):
+        now = datetime.datetime.now()
+        vb = datetime.datetime(now.year, 7, 13)
+        if now.month > 7:
+            vb = datetime.datetime(now.year + 1, 7, 13)
+        until = vb - now
+        if now.month == 7 and now.day == 13:
+            await ctx.send('It is Victini\'s Birthday! Make sure to wish them a happy birthday!')
+        else:
+            if until.days + 1 == 1:
+                return await ctx.send('No, tomorrow is Victini\'s Birthday!')
+            await ctx.send(f'No, there are {until.days + 1} more days until Victini\'s birthday.')
 
     @commands.group(invoke_without_command=True)
     async def math(self, ctx):
