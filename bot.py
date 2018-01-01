@@ -100,17 +100,7 @@ async def onready():
 @bot.event
 async def on_message(message):
     channel = message.channel
-    if commands.errors.MissingPermissions:
-        missing_perms = commands.errors.MissingPermissions.missing_perms
 
-        missing = [perm.replace('_', ' ').replace('guild', 'server').title() for perm in missing_perms]
-
-        if len(missing) > 2:
-            fmt = '{}, and {}'.format(", ".join(missing[:-1]), missing[-1])
-        else:
-            fmt = ' and '.join(missing)
-        message = f'You are missing {fmt} permission(s) to run this command.'
-        await channel.send(message)
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
         with open('data/config.json') as f:
             config = json.load(f)
