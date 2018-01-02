@@ -41,6 +41,7 @@ class Pokedex:
     @pokemon.command()
     async def random(self, ctx):
         '''Get stats about a random pokemon.'''
+        await ctx.trigger_typing()
         num = random.randint(1, 721)
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
@@ -97,6 +98,7 @@ class Pokedex:
     @pokemon.command()
     async def info(self, ctx, pokemon):
         '''Get stats about a pokemon. You can specify either its pokedex number or name.'''
+        await ctx.trigger_typing()
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
