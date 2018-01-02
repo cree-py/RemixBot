@@ -83,6 +83,15 @@ class Pokedex:
                     else:
                         pass       
                 em.description=description
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
+                data = await resp.json()
+                moves = ""
+                for i in range(len(data['moves'])):
+                    if not i == 0:
+                        moves += ", "
+                    moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+        em.add_field(name="Learnable Moves", value=moves)
         await ctx.send(embed=em)
         
     @pokemon.command()
@@ -130,9 +139,18 @@ class Pokedex:
                         else:
                             pass       
                     em.description=description
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
+                    data = await resp.json()
+                    moves = ""
+                    for i in range(len(data['moves'])):
+                        if not i == 0:
+                            moves += ", "
+                        moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+            em.add_field(name="Learnable Moves", value=moves)
             await ctx.send(embed=em)
         except:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
-
+            
 def setup(bot):
     bot.add_cog(Pokedex(bot))
