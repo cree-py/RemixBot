@@ -369,7 +369,7 @@ async def invite(ctx):
 
 
 @bot.command()
-async def say(ctx, message: str):
+async def say(ctx, *, message: str):
     '''Say something as the bot'''
     await ctx.message.delete
     await ctx.send(message)
