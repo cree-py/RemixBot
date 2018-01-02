@@ -121,7 +121,7 @@ async def on_message(message):
             try:
                 prefix = config[str(message.guild.id)]['prefix']
             except KeyError:
-                prefix = 'c.'
+                prefix = '-'
             await channel.send(f'The guild prefix is `{prefix}`')
 
     await bot.process_commands(message)
@@ -140,7 +140,7 @@ async def on_guild_join(g):
     i = 0
     while not success:
         try:
-            await g.channels[i].send(f"Hello! Thanks for inviting me to your server. To set a custom prefix, use `c.prefix <prefix>`. For more help, use c.help. If you want to suggest anything to be added into the bot use `c.suggest <your suggestion>!`")
+            await g.channels[i].send(f"Hello! Thanks for inviting me to your server. To set a custom prefix, use `-prefix <prefix>`. For more help, use -help. If you want to suggest anything to be added into the bot use `-suggest <your suggestion>!`")
         except (discord.Forbidden, AttributeError):
             i += 1
         except IndexError:
