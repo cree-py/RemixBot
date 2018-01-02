@@ -37,18 +37,19 @@ import json
 
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
-    with open('data/config.json') as f:
-        config = json.load(f)
     try:
-        if str(message.guild.id) not in config:
-            return 'c.'
+        with open('data/config.json') as f:
+            config = json.load(f)
     except:
-        pass
-    else:
-        try:
-            return config[str(message.guild.id)]['prefix']
-        except KeyError:
-            return 'c.'
+        return '-'
+
+    if str(message.guild.id) not in config:
+        return '-'
+
+    try:
+        return config[str(message.guild.id)]['prefix']
+    except KeyError:
+        return '-'
 
 
 bot = commands.Bot(command_prefix=get_pre)
