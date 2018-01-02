@@ -25,7 +25,6 @@ Previously, people have copied code from here and hosted their own instance with
 
 ### Contributors
 - [4JR](https://github.com/fourjr)
-- [IceMC](https://github.com/iceemc)
 
 ### Contributing
 If you need support with the bot or would like to *contribute to RemixBot*, join [the discord server](https://discord.gg/RzsYQ9f) and ask any of the people with the Creators/Contributors role. Make sure to read the [Contributor Covenant Code of Conduct](https://github.com/cree-py/creepy.py/wiki/Contributor-Covenant-Code-of-Conduct) and agree to it before becoming a contributor.
