@@ -87,7 +87,7 @@ class Pokedex:
         
     @pokemon.command()
     async def info(self, ctx, pokemon):
-        '''Get stats about a random pokemon.'''
+        '''Get stats about a pokemon. You can specify either its pokedex number or name.'''
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
