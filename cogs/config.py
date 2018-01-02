@@ -39,11 +39,8 @@ class Config:
         '''Set a custom prefix for the guild.'''
         with open('./data/config.json', 'r+') as f:
             prefix = json.load(f)
-            try:
-                p = prefix[str(ctx.message.guild.id)]
-            except KeyError:
-                prefix[str(ctx.message.guild.id)] = dict()
-                prefix[str(ctx.message.guild.id)]['prefix'] = 'c.'
+            if str(ctx.guild.id) not in prefix:
+                prefix[str(ctx.message.guild.id)] = {'prefix': '-'}
             f.seek(0)
 
             prefix[str(ctx.message.guild.id)]['prefix'] = str(pre)
