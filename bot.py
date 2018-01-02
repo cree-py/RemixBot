@@ -70,7 +70,7 @@ for cog in cogs:
 
 
 bot.remove_command('help')
-version = "Beta 1.8.0"
+version = "Beta 2.0.0"
 
 
 def dev_check(id):
@@ -218,7 +218,7 @@ async def info(ctx):
     em.add_field(name='GitHub', value='[Click here](https://github.com/cree-py/creepy.py)')
     em.add_field(name="Upvote this bot!", value=f"[Click here](https://discordbots.org/bot/{bot.user.id}) :reminder_ribbon:")
 
-    em.set_footer(text="CreeperBot | Powered by discord.py")
+    em.set_footer(text="RemixBot | Powered by discord.py")
 
 
 @bot.command(name='presence', hidden=True)
@@ -251,7 +251,7 @@ async def _presence(ctx, type=None, *, game=None):
 
 @bot.command()
 async def suggest(ctx, *, idea: str):
-    """Suggest an idea. The idea will be sent to developer server"""
+    """Suggest an idea. Your idea will be sent to the developer server"""
     suggest = bot.get_channel(384111952798154752)
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = f"{ctx.author} | User ID: {ctx.author.id}"
@@ -362,7 +362,7 @@ async def say(ctx, message: str):
 async def shutdown(ctx):
     '''Shut down the bot'''
     if not dev_check(ctx.author.id):
-        return await ctx.send("You can't use this command because you are not a CreeperBot developer!")
+        return await ctx.send("You can't use this command because you are not a RemixBot developer!")
 
     await ctx.send("Shutting down....")
     await bot.logout()
