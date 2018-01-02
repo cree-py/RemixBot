@@ -53,6 +53,8 @@ async def get_pre(bot, message):
 
 bot = commands.Bot(command_prefix=get_pre)
 dbltoken = "token"
+url = url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
+headers = {"Authorization": dbltoken}
 directory = 'cogs'
 cogs = [x.replace('.y', '') for x in os.listdir('cogs') if x.endswith('.y')]
 
@@ -93,6 +95,11 @@ def cleanup_code(content):
 async def onready():
     print("Bot Is Online.")
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | {version}", type=3), afk=True)
+
+    payload = {"server_count": len(bot.guilds)}
+    async with aiohttp.ClientSession() as aioclient:
+        await aioclient.post(url, data=payload, headers=headers)
+
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
 
@@ -134,33 +141,20 @@ async def on_guild_join(g):
             pass
         else:
             success = True
-    url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
-    headers = {
-        'Authorization': dbltoken,
-        'content-type': 'application/json'
-    }
-    payload = {
-        'server_count': len(bot.guilds)
-    }
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
-            print(dblpost.status)
+
+    payload = {"server_count": len(bot.guilds)}
+    async with aiohttp.ClientSession() as aioclient:
+        await aioclient.post(url, data=payload, headers=headers)
+
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | {version}", type=3), afk=True)
 
 
 @bot.event
 async def on_guild_remove(g):
-    url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
-    headers = {
-        'Authorization': dbltoken,
-        'content-type': 'application/json'
-    }
-    payload = {
-        'server_count': len(bot.guilds)
-    }
-    async with aiohttp.ClientSession() as session:
-        async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
-            print(dblpost.status)
+    payload = {"server_count": len(bot.guilds)}
+    async with aiohttp.ClientSession() as aioclient:
+        await aioclient.post(url, data=payload, headers=headers)
+
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | {version}", type=3), afk=True)
 
 
