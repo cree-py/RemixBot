@@ -154,32 +154,32 @@ class Pokedex:
         except:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             
-    @pokemon.command()
-    async def move(self, ctx, move):
-        '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
-        await ctx.trigger_typing()
-        try:
-            async with aiohttp.ClientSession() as session:
-                async with session.get(f'https://pokeapi.co/api/v2/move/{move}/') as resp:
-                    data = await resp.json()
-                    id = data['id']
-                    em = discord.Embed(color=discord.Color(value=0x00FF00))
-                    em.title = data['name'].title()
-                    em.add_field(name="Accuracy", value=data['accuracy'])
-                    em.add_field(name="PP", value=data['pp'])
-                    em.add_field(name="Priority", value=data['priority'])
-                    em.add_field(name="Damage", value=data['power'])
-                    em.add_field(name="Type", value=data['type']['name'].title()
-                    for i in range(len(data['flavor_text_entries'])):
-                        if data['flavor_text_entries'][i]['language']['name'] == "en":
-                            description = data['flavor_text_entries'][i]['flavor_text']
-                            break
-                        else:
-                            pass       
-                    em.description=description
-            await ctx.send(embed=em)
-        except:
-            await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
+#     @pokemon.command()
+#     async def move(self, ctx, move):
+#         '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
+#         await ctx.trigger_typing()
+#         try:
+#             async with aiohttp.ClientSession() as session:
+#                 async with session.get(f'https://pokeapi.co/api/v2/move/{move}/') as resp:
+#                     data = await resp.json()
+#                     id = data['id']
+#                     em = discord.Embed(color=discord.Color(value=0x00FF00))
+#                     em.title = data['name'].title()
+#                     em.add_field(name="Accuracy", value=data['accuracy'])
+#                     em.add_field(name="PP", value=data['pp'])
+#                     em.add_field(name="Priority", value=data['priority'])
+#                     em.add_field(name="Damage", value=data['power'])
+#                     em.add_field(name="Type", value=data['type']['name'].title()
+#                     for i in range(len(data['flavor_text_entries'])):
+#                         if data['flavor_text_entries'][i]['language']['name'] == "en":
+#                             description = data['flavor_text_entries'][i]['flavor_text']
+#                             break
+#                         else:
+#                             pass       
+#                     em.description=description
+#             await ctx.send(embed=em)
+#         except:
+#             await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
 
          
 def setup(bot):
