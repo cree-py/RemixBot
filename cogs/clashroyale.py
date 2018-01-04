@@ -262,6 +262,28 @@ class Clash_Royale:
             for m in clan.members:
                 crowns += m.clan_chest_crowns
             chest = f'{crowns}/1600 {self.emoji("chestclan")}'
+            # this is dat banana boi's horrible coding. do NOT accept without making sure that this is good enough.
+            if crowns > 70:
+                tier = '1/10'
+            if crowns > 160:
+                tier = '2/10'
+            if crowns > 270:
+                tier = '3/10'
+            if crowns > 400:
+                tier = '4/10'
+            if crowns > 550:
+                tier = '5/10'
+            if crowns > 720:
+                tier = '6/10'
+            if crowns > 910:
+                tier = '7/10'
+            if crowns > 1120:
+                tier = '8/10'
+            if crowns > 1350:
+                tier = '9/10'
+            if crowns == 1600:
+                tier = '10/10'
+        # end dat banana boi's horrible coding.       
 
         pushers = []
         if len(clan.members) >= 3:
@@ -290,6 +312,7 @@ class Clash_Royale:
         em.add_field(name="Required Trophies", value=f"{clan.required_score} {self.emoji('trophy')}")
         em.add_field(name='Top Players', value='\n\n'.join(pushers))
         em.add_field(name='Top Contributors', value='\n\n'.join(ccc))
+        em.add_field(name='Clan Chest Tier', value=f'{tier}') # also dont forget to add the clan chest emoji, idk what it is
         em.set_footer(text="Stats made by Cree-Py | Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await ctx.send(embed=em)
 
