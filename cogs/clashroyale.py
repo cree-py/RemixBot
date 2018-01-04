@@ -264,25 +264,25 @@ class Clash_Royale:
             chest = f'{crowns}/1600 {self.emoji("chestclan")}'
                 if crowns < 70:
                     tier = '0/10'
-                if crowns > 70 and crowns < 160:
+                elif crowns > 70 and crowns < 160:
                     tier = '1/10'
-                if crowns > 160 and crowns < 270:
+                elif crowns > 160 and crowns < 270:
                     tier = '2/10'
-                if crowns > 270 and crowns < 400:
+                elif crowns > 270 and crowns < 400:
                     tier = '3/10'
-                if crowns > 400 and crowns < 550:
+                elif crowns > 400 and crowns < 550:
                     tier = '4/10'
-                if crowns > 550 and crowns < 720:
+                elif crowns > 550 and crowns < 720:
                     tier = '5/10'
-                if crowns > 720 and crowns < 910:
+                elif crowns > 720 and crowns < 910:
                     tier = '6/10'
-                if crowns > 910 and crowns < 1120:
+                elif crowns > 910 and crowns < 1120:
                     tier = '7/10'
-                if crowns > 1120 and crowns < 1350:
+                elif crowns > 1120 and crowns < 1350:
                     tier = '8/10'
-                if crowns > 1350 and crowns < 1600:
+                elif crowns > 1350 and crowns < 1600:
                     tier = '9/10'
-                if crowns == 1600:
+                elif crowns == 1600:
                     tier = '10/10'
             
         pushers = []
