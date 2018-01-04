@@ -185,7 +185,7 @@ class Clash_Royale:
         if s:
             em.add_field(name=f'Previous Season Results ({s.id})', value=season, inline=False)
 
-        em.set_thumbnail(url=profile.stats.favorite_card.icon)
+        em.set_thumbnail(url=f'https://cr-api.github.io/cr-api-assets/arenas/arena{profile.arena.arenaID}.png'))
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
