@@ -262,7 +262,29 @@ class Clash_Royale:
             for m in clan.members:
                 crowns += m.clan_chest_crowns
             chest = f'{crowns}/1600 {self.emoji("chestclan")}'
-
+                if crowns < 70:
+                    tier = '0/10'
+                if crowns > 70 and crowns < 160:
+                    tier = '1/10'
+                if crowns > 160 and crowns < 270:
+                    tier = '2/10'
+                if crowns > 270 and crowns < 400:
+                    tier = '3/10'
+                if crowns > 400 and crowns < 550:
+                    tier = '4/10'
+                if crowns > 550 and crowns < 720:
+                    tier = '5/10'
+                if crowns > 720 and crowns < 910:
+                    tier = '6/10'
+                if crowns > 910 and crowns < 1120:
+                    tier = '7/10'
+                if crowns > 1120 and crowns < 1350:
+                    tier = '8/10'
+                if crowns > 1350 and crowns < 1600:
+                    tier = '9/10'
+                if crowns == 1600:
+                    tier = '10/10'
+            
         pushers = []
         if len(clan.members) >= 3:
             for i in range(3):
@@ -290,6 +312,7 @@ class Clash_Royale:
         em.add_field(name="Required Trophies", value=f"{clan.required_score} {self.emoji('trophy')}")
         em.add_field(name='Top Players', value='\n\n'.join(pushers))
         em.add_field(name='Top Contributors', value='\n\n'.join(ccc))
+        em.add_field(name='Clan Chest Tier', value=f'{tier}')
         em.set_footer(text="Stats made by Cree-Py | Powered by cr-api.com", icon_url="http://cr-api.com/static/img/branding/cr-api-logo.png")
         await ctx.send(embed=em)
 
