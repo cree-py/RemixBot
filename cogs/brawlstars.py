@@ -47,7 +47,7 @@ class BrawlStars:
 
     # Get player tag from json
     def get_tag(self, userid):
-        with open('./data/tags/tags.json') as f:
+        with open('./data/tags/bstags.json') as f:
             config = json.load(f)
             try:
                 tag = config[userid]
@@ -57,7 +57,7 @@ class BrawlStars:
 
     # Save a tag
     def save_tag(self, userid, tag):
-        with open('./data/tags/tags.json', 'r+') as f:
+        with open('./data/tags/bstags.json', 'r+') as f:
             config = json.load(f)
             f.seek(0)
             config[userid] = tag
