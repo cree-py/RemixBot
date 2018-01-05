@@ -274,6 +274,7 @@ class BrawlStars:
                 em2 = discord.Embed(color=discord.Color(value=0x00FF00))
                 em2.title = "Top members"
                 em2.description = "This is calculated through total trophy count."
+                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
                 em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
                 em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
                 em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
@@ -362,8 +363,10 @@ class BrawlStars:
                 em.add_field(name="Total trophies", value=totaltrophies)
                 em.add_field(name="Required trophies", value=reqdtrophies)
 
+                em2 = discord.Embed(color=discord.Color(value=0x00FF00))
                 em2.title = "Top members"
                 em2.description = "This is calculated through total trophy count."
+                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
                 em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
                 em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
                 em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
