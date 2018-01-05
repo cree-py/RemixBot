@@ -132,9 +132,9 @@ class BrawlStars:
                         em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
                         em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
                         await ctx.send(embed=em)
-                    except:
+                    except Exception as e:
                         # Haha you got me I'm lazy
-                        await ctx.send("An unknown error occured.")
+                        await ctx.send(e)
                 else:
                     await ctx.send("You have an invalid tag saved. Which shouldn't happen.")
         else:
@@ -175,9 +175,9 @@ class BrawlStars:
                     em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
                     em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
                     await ctx.send(embed=em)
-                except:
+                except Exception as e:
                     # Haha you got me I'm lazy
-                    await ctx.send("An unknown error occured.")
+                    await ctx.send(e)
             else:
                 await ctx.send("Invalid tag. Tags can only contain the following characters: ```0289PYLQGRJCUV```")
                 await ctx.send("Please check your tag and try again.")
