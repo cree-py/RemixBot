@@ -77,6 +77,14 @@ class BrawlStars:
 
         await ctx.trigger_typing()
 
+        # Get attr using beautiful soup
+        def get_attr(type: str, attr: str):
+            return soup.find(type, class_=attr).text
+
+        # Get all matches into soup
+        def get_all_attrs(type: str, attr: str):
+            return soup.find_all(type, class_=attr)
+
         if id == "notagspecified":
             id = self.get_tag(str(ctx.message.author.id)).strip('#').replace('O', '0')
             if id is None:
@@ -102,18 +110,18 @@ class BrawlStars:
 
                         em = discord.Embed(color=discord.Color(value=0x00FF00))
                         em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                        em.title = self.get_attr('div', 'player-name brawlstars-font') + " (#" + id + ")"
-                        em.description = "Band: " + self.get_attr('div', 'band-name mr-2') + " (" + self.get_attr('div', 'band-tag') + ")"
-                        em.add_field(name="Level", value=self.get_attr('div', 'experience-level'))
-                        em.add_field(name="Experience", value=self.get_attr('div', 'progress-text'))
-                        em.add_field(name="Trophies", value=self.get_all_attrs('div', 'trophies')[0].text)
-                        em.add_field(name="Highest Trophies", value=self.get_all_attrs('div', 'trophies')[1].text)
+                        em.title = get_attr('div', 'player-name brawlstars-font') + " (#" + id + ")"
+                        em.description = "Band: " + get_attr('div', 'band-name mr-2') + " (" + get_attr('div', 'band-tag') + ")"
+                        em.add_field(name="Level", value=get_attr('div', 'experience-level'))
+                        em.add_field(name="Experience", value=get_attr('div', 'progress-text'))
+                        em.add_field(name="Trophies", value=get_all_attrs('div', 'trophies')[0].text)
+                        em.add_field(name="Highest Trophies", value=get_all_attrs('div', 'trophies')[1].text)
                         em.add_field(name="Highest Brawler", value=highestbrawler)
-                        em.add_field(name="Highest Brawler Trophies", value=self.get_all_attrs('div', 'trophies')[2].text)
-                        em.add_field(name="Victories", value=self.get_attr('div', 'victories'))
-                        em.add_field(name="Showdown Victories", value=self.get_attr('div', 'showdown-victories'))
-                        em.add_field(name="Best time as boss", value=self.get_attr('div', 'boss-time'))
-                        em.add_field(name="Best robo rumble time", value=self.get_attr('div', 'robo-time'))
+                        em.add_field(name="Highest Brawler Trophies", value=get_all_attrs('div', 'trophies')[2].text)
+                        em.add_field(name="Victories", value=get_attr('div', 'victories'))
+                        em.add_field(name="Showdown Victories", value=get_attr('div', 'showdown-victories'))
+                        em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
+                        em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
                         await ctx.send(embed=em)
                     except Exception as e:
                         await ctx.send(e)
@@ -134,7 +142,7 @@ class BrawlStars:
                     neweststr = newerstr.split('" w')
                     imgpath = neweststr[0]
 
-                    test = self.get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
+                    test = get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
                     div = str(test[0])
                     newdiv = div.split('brawlers/')
                     newerdiv = newdiv[1]
@@ -143,18 +151,18 @@ class BrawlStars:
 
                     em = discord.Embed(color=discord.Color(value=0x00FF00))
                     em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                    em.title = self.get_attr('div', 'player-name brawlstars-font') + " (#" + id + ")"
-                    em.description = "Band: " + self.get_attr('div', 'band-name mr-2') + " (" + self.get_attr('div', 'band-tag') + ")"
-                    em.add_field(name="Level", value=self.get_attr('div', 'experience-level'))
-                    em.add_field(name="Experience", value=self.get_attr('div', 'progress-text'))
-                    em.add_field(name="Trophies", value=self.get_all_attrs('div', 'trophies')[0].text)
-                    em.add_field(name="Highest Trophies", value=self.get_all_attrs('div', 'trophies')[1].text)
+                    em.title = get_attr('div', 'player-name brawlstars-font') + " (#" + id + ")"
+                    em.description = "Band: " + get_attr('div', 'band-name mr-2') + " (" + get_attr('div', 'band-tag') + ")"
+                    em.add_field(name="Level", value=get_attr('div', 'experience-level'))
+                    em.add_field(name="Experience", value=get_attr('div', 'progress-text'))
+                    em.add_field(name="Trophies", value=get_all_attrs('div', 'trophies')[0].text)
+                    em.add_field(name="Highest Trophies", value=get_all_attrs('div', 'trophies')[1].text)
                     em.add_field(name="Highest Brawler", value=highestbrawler)
-                    em.add_field(name="Highest Brawler Trophies", value=self.get_all_attrs('div', 'trophies')[2].text)
-                    em.add_field(name="Victories", value=self.get_attr('div', 'victories'))
-                    em.add_field(name="Showdown Victories", value=self.get_attr('div', 'showdown-victories'))
-                    em.add_field(name="Best time as boss", value=self.get_attr('div', 'boss-time'))
-                    em.add_field(name="Best robo rumble time", value=self.get_attr('div', 'robo-time'))
+                    em.add_field(name="Highest Brawler Trophies", value=get_all_attrs('div', 'trophies')[2].text)
+                    em.add_field(name="Victories", value=get_attr('div', 'victories'))
+                    em.add_field(name="Showdown Victories", value=get_attr('div', 'showdown-victories'))
+                    em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
+                    em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
                     await ctx.send(embed=em)
                 except Exception as e:
                     # Haha you got me I'm lazy
