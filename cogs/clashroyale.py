@@ -60,7 +60,6 @@ class Clash_Royale:
     def save_tag(self, userid, tag):
         with open('./data/tags/tags.json', 'r+') as f:
             config = json.load(f)
-            f.seek(0)
             config[userid] = tag
             json.dump(config, f, indent=4)
 
