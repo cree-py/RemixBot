@@ -271,6 +271,7 @@ class BrawlStars:
                 em.add_field(name="Total trophies", value=totaltrophies)
                 em.add_field(name="Required trophies", value=reqdtrophies)
 
+                em2 = discord.Embed(color=discord.Color(value=0x00FF00))
                 em2.title = "Top members"
                 em2.description = "This is calculated through total trophy count."
                 em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
