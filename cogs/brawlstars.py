@@ -69,26 +69,23 @@ class BrawlStars:
         await ctx.send('TODO: brawlstars commands')
 
     @brawlstars.command()
-    async def profile(self, ctx, id="notagspecified"):
-        '''Get your profile.'''
+    async def profile(self, ctx, id=None):
+        '''Get a brawl stars profile.'''
 
         # ID is the player tag
         # Also I probably could have done the same thing with less lines
-
         await ctx.trigger_typing()
 
-        # Get attr using beautiful soup
         def get_attr(type: str, attr: str):
             return soup.find(type, class_=attr).text
 
-        # Get all matches into soup
         def get_all_attrs(type: str, attr: str):
             return soup.find_all(type, class_=attr)
 
-        if id == "notagspecified":
+        if not id:
             id = self.get_tag(str(ctx.message.author.id)).strip('#').replace('O', '0')
-            if id is None:
-                await ctx.send("Um... what the heck are you trying to do?")
+            if id == 'None':
+                return await ctx.send(f"Please save your player tag using `{ctx.prefix}bs save <tag>")
             else:
                 if self.check_tag(id):
                     try:
@@ -96,37 +93,13 @@ class BrawlStars:
                             async with session.get(f'https://brawlstats.io/players/{id}') as resp:
                                 data = await resp.read()
                         soup = BeautifulSoup(data, 'lxml')
-
-                        source = (str(soup.find_all("img", class_="mr-2")))
-                        src = source.split('src="')[1]
-                        imgpath = src.split('" w')[0]
-
-                        test = self.get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
-                        div = str(test[0])
-                        newdiv = div.split('brawlers/')
-                        newerdiv = newdiv[1]
-                        newestdiv = newerdiv.split('"')
-                        highestbrawler = newestdiv[0].title()
-
-                        em = discord.Embed(color=discord.Color(value=0x00FF00))
-                        em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                        em.title = get_attr('div', 'player-name brawlstars-font') + " (#" + id + ")"
-                        em.description = "Band: " + get_attr('div', 'band-name mr-2') + " (" + get_attr('div', 'band-tag') + ")"
-                        em.add_field(name="Level", value=get_attr('div', 'experience-level'))
-                        em.add_field(name="Experience", value=get_attr('div', 'progress-text'))
-                        em.add_field(name="Trophies", value=get_all_attrs('div', 'trophies')[0].text)
-                        em.add_field(name="Highest Trophies", value=get_all_attrs('div', 'trophies')[1].text)
-                        em.add_field(name="Highest Brawler", value=highestbrawler)
-                        em.add_field(name="Highest Brawler Trophies", value=get_all_attrs('div', 'trophies')[2].text)
-                        em.add_field(name="Victories", value=get_attr('div', 'victories'))
-                        em.add_field(name="Showdown Victories", value=get_attr('div', 'showdown-victories'))
-                        em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
-                        em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
-                        await ctx.send(embed=em)
                     except Exception as e:
-                        await ctx.send(e)
+                        await ctx.send(f'`{e}`')
+                    else:
+                        success = True
+
                 else:
-                    await ctx.send("You have an invalid tag.")
+                    return await ctx.send("You have an invalid tag.")
         else:
             id = id.strip('#').replace('O', '0')
             if self.check_tag(id):
@@ -135,46 +108,42 @@ class BrawlStars:
                         async with session.get(f'https://brawlstats.io/players/{id}') as resp:
                             data = await resp.read()
                     soup = BeautifulSoup(data, 'lxml')
-
-                    lol = (str(soup.find_all("img", class_="mr-2")))
-                    newstr = lol.split('src="')
-                    newerstr = newstr[1]
-                    neweststr = newerstr.split('" w')
-                    imgpath = neweststr[0]
-
-                    test = get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
-                    div = str(test[0])
-                    newdiv = div.split('brawlers/')
-                    newerdiv = newdiv[1]
-                    newestdiv = newerdiv.split('"')
-                    highestbrawler = newestdiv[0].title()
-
-                    em = discord.Embed(color=discord.Color(value=0x00FF00))
-                    em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                    em.title = get_attr('div', 'player-name brawlstars-font') + " (#" + id + ")"
-                    em.description = "Band: " + get_attr('div', 'band-name mr-2') + " (" + get_attr('div', 'band-tag') + ")"
-                    em.add_field(name="Level", value=get_attr('div', 'experience-level'))
-                    em.add_field(name="Experience", value=get_attr('div', 'progress-text'))
-                    em.add_field(name="Trophies", value=get_all_attrs('div', 'trophies')[0].text)
-                    em.add_field(name="Highest Trophies", value=get_all_attrs('div', 'trophies')[1].text)
-                    em.add_field(name="Highest Brawler", value=highestbrawler)
-                    em.add_field(name="Highest Brawler Trophies", value=get_all_attrs('div', 'trophies')[2].text)
-                    em.add_field(name="Victories", value=get_attr('div', 'victories'))
-                    em.add_field(name="Showdown Victories", value=get_attr('div', 'showdown-victories'))
-                    em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
-                    em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
-                    await ctx.send(embed=em)
                 except Exception as e:
-                    # Haha you got me I'm lazy
                     await ctx.send(e)
+                else:
+                    success = True
             else:
-                await ctx.send("Invalid tag. Tags can only contain the following characters: ```0289PYLQGRJCUV```")
-                await ctx.send("Please check your tag and try again.")
+                await ctx.send("Invalid tag. Tags can only contain the following characters: `0289PYLQGRJCUV`")
+        if success:
+            source = str(soup.find_all("img", class_="mr-2"))
+            src = source.split('src="')[1]
+            imgpath = src.split('" w')[0]
+
+            brawlers = self.get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
+            top = str(brawlers[0])
+            name_after = top.split('brawlers/')[1]
+            highestbrawler = name_after.split('"')[0].title()
+
+            em = discord.Embed(color=discord.Color(value=0x00FF00))
+            em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+            em.title = f"{get_attr('div', 'player-name brawlstars-font')} (#{id})"
+            em.description = f"Band: {get_attr('div', 'band-name mr-2')} ({get_attr('div', 'band-tag')})"
+            em.add_field(name="Level", value=get_attr('div', 'experience-level'))
+            em.add_field(name="Experience", value=get_attr('div', 'progress-text'))
+            em.add_field(name="Trophies", value=get_all_attrs('div', 'trophies')[0].text)
+            em.add_field(name="Highest Trophies", value=get_all_attrs('div', 'trophies')[1].text)
+            em.add_field(name="Highest Brawler", value=highestbrawler)
+            em.add_field(name="Highest Brawler Trophies", value=get_all_attrs('div', 'trophies')[2].text)
+            em.add_field(name="Victories", value=get_attr('div', 'victories'))
+            em.add_field(name="Showdown Victories", value=get_attr('div', 'showdown-victories'))
+            em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
+            em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
+            await ctx.send(embed=em)
 
     @brawlstars.command()
     async def save(self, ctx, id=None):
         '''Save a tag.'''
-        if id is None:
+        if not id:
             await ctx.send("Please specify a tag to save.")
         else:
             id = id.strip('#').replace('O', '0')
