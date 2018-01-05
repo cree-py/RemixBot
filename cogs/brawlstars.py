@@ -119,7 +119,7 @@ class BrawlStars:
             src = source.split('src="')[1]
             imgpath = src.split('" w')[0]
 
-            brawlers = self.get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
+            brawlers = get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
             top = str(brawlers[0])
             name_after = top.split('brawlers/')[1]
             highestbrawler = name_after.split('"')[0].title()
