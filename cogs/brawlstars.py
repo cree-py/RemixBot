@@ -175,6 +175,206 @@ class BrawlStars:
 
         await ctx.send(embed=em)
 
+    @bs.command()
+    async def clan(self, ctx, id=None):
+        def get_attr(self, type: str, attr: str):
+            return soup.find(type, class_=attr).text
 
+        def get_all_attrs(self, type: str, attr: str):
+            return soup.find_all(type, class_=attr)
+
+        await ctx.trigger_typing()
+        if id is None:
+            if self.get_tag(str(ctx.author.id)) == 'None':
+                return await ctx.send(f'No tag found. Please use `{ctx.prefix}bs save <tag>` to save a tag to your discord profile.')
+            else:
+                id = self.get_tag(str(ctx.author.id))
+                # get player stats
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(f'https://brawlstats.io/players/{id}') as resp:
+                            data = await resp.read()
+                    soup = BeautifulSoup(data, 'lxml')
+                except Exception as e:
+                    await ctx.send(f'`{e}`')
+                bandtag = get_attr('div', 'band-tag').strip("#")
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(f'https://brawlstats.io/bands/{bandtag}') as resp:
+                            data = await resp.read()
+                    soup = BeautifulSoup(data, 'lxml')
+                except Exception as e:
+                    await ctx.send(f'`{e}`')
+
+                name = str(get_attr('div', 'name'))
+                desc = str(get_attr('div', 'clan-description'))
+
+                totaltrophiesbeta = str(get_all_attrs('div', 'trophies')[0]).split(">")
+                totaltrophiesgamma = totaltrophiesbeta[1].split("<")
+                totaltrophies = totaltrophiesgamma[0]
+                reqdtrophiesbeta = str(get_all_attrs('div', 'trophies')[1]).split(">")
+                reqdtrophiesgamma = reqdtrophiesbeta[1].split("<")
+                reqdtrophies = reqdtrophiesgamma[0]
+
+                memberonenamealpha = str(get_all_attrs('tr', 'jumpc')[0])
+                memberonenamebeta = memberonenamealpha.split('<div class="name">')
+                memberonenamegamma = memberonenamebeta[1].split('</div><div class="clan">')
+                memberonename = memberonenamegamma[0]
+                memberonerankbeta = memberonenamegamma[1].split('</div></div><div class="trophy-count">')
+                memberonerank = memberonerankbeta[0]
+                memberonetrophybeta = memberonerankbeta[1]
+                memberonetrophygamma = memberonetrophybeta.split("</div>")
+                memberonetrophy = memberonetrophygamma[0]
+
+                membertwonamealpha = str(get_all_attrs('tr', 'jumpc')[1])
+                membertwonamebeta = membertwonamealpha.split('<div class="name">')
+                membertwonamegamma = membertwonamebeta[1].split('</div><div class="clan">')
+                membertwoname = membertwonamegamma[0]
+                membertworankbeta = membertwonamegamma[1].split('</div></div><div class="trophy-count">')
+                membertworank = membertworankbeta[0]
+                membertwotrophybeta = membertworankbeta[1]
+                membertwotrophygamma = membertwotrophybeta.split("</div>")
+                membertwotrophy = membertwotrophygamma[0]
+
+                memberthreenamealpha = str(get_all_attrs('tr', 'jumpc')[2])
+                memberthreenamebeta = memberthreenamealpha.split('<div class="name">')
+                memberthreenamegamma = memberthreenamebeta[1].split('</div><div class="clan">')
+                memberthreename = memberthreenamegamma[0]
+                memberthreerankbeta = memberthreenamegamma[1].split('</div></div><div class="trophy-count">')
+                memberthreerank = memberthreerankbeta[0]
+                memberthreetrophybeta = memberthreerankbeta[1]
+                memberthreetrophygamma = memberthreetrophybeta.split("</div>")
+                memberthreetrophy = memberthreetrophygamma[0]
+
+                memberfournamealpha = str(get_all_attrs('tr', 'jumpc')[3])
+                memberfournamebeta = memberfournamealpha.split('<div class="name">')
+                memberfournamegamma = memberfournamebeta[1].split('</div><div class="clan">')
+                memberfourname = memberfournamegamma[0]
+                memberfourrankbeta = memberfournamegamma[1].split('</div></div><div class="trophy-count">')
+                memberfourrank = memberfourrankbeta[0]
+                memberfourtrophybeta = memberfourrankbeta[1]
+                memberfourtrophygamma = memberfourtrophybeta.split("</div>")
+                memberfourtrophy = memberfourtrophygamma[0]
+
+                text = str(get_attr('div', 'board-header my-3'))
+                thing = text.split(' ')
+                members = thing[2].strip('(')
+
+                source = str(get_all_attrs('div', 'badge'))
+                src = source.split('src="')[1]
+                imgpathbeta = src.split('" w')[0]
+                imgpath = imgpathbeta.split('"')[0]
+                
+                em = discord.Embed(color=discord.Color(value=0x00FF00))
+                em.title = name + " (#" + id + ")"
+                em.description = desc
+                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+                em.add_field(name="Total trophies", value=totaltrophies)
+                em.add_field(name="Required trophies", value=reqdtrophies)
+
+                em2.title = "Top members"
+                em2.description = "This is calculated through total trophy count."
+                em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
+                em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
+                em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
+                em2.add_field(name=memberfourname, value=memberfourrank + "\n" + memberfourtrophy)
+
+                await ctx.send(embed=em)
+                await ctx.send(embed=em2)
+
+        else:
+            # don't want to fix indentation level
+            if 1 == 1:
+            # Get ID 
+            # get player stats
+                bandtag = id
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(f'https://brawlstats.io/bands/{bandtag}') as resp:
+                            data = await resp.read()
+                    soup = BeautifulSoup(data, 'lxml')
+                except Exception as e:
+                    await ctx.send(f'`{e}`')
+
+                name = str(get_attr('div', 'name'))
+                desc = str(get_attr('div', 'clan-description'))
+
+                totaltrophiesbeta = str(get_all_attrs('div', 'trophies')[0]).split(">")
+                totaltrophiesgamma = totaltrophiesbeta[1].split("<")
+                totaltrophies = totaltrophiesgamma[0]
+                reqdtrophiesbeta = str(get_all_attrs('div', 'trophies')[1]).split(">")
+                reqdtrophiesgamma = reqdtrophiesbeta[1].split("<")
+                reqdtrophies = reqdtrophiesgamma[0]
+
+                memberonenamealpha = str(get_all_attrs('tr', 'jumpc')[0])
+                memberonenamebeta = memberonenamealpha.split('<div class="name">')
+                memberonenamegamma = memberonenamebeta[1].split('</div><div class="clan">')
+                memberonename = memberonenamegamma[0]
+                memberonerankbeta = memberonenamegamma[1].split('</div></div><div class="trophy-count">')
+                memberonerank = memberonerankbeta[0]
+                memberonetrophybeta = memberonerankbeta[1]
+                memberonetrophygamma = memberonetrophybeta.split("</div>")
+                memberonetrophy = memberonetrophygamma[0]
+
+                membertwonamealpha = str(get_all_attrs('tr', 'jumpc')[1])
+                membertwonamebeta = membertwonamealpha.split('<div class="name">')
+                membertwonamegamma = membertwonamebeta[1].split('</div><div class="clan">')
+                membertwoname = membertwonamegamma[0]
+                membertworankbeta = membertwonamegamma[1].split('</div></div><div class="trophy-count">')
+                membertworank = membertworankbeta[0]
+                membertwotrophybeta = membertworankbeta[1]
+                membertwotrophygamma = membertwotrophybeta.split("</div>")
+                membertwotrophy = membertwotrophygamma[0]
+
+                memberthreenamealpha = str(get_all_attrs('tr', 'jumpc')[2])
+                memberthreenamebeta = memberthreenamealpha.split('<div class="name">')
+                memberthreenamegamma = memberthreenamebeta[1].split('</div><div class="clan">')
+                memberthreename = memberthreenamegamma[0]
+                memberthreerankbeta = memberthreenamegamma[1].split('</div></div><div class="trophy-count">')
+                memberthreerank = memberthreerankbeta[0]
+                memberthreetrophybeta = memberthreerankbeta[1]
+                memberthreetrophygamma = memberthreetrophybeta.split("</div>")
+                memberthreetrophy = memberthreetrophygamma[0]
+
+                memberfournamealpha = str(get_all_attrs('tr', 'jumpc')[3])
+                memberfournamebeta = memberfournamealpha.split('<div class="name">')
+                memberfournamegamma = memberfournamebeta[1].split('</div><div class="clan">')
+                memberfourname = memberfournamegamma[0]
+                memberfourrankbeta = memberfournamegamma[1].split('</div></div><div class="trophy-count">')
+                memberfourrank = memberfourrankbeta[0]
+                memberfourtrophybeta = memberfourrankbeta[1]
+                memberfourtrophygamma = memberfourtrophybeta.split("</div>")
+                memberfourtrophy = memberfourtrophygamma[0]
+
+                text = str(get_attr('div', 'board-header my-3'))
+                thing = text.split(' ')
+                members = thing[2].strip('(')
+
+                source = str(get_all_attrs('div', 'badge'))
+                src = source.split('src="')[1]
+                imgpathbeta = src.split('" w')[0]
+                imgpath = imgpathbeta.split('"')[0]
+                
+                em = discord.Embed(color=discord.Color(value=0x00FF00))
+                em.title = name + " (#" + id + ")"
+                em.description = desc
+                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+                em.add_field(name="Total trophies", value=totaltrophies)
+                em.add_field(name="Required trophies", value=reqdtrophies)
+
+                em2.title = "Top members"
+                em2.description = "This is calculated through total trophy count."
+                em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
+                em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
+                em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
+                em2.add_field(name=memberfourname, value=memberfourrank + "\n" + memberfourtrophy)
+
+                await ctx.send(embed=em)
+                await ctx.send(embed=em2)
+
+            else:
+                await ctx.send("you have broken the universe and 1 is no longer equal to 1.")
+
+        
 def setup(bot):
     bot.add_cog(BrawlStars(bot))
