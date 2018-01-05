@@ -64,11 +64,11 @@ class BrawlStars:
         return True
 
     @commands.group(invoke_without_command=True)
-    async def brawlstars(self, ctx):
+    async def bs(self, ctx):
         '''Command group for all BrawlStars commands.'''
-        await ctx.send('TODO: brawlstars commands')
+        await ctx.send(f'Commands:\n`{ctx.prefix}bs save <tag>` Saves a tag to your profile.\n`{ctx.prefix}bs profile [tag]` Get a brawl stars profile.\n`{ctx.prefix}bs weburl [tag]` Get the url for more info on a profile.')
 
-    @brawlstars.command()
+    @bs.command()
     async def profile(self, ctx, id=None):
         '''Get a brawl stars profile.'''
 
@@ -140,7 +140,7 @@ class BrawlStars:
             em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
             await ctx.send(embed=em)
 
-    @brawlstars.command()
+    @bs.command()
     async def save(self, ctx, id=None):
         '''Save a tag.'''
         if not id:
@@ -153,7 +153,7 @@ class BrawlStars:
             else:
                 await ctx.send("Your tag is invalid. Please make sure you only have the characters `0289PYLQGRJCUV` in the tag.")
 
-    @brawlstars.command()
+    @bs.command()
     async def weburl(self, ctx, id=None):
         await ctx.trigger_typing()
         em = discord.Embed(title='brawlstats.io URL')
