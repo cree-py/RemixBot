@@ -357,7 +357,7 @@ class BrawlStars:
                 imgpath = imgpathbeta.split('"')[0]
                 
                 em = discord.Embed(color=discord.Color(value=0x00FF00))
-                em.title = name + " (#" + id + ")"
+                em.title = name + " (#" + bandtag + ")"
                 em.description = desc
                 em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
                 em.add_field(name="Total trophies", value=totaltrophies)
