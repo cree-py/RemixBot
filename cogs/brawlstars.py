@@ -274,7 +274,7 @@ class BrawlStars:
                 em2 = discord.Embed(color=discord.Color(value=0x00FF00))
                 em2.title = "Top members"
                 em2.description = "This is calculated through total trophy count."
-                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+                em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
                 em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
                 em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
                 em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
@@ -288,7 +288,7 @@ class BrawlStars:
             try:
             # Get ID 
             # get player stats
-                bandtag = id
+                bandtag = id.strip('#')
                 try:
                     async with aiohttp.ClientSession() as session:
                         async with session.get(f'https://brawlstats.io/bands/{bandtag}') as resp:
@@ -366,7 +366,7 @@ class BrawlStars:
                 em2 = discord.Embed(color=discord.Color(value=0x00FF00))
                 em2.title = "Top members"
                 em2.description = "This is calculated through total trophy count."
-                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+                em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
                 em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
                 em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
                 em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
@@ -375,9 +375,9 @@ class BrawlStars:
                 await ctx.send(embed=em)
                 await ctx.send(embed=em2)
 
-            except:
+            except Exception as e:
                 await ctx.send("This tag is invalid. Make sure that you have a band tag, not a player tag, and that it only contains the characters `0289PYLQGRJCUV`.")
-
+                await ctx.send(e)
         
 def setup(bot):
     bot.add_cog(BrawlStars(bot))
