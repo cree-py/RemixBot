@@ -41,7 +41,6 @@ class Config:
             prefix = json.load(f)
             if str(ctx.guild.id) not in prefix:
                 prefix[str(ctx.message.guild.id)] = {'prefix': '-'}
-            f.seek(0)
 
             prefix[str(ctx.message.guild.id)]['prefix'] = str(pre)
             json.dump(prefix, f, indent=4)
@@ -61,7 +60,6 @@ class Config:
             except KeyError:
                 welc[str(ctx.message.guild.id)] = dict()
                 welc[str(ctx.message.guild.id)]['welctype'] = False
-            f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 welc[str(ctx.message.guild.id)]['welctype'] = False
@@ -95,7 +93,6 @@ class Config:
             except KeyError:
                 leave[str(ctx.message.guild.id)] = dict()
                 leave[str(ctx.message.guild.id)]['leavetype'] = False
-            f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 leave[str(ctx.message.guild.id)]['leavetype'] = False
@@ -129,7 +126,6 @@ class Config:
             except KeyError:
                 logs[str(ctx.message.guild.id)] = dict()
                 logs[str(ctx.message.guild.id)]['logtype'] = False
-            f.seek(0)
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 logs[str(ctx.message.guild.id)]['logtype'] = False
