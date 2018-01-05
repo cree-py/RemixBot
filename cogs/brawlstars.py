@@ -29,23 +29,18 @@ import aiohttp
 from bs4 import BeautifulSoup
 import json
 
+
 class BrawlStars:
 
-    # Methods
-
-    # Constructor
     def __init__(self, bot):
         self.bot = bot
 
-    # Get attr using beautiful soup
     def get_attr(self, type: str, attr: str):
         return soup.find(type, class_=attr).text
 
-    # Get all matches into soup
     def get_all_attrs(self, type: str, attr: str):
         return soup.find_all(type, class_=attr)
 
-    # Get player tag from json
     def get_tag(self, userid):
         with open('./data/tags/bstags.json') as f:
             config = json.load(f)
@@ -55,7 +50,6 @@ class BrawlStars:
                 return 'None'
         return tag
 
-    # Save a tag
     def save_tag(self, userid, tag):
         with open('./data/tags/bstags.json', 'r+') as f:
             config = json.load(f)
@@ -63,14 +57,11 @@ class BrawlStars:
             config[userid] = tag
             json.dump(config, f, indent=4)
 
-    # Check validity of tag
     def check_tag(self, tag):
         for char in tag:
             if char.upper() not in '0289PYLQGRJCUV':
                 return False
         return True
-
-    # Commands
 
     @commands.group(invoke_without_command=True)
     async def brawlstars(self, ctx):
@@ -81,14 +72,8 @@ class BrawlStars:
     async def profile(self, ctx, id="notagspecified"):
         '''Get your profile.'''
 
-        # ID is the player tag, I just screwed up naming the variables
-        # Also, since the other variable names are also horrible:
-        # lol, newstr, newerstr, and neweststr are all either
-        # useless strings or lists I made to get to oimgpath since
-        # I'm a noob. test, div, newdiv, newerdiv, and newestdiv
-        # are the same except for highestbrawler. 
+        # ID is the player tag
         # Also I probably could have done the same thing with less lines
-        # but whatever
 
         await ctx.trigger_typing()
 
@@ -104,12 +89,10 @@ class BrawlStars:
                                 data = await resp.read()
                         soup = BeautifulSoup(data, 'lxml')
 
-                        lol = (str(soup.find_all("img", class_="mr-2")))
-                        newstr = lol.split('src="')
-                        newerstr = newstr[1]
-                        neweststr = newerstr.split('" w')
-                        imgpath = neweststr[0]
-                        
+                        source = (str(soup.find_all("img", class_="mr-2")))
+                        src = source.split('src="')[1]
+                        imgpath = src.split('" w')[0]
+
                         test = self.get_all_attrs("div", "brawlers-brawler-slot d-inline-block")
                         div = str(test[0])
                         newdiv = div.split('brawlers/')
@@ -133,12 +116,10 @@ class BrawlStars:
                         em.add_field(name="Best robo rumble time", value=self.get_attr('div', 'robo-time'))
                         await ctx.send(embed=em)
                     except Exception as e:
-                        # Haha you got me I'm lazy
                         await ctx.send(e)
                 else:
                     await ctx.send("You have an invalid tag.")
         else:
-            # remove # and replace O with 0
             id = id.strip('#').replace('O', '0')
             if self.check_tag(id):
                 try:
@@ -216,6 +197,7 @@ class BrawlStars:
                       icon_url='http://brawlstats.io/images/bs-stats.png')
 
         await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(BrawlStars(bot))
