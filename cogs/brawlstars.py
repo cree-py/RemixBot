@@ -175,11 +175,11 @@ class BrawlStars:
         await ctx.send(embed=em)
 
     @bs.command()
-    async def clan(self, ctx, id=None):
-        def get_attr(self, type: str, attr: str):
+    async def band(self, ctx, id=None):
+        def get_attr(type: str, attr: str):
             return soup.find(type, class_=attr).text
 
-        def get_all_attrs(self, type: str, attr: str):
+        def get_all_attrs(type: str, attr: str):
             return soup.find_all(type, class_=attr)
 
         await ctx.trigger_typing()
