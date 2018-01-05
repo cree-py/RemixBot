@@ -5,7 +5,7 @@
       <img src="https://discordbots.org/api/widget/servers/384044025298026496.svg" alt="Discord Bots" />
     </a>
     <a href="https://discord.gg/RzsYQ9f">
-      <img src="https://discordapp.com/api/guilds/384102150109659137/embed.png" alt="CreeperBot Coding and Support" />
+      <img src="https://discordapp.com/api/guilds/384102150109659137/embed.png" alt="RemixBot Coding and Support" />
     </a>
   </p>
 </div>
@@ -25,7 +25,7 @@ Previously, people have copied code from here and hosted their own instance with
 
 ### Contributors
 - [4JR](https://github.com/fourjr)
-- [Dat Banana Boi](https://github.com/bananaboy21)
+- [dat banana boi](https://github.com/bananaboy21)
 
 ### Contributing
 If you need support with the bot or would like to *contribute to RemixBot*, join [the discord server](https://discord.gg/RzsYQ9f) and ask any of the people with the Creators/Contributors role. Make sure to read the [Contributor Covenant Code of Conduct](https://github.com/cree-py/creepy.py/wiki/Contributor-Covenant-Code-of-Conduct) and agree to it before becoming a contributor.
