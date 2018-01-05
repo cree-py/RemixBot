@@ -84,7 +84,7 @@ class BrawlStars:
         if not id:
             id = self.get_tag(str(ctx.message.author.id)).strip('#').replace('O', '0')
             if id == 'None':
-                return await ctx.send(f"Please save your player tag using `{ctx.prefix}bs save <tag>")
+                return await ctx.send(f"Please save your player tag using `{ctx.prefix}bs save <tag>`")
             else:
                 if self.check_tag(id):
                     try:
