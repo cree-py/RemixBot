@@ -285,7 +285,7 @@ class BrawlStars:
 
         else:
             # don't want to fix indentation level
-            if 1 == 1:
+            try:
             # Get ID 
             # get player stats
                 bandtag = id
@@ -375,8 +375,8 @@ class BrawlStars:
                 await ctx.send(embed=em)
                 await ctx.send(embed=em2)
 
-            else:
-                await ctx.send("you have broken the universe and 1 is no longer equal to 1.")
+            except:
+                await ctx.send("This tag is invalid. Make sure that you have a band tag, not a player tag, and that it only contains the characters `0289PYLQGRJCUV`.")
 
         
 def setup(bot):
