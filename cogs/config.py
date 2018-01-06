@@ -194,12 +194,12 @@ class Config:
             return
         try:
             enabled = config['logtype']
-            channel = config['logchannel']
+            channel = self.bot.get_channel(int(config['logchannel']))
         except KeyError:
             return
         else:
             if enabled:
-                return (True, self.bot.get_channel(int(channel)))
+                return (True, channel)
             return False
 
     # async def on_message_delete(self, msg):
