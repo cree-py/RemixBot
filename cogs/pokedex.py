@@ -158,9 +158,10 @@ class Pokedex:
     async def move(self, ctx, *, move):
         '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
         await ctx.trigger_typing()
+        urlmove = move.lower().replace(' ', '-')
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.get(f'https://pokeapi.co/api/v2/move/{move.lower().replace(' ', '-')}/') as resp:
+                async with session.get(f'https://pokeapi.co/api/v2/move/{urlmove}/') as resp:
                     data = await resp.json()
                     id = data['id']
                     em = discord.Embed(color=discord.Color(value=0x00FF00))
