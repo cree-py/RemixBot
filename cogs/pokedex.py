@@ -155,8 +155,11 @@ class Pokedex:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             
     @pokemon.command()
-    async def move(self, ctx, *, move):
+    async def move(self, ctx, *, move=None):
         '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
+        if move is None:
+            await ctx.send("Usage: `-pokemon move <name of the move or its pokeapi.co ID>`")
+            return
         await ctx.trigger_typing()
         urlmove = move.lower().replace(' ', '-')
         try:
