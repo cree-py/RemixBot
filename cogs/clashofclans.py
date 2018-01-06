@@ -56,7 +56,7 @@ class Clash_of_Clans:
         result = await self.db.clashofclans.find_one({'_id': userid})
         if not result:
             return 'None'
-        return result
+        return result['tag']
 
     async def save_tag(self, userid, tag):
         await self.db.clashofclans.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
@@ -100,7 +100,6 @@ class Clash_of_Clans:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as response:
-                print(tag)
                 resp = await response.json()
                 name = resp['name']
                 em.title = "CoC Profile"
