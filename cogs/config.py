@@ -199,7 +199,7 @@ class Config:
             return
         else:
             if enabled:
-                return True, self.bot.get_channel(int(channel))
+                return (True, self.bot.get_channel(int(channel)))
             return False
 
     # async def on_message_delete(self, msg):
