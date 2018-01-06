@@ -95,7 +95,7 @@ def cleanup_code(content):
 
 @bot.event
 async def onready():
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | What is the prefix | {version}", type=3), afk=True)
 
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
     headers = {
