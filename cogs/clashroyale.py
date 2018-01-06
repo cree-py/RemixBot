@@ -25,6 +25,7 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
+from motor.motor_asyncio import AsyncIOMotorClient
 import clashroyale
 import json
 import re
@@ -37,7 +38,10 @@ class Clash_Royale:
         with open('./data/auths.json') as f:
             auth = json.load(f)
             self.token = auth.get('CR-API')
+            mongo_uri = auth.get('MONGODB')
         self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
+        mongo = AsyncIOMotorClient(mongo_uri)
+        self.db = mongo.RemixBot
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
@@ -48,20 +52,14 @@ class Clash_Royale:
         return self.all_cap_re.sub(r'\1-\2', s1).title()
     # This marks the end of that code. We give full credit to Kyber
 
-    def get_tag(self, userid):
-        with open('./data/tags/tags.json') as f:
-            config = json.load(f)
-            try:
-                tag = config[userid]
-            except KeyError:
-                return 'None'
-        return tag
+    async def get_tag(self, userid):
+        result = await self.db.clashroyale.find_one({'_id': userid})
+        if not result:
+            return 'None'
+        return result['tag']
 
-    def save_tag(self, userid, tag):
-        with open('./data/tags/tags.json', 'r+') as f:
-            config = json.load(f)
-            config[userid] = tag
-            json.dump(config, f, indent=4)
+    async def save_tag(self, userid, tag):
+        await self.db.clashroyale.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
 
     def check_tag(self, tag):
         for char in tag:
@@ -76,9 +74,6 @@ class Clash_Royale:
             emojis = json.load(f)
             e = emojis[emoji]
         return self.bot.get_emoji(e)
-
-    def cdir(self, obj):
-        return [x for x in dir(obj) if not x.startswith('_')]
 
     def get_chests(self, ctx, p):
         cycle = p.chest_cycle
@@ -95,7 +90,7 @@ class Clash_Royale:
         tag = tag.strip('#').replace('O', '0')
         if not self.check_tag(tag):
             return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
-        self.save_tag(str(ctx.author.id), tag)
+        await self.save_tag(str(ctx.author.id), tag)
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
     @commands.command()
@@ -104,9 +99,9 @@ class Clash_Royale:
         await ctx.trigger_typing()
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
@@ -196,9 +191,9 @@ class Clash_Royale:
         await ctx.trigger_typing()
         em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
@@ -229,9 +224,9 @@ class Clash_Royale:
         await ctx.trigger_typing()
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
@@ -305,9 +300,9 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
@@ -353,9 +348,9 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
                 clan = await profile.get_clan()
@@ -401,9 +396,9 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
@@ -432,9 +427,9 @@ class Clash_Royale:
         em.color = discord.Color(value=0x00ff00)
 
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
             try:
                 profile = await self.client.get_player(tag)
             except (clashroyale.errors.NotResponding, clashroyale.errors.ServerError) as e:
@@ -470,9 +465,9 @@ class Clash_Royale:
         em = discord.Embed(title='cr-api.com URL')
         em.color = discord.Color(value=0x00ff00)
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(tag.strip('#').replace('O', '0')):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
