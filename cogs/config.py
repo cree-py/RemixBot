@@ -214,8 +214,10 @@ class Config:
         try:
             type = await self.logtype(channel)[0]
             if not type:
+                print('1')
                 return
         except TypeError:
+            print('2')
             return
         em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=0x00ff00)
         em.timestamp = datetime.datetime.utcnow()
