@@ -81,7 +81,7 @@ class Clash_of_Clans:
         tag = tag.strip('#').replace('O', '0')
         if not self.check_tag(tag):
             return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
-        self.save_tag(str(ctx.author.id), tag)
+        await self.save_tag(str(ctx.author.id), tag)
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
     @commands.command()
@@ -90,9 +90,9 @@ class Clash_of_Clans:
         em = discord.Embed(color=discord.Color(value=0x00ff00))
 
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}cocsave <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(tag):
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
@@ -151,9 +151,9 @@ class Clash_of_Clans:
         em = discord.Embed(color=discord.Color(value=0x00ff00))
 
         if tag is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}cocsave <tag>` to save a tag to your discord profile.')
-            tag = self.get_tag(str(ctx.author.id))
+            tag = await self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(tag):
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
