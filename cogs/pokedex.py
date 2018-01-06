@@ -36,7 +36,7 @@ class Pokedex:
     @commands.group(invoke_without_command=True)
     async def pokemon(self, ctx):
         '''Base group for pokemon commands.'''
-        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n**Note:** A lot of the time the API response time is slow so please be patient.")
+        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n`-pokemon move <move>` Get info about a move. You can use the name or pokeapi.co ID.\n**Note:** A lot of the time the API response time is slow so please be patient.")
         
     @pokemon.command()
     async def random(self, ctx):
