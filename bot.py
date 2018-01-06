@@ -74,7 +74,7 @@ for cog in cogs:
 
 
 bot.remove_command('help')
-version = "Beta 2.0.0"
+version = "Beta 2.1.0"
 
 
 def dev_check(id):
