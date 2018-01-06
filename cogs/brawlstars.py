@@ -25,10 +25,11 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
-import aiohttp
+from motor.motor_asyncio import AsyncIOMotorClient
 from bs4 import BeautifulSoup
-import json
+import aiohttp
 import datetime
+import json
 import pytz
 
 
@@ -36,6 +37,11 @@ class BrawlStars:
 
     def __init__(self, bot):
         self.bot = bot
+        with open('./data/auths.json') as f:
+            auth = json.load(f)
+            mongo_uri = auth.get('MONGODB')
+        mongo = AsyncIOMotorClient(mongo_uri)
+        self.db = mongo.RemixBot
 
     def get_attr(self, type: str, attr: str):
         return soup.find(type, class_=attr).text
