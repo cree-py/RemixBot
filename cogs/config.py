@@ -194,13 +194,25 @@ class Config:
             return
         try:
             enabled = config['logtype']
+        except KeyError:
+            return
+        else:
+            if enabled:
+                return True
+            return False
+
+    async def logchannel(self, item):
+        config = await self.db.config.find_one({'_id': str(item.guild.id)})
+        if not config:
+            return
+        try:
+            enabled = config['logtype']
             channel = self.bot.get_channel(int(config['logchannel']))
         except KeyError:
             return
         else:
             if enabled:
-                return (True, channel)
-            return False
+                return channel
 
     # async def on_message_delete(self, msg):
     #     if not self.logtype(msg)[0]:
@@ -211,19 +223,19 @@ class Config:
     #     await self.logtype(msg)[1].send(embed=em)
 
     async def on_guild_channel_create(self, channel):
-        type = await self.logtype(channel)[0]
+        type = await self.logtype(channel)
         if not type:
             print('1')
             return
         em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=0x00ff00)
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
-        ch = await self.logtype(channel)[1]
+        ch = await self.logchannel(channel)
         await ch.send(embed=em)
 
     async def on_guild_channel_delete(self, channel):
         try:
-            type = await self.logtype(channel)[0]
+            type = await self.logtype(channel)
             if not type:
                 return
         except TypeError:
