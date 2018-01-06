@@ -134,6 +134,7 @@ class Config:
             if id == channel.content:
                 return await ctx.send('Please mention a channel.')
             config['logchannel'] = str(id)
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send(f'Mod-logs have been successfully set in <#{id}>')
 
     # ------------Welcome and leave----------------
