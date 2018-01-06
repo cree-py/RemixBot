@@ -36,7 +36,7 @@ class Pokedex:
     @commands.group(invoke_without_command=True)
     async def pokemon(self, ctx):
         '''Base group for pokemon commands.'''
-        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n**Note:** A lot of the time the API response time is slow so please be patient.")
+        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n`-pokemon move <move>` Get info about a move. You can use the name or pokeapi.co ID.\n**Note:** A lot of the time the API response time is slow so please be patient.")
         
     @pokemon.command()
     async def random(self, ctx):
@@ -154,32 +154,38 @@ class Pokedex:
         except:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             
-#     @pokemon.command()
-#     async def move(self, ctx, move):
-#         '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
-#         await ctx.trigger_typing()
-#         try:
-#             async with aiohttp.ClientSession() as session:
-#                 async with session.get(f'https://pokeapi.co/api/v2/move/{move}/') as resp:
-#                     data = await resp.json()
-#                     id = data['id']
-#                     em = discord.Embed(color=discord.Color(value=0x00FF00))
-#                     em.title = data['name'].title()
-#                     em.add_field(name="Accuracy", value=data['accuracy'])
-#                     em.add_field(name="PP", value=data['pp'])
-#                     em.add_field(name="Priority", value=data['priority'])
-#                     em.add_field(name="Damage", value=data['power'])
-#                     em.add_field(name="Type", value=data['type']['name'].title()
-#                     for i in range(len(data['flavor_text_entries'])):
-#                         if data['flavor_text_entries'][i]['language']['name'] == "en":
-#                             description = data['flavor_text_entries'][i]['flavor_text']
-#                             break
-#                         else:
-#                             pass       
-#                     em.description=description
-#             await ctx.send(embed=em)
-#         except:
-#             await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
+    @pokemon.command()
+    async def move(self, ctx, *, move=None):
+        '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
+        if move is None:
+            await ctx.send("Usage: `-pokemon move <name of the move or its pokeapi.co ID>`")
+            return
+        await ctx.trigger_typing()
+        urlmove = move.lower().replace(' ', '-')
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'https://pokeapi.co/api/v2/move/{urlmove}/') as resp:
+                    data = await resp.json()
+                    id = data['id']
+                    em = discord.Embed(color=discord.Color(value=0x00FF00))
+                    em.title = data['name'].title().replace('-', ' ')
+                    em.add_field(name="Accuracy", value=data['accuracy'])
+                    em.add_field(name="PP", value=data['pp'])
+                    em.add_field(name="Priority", value=data['priority'])
+                    em.add_field(name="Damage", value=data['power'])
+                    em.add_field(name="Type", value=data['type']['name'].title())
+                    for i in range(len(data['flavor_text_entries'])):
+                        if data['flavor_text_entries'][i]['language']['name'] == "en":
+                            description = data['flavor_text_entries'][i]['flavor_text']
+                            break
+                        else:
+                            pass       
+                    type = data['type']['name']
+                    em.description=description.replace('\n', ' ')
+                    em.set_thumbnail(url=f'https://remixweb.herokuapp.com/assets/{type}.png')
+            await ctx.send(embed=em)
+        except:
+            await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
 
          
 def setup(bot):
