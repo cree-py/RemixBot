@@ -439,6 +439,7 @@ class BrawlStars:
                 await ctx.send(embed=em)
         elif when == "upcoming":
             await ctx.trigger_typing()
+            j = 6
             if dayofwk in [1, 2, 3, 4, 5]:
                 em2.title="Upcoming events"
                 for i in range(3):
