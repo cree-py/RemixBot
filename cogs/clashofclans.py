@@ -100,6 +100,7 @@ class Clash_of_Clans:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as response:
+                print(tag)
                 resp = await response.json()
                 name = resp['name']
                 em.title = "CoC Profile"
