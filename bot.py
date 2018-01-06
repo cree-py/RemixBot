@@ -74,7 +74,7 @@ for cog in cogs:
 
 
 bot.remove_command('help')
-version = "Beta 2.2.0"
+version = "v2.0.0"
 
 
 def dev_check(id):
@@ -96,7 +96,7 @@ def cleanup_code(content):
 @bot.event
 async def onready():
     print("Bot Is Online.")
-    await bot.change_presence(game=discord.Game(name=f"-help | what is the prefix | {len(bot.guilds)} servers | {version}", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"-help | {len(bot.guilds)} servers | {version}", type=3), afk=True)
 
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
     headers = {
