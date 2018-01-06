@@ -184,7 +184,7 @@ class Config:
             except (discord.Forbidden, AttributeError):
                 i += 1
             except IndexError:
-                # the channel set doesn't allow creeperbot to send messages
+                # the channel set doesn't allow remixbot to send messages
                 pass
             else:
                 success = True
