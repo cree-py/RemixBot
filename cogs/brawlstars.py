@@ -78,7 +78,7 @@ class BrawlStars:
             return soup.find_all(type, class_=attr)
 
         if not id:
-            id = await self.get_tag(str(ctx.message.author.id)).strip('#').replace('O', '0')
+            id = await (self.get_tag(str(ctx.message.author.id))).strip('#').replace('O', '0')
             if id == 'None':
                 return await ctx.send(f"Please save your player tag using `{ctx.prefix}bs save <tag>`")
             else:
