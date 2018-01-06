@@ -58,28 +58,27 @@ class Config:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('./data/config.json', 'r+') as f:
-            welc = json.load(f)
-            if str(ctx.guild.id) not in welc:
-                welc[str(ctx.guild.id)] = {'welctype': False}
+        config = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        if not config:
+            config = {'_id': str(ctx.guild.id), 'welctype': False}
 
-            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                welc[str(ctx.message.guild.id)]['welctype'] = False
-                json.dump(welc, f, indent=4)
-                await ctx.send('Welcome messages disabled for this guild.')
-            else:
-                welc[str(ctx.message.guild.id)]['welctype'] = True
-                await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
-                channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
-                id = channel.content.strip('<#').strip('>')
-                if id == channel.content:
-                    return await ctx.send('Please mention a channel.')
-                welc[str(ctx.message.guild.id)]['welcchannel'] = id
-                await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
-                msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
-                welc[str(ctx.message.guild.id)]['welc'] = str(msg.content).replace('"', '\"')
-                json.dump(welc, f, indent=4)
-                await ctx.send('Your welcome message has been successfully set.')
+        if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
+            config['welctype'] = False
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await ctx.send('Welcome messages disabled for this guild.')
+        else:
+            config['welctype'] = True
+            await ctx.send('Which channel do you want the welcome messages to be set to? Use a channel mention.')
+            channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
+            id = channel.content.strip('<#').strip('>')
+            if id == channel.content:
+                return await ctx.send('Please mention a channel.')
+            config['welcchannel'] = str(id)
+            await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
+            msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
+            config['welc'] = str(msg.content).replace('"', '\"')
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await ctx.send('Your welcome message has been successfully set.')
 
     @commands.command(aliases=['setleave', 'leavemsg', 'leavemessage', 'leaveset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
@@ -88,28 +87,27 @@ class Config:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('./data/config.json', 'r+') as f:
-            leave = json.load(f)
-            if str(ctx.guild.id) not in leave:
-                leave[str(ctx.message.guild.id)] = {'leavetype': False}
+        config = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        if not config:
+            config = {'_id': str(ctx.guild.id), 'leavetype': False}
 
-            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                leave[str(ctx.message.guild.id)]['leavetype'] = False
-                json.dump(leave, f, indent=4)
-                await ctx.send('Leave messages disabled for this guild.')
-            else:
-                leave[str(ctx.message.guild.id)]['leavetype'] = True
-                await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
-                channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
-                id = channel.content.strip('<#').strip('>')
-                if id == channel.content:
-                    return await ctx.send('Please mention a channel.')
-                leave[str(ctx.message.guild.id)]['leavechannel'] = id
-                await ctx.send('What do you want the message to be?\nUsage:```\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
-                msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
-                leave[str(ctx.message.guild.id)]['leave'] = str(msg.content).replace('"', '\"')
-                json.dump(leave, f, indent=4)
-                await ctx.send('Your leave message has been successfully set.')
+        if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
+            config['leavetype'] = False
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await ctx.send('Leave messages disabled for this guild.')
+        else:
+            config['leavetype'] = True
+            await ctx.send('Which channel do you want the leave messages to be set to? Use a channel mention.')
+            channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
+            id = channel.content.strip('<#').strip('>')
+            if id == channel.content:
+                return await ctx.send('Please mention a channel.')
+            config['leavechannel'] = str(id)
+            await ctx.send('What do you want the message to be?\nUsage:```\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
+            msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
+            config['leave'] = str(msg.content).replace('"', '\"')
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await ctx.send('Your leave message has been successfully set.')
 
     @commands.command(aliases=['mod-log'])
     @commands.has_permissions(view_audit_log=True)
@@ -140,52 +138,56 @@ class Config:
     # ------------Welcome and leave----------------
 
     async def on_member_join(self, m):
-        with open('data/config.json') as f:
-            welc = json.load(f)
+        config = await self.db.config.find_one({'_id': str(m.guild.id)})
+        if not config:
+            return
+        try:
+            type = config['welctype']
+        except KeyError:
+            return
+        if type is False:
+            return
+
+        channel = int(config['welcchannel'])
+        msg = config['welc']
+        success = False
+        i = 0
+        while not success:
             try:
-                type = welc[str(m.guild.id)]['welctype']
-            except KeyError:
-                return
-            if type is False:
-                return
-            channel = int(welc[str(m.guild.id)]['welcchannel'])
-            msg = welc[str(m.guild.id)]['welc']
-            success = False
-            i = 0
-            while not success:
-                try:
-                    await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
-                except (discord.Forbidden, AttributeError):
-                    i += 1
-                except IndexError:
-                    # the channel set doesn't allow remixbot to send messages
-                    pass
-                else:
-                    success = True
+                await self.bot.get_channel(channel).send(msg.format(name=m, server=m.guild, mention=m.mention, member=m, membercount=len(m.guild.members)))
+            except (discord.Forbidden, AttributeError):
+                i += 1
+            except IndexError:
+                # the channel set doesn't allow remixbot to send messages
+                pass
+            else:
+                success = True
 
     async def on_member_remove(self, m):
-        with open('data/config.json') as f:
-            leave = json.load(f)
+        config = await self.db.config.find_one({'_id': str(m.guild.id)})
+        if not config:
+            return
+        try:
+            type = config['welctype']
+        except KeyError:
+            return
+        if type is False:
+            return
+
+        channel = int(config['leavechannel'])
+        msg = config['leave']
+        success = False
+        i = 0
+        while not success:
             try:
-                leave[str(m.guild.id)]['leavetype']
-            except KeyError:
-                return
-            if type is False:
-                return
-            channel = int(leave[str(m.guild.id)]['leavechannel'])
-            msg = leave[str(m.guild.id)]['leave']
-            success = False
-            i = 0
-            while not success:
-                try:
-                    await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
-                except (discord.Forbidden, AttributeError):
-                    i += 1
-                except IndexError:
-                    # the channel set doesn't allow creeperbot to send messages
-                    pass
-                else:
-                    success = True
+                await self.bot.get_channel(channel).send(msg.format(name=m.name, server=m.guild, membercount=len(m.guild.members)))
+            except (discord.Forbidden, AttributeError):
+                i += 1
+            except IndexError:
+                # the channel set doesn't allow creeperbot to send messages
+                pass
+            else:
+                success = True
 
     # ------------Mod-log events below-------------
 
