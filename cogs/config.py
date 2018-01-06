@@ -44,7 +44,7 @@ class Config:
 
             prefix[str(ctx.message.guild.id)]['prefix'] = str(pre)
             json.dump(prefix, f, indent=4)
-            await ctx.send(f'The guild prefix has been set to `{pre}`. Use `{pre}prefix <prefix>` to change it again.')
+            await ctx.send(f'The guild prefix has been set to `{pre}` Use `{pre}prefix <prefix>` to change it again.')
 
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)
@@ -55,11 +55,8 @@ class Config:
 
         with open('./data/config.json', 'r+') as f:
             welc = json.load(f)
-            try:
-                g = welc[str(ctx.message.guild.id)]
-            except KeyError:
-                welc[str(ctx.message.guild.id)] = dict()
-                welc[str(ctx.message.guild.id)]['welctype'] = False
+            if str(ctx.guild.id) not in welc:
+                welc[str(ctx.guild.id)] = {'welctype': False}
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 welc[str(ctx.message.guild.id)]['welctype'] = False
@@ -88,11 +85,8 @@ class Config:
 
         with open('./data/config.json', 'r+') as f:
             leave = json.load(f)
-            try:
-                g = leave[str(ctx.message.guild.id)]
-            except KeyError:
-                leave[str(ctx.message.guild.id)] = dict()
-                leave[str(ctx.message.guild.id)]['leavetype'] = False
+            if str(ctx.guild.id) not in leave:
+                leave[str(ctx.message.guild.id)] = {'leavetype': False}
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 leave[str(ctx.message.guild.id)]['leavetype'] = False
@@ -121,11 +115,8 @@ class Config:
 
         with open('./data/config.json', 'r+') as f:
             logs = json.load(f)
-            try:
-                g = logs[str(ctx.message.guild.id)]
-            except KeyError:
-                logs[str(ctx.message.guild.id)] = dict()
-                logs[str(ctx.message.guild.id)]['logtype'] = False
+            if str(ctx.guild.id) not in logs:
+                logs[str(ctx.guild.id)] = {'logtype': False}
 
             if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
                 logs[str(ctx.message.guild.id)]['logtype'] = False
@@ -163,7 +154,7 @@ class Config:
                 except (discord.Forbidden, AttributeError):
                     i += 1
                 except IndexError:
-                    # the channel set doesn't allow creeperbot to send messages
+                    # the channel set doesn't allow remixbot to send messages
                     pass
                 else:
                     success = True
