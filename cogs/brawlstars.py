@@ -28,6 +28,8 @@ from discord.ext import commands
 import aiohttp
 from bs4 import BeautifulSoup
 import json
+import datetime
+import pytz
 
 
 class BrawlStars:
@@ -378,6 +380,156 @@ class BrawlStars:
             except Exception as e:
                 await ctx.send("This tag is invalid. Make sure that you have a band tag, not a player tag, and that it only contains the characters `0289PYLQGRJCUV`.")
                 await ctx.send(e)
+
+    @bs.command()
+    async def events(self, ctx, when=None):
+        '''Information about events.'''
+
+        url = 'https://brawlstats.io/events/'
+
+        def get_attr(type: str, attr: str):
+            return soup.find(type, class_=attr).text
+
+        def get_all_attrs(type: str, attr: str):
+            return soup.find_all(type, class_=attr)
+
+        now = datetime.datetime.now(pytz.UTC)
+        now = now.astimezone(pytz.timezone("US/Pacific"))
+        dayofwk = int(now.weekday()) + 1
+
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                data = await resp.read()
+        soup = BeautifulSoup(data, 'lxml')
+
+        em = discord.Embed(color=discord.Color(value=0x00FF00))
+        em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+
+        if when is None:
+            await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
+            return
+        elif when == "current":
+            await ctx.trigger_typing()
+            if dayofwk in [1, 2, 3, 4, 5]:
+                em.title = "Current events"
+                j = 0
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i].text) + '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
+                await ctx.send(embed=em)
+            else:
+                em.title = "Current events"
+                j = 0
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i].text) + '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
+                em.add_field(name=str(get_all_attrs('h4', 'card-title')[3].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[3].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                await ctx.send(embed=em)
+        elif when == "upcoming":
+            await ctx.trigger_typing()
+            if dayofwk in [1, 2, 3, 4, 5]:
+                em2.title="Upcoming events"
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 3].text)
+                    val += '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 3].text), value=val)
+
+                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                await ctx.send(embed=em2)
+            else:
+                em2.title="Upcoming events"
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 4].text)
+                    val += '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
+                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6','card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                await ctx.send(embed=em2)
+        elif when == "both":
+            await ctx.trigger_typing()
+            if dayofwk in [1, 2, 3, 4, 5]:
+                em.title = "Current events"
+                j = 0
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i].text) + '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
+
+
+                em2.title="Upcoming events"
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 3].text)
+                    val += '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 3].text), value=val)
+
+                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+
+                await ctx.send(embed=em)
+                await ctx.send(embed=em2)
+            else:
+                em.title = "Current events"
+                j = 0
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i].text) + '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
+                em.add_field(name=str(get_all_attrs('h4', 'card-title')[3].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[3].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                em2.title="Upcoming events"
+                for i in range(3):
+                    val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 4].text)
+                    val += '\n'
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins\n'
+                    j += 1
+                    val += str(get_all_attrs('div', 'card-map-coins')[j].text)
+                    val += ' Coins'
+                    j += 1
+                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
+                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6','card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                await ctx.send(embed=em)
+                await ctx.send(embed=em2)
+        else:
+            await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
+            return
         
 def setup(bot):
     bot.add_cog(BrawlStars(bot))
