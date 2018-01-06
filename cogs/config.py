@@ -211,13 +211,9 @@ class Config:
     #     await self.logtype(msg)[1].send(embed=em)
 
     async def on_guild_channel_create(self, channel):
-        try:
-            type = await self.logtype(channel)[0]
-            if not type:
-                print('1')
-                return
-        except TypeError:
-            print('2')
+        type = await self.logtype(channel)[0]
+        if not type:
+            print('1')
             return
         em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=0x00ff00)
         em.timestamp = datetime.datetime.utcnow()
