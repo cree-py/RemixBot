@@ -118,25 +118,23 @@ class Config:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        with open('./data/config.json', 'r+') as f:
-            logs = json.load(f)
-            if str(ctx.guild.id) not in logs:
-                logs[str(ctx.guild.id)] = {'logtype': False}
+        config = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        if not config:
+            config = {'_id': str(ctx.guild.id), 'logtype': False}
 
-            if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
-                logs[str(ctx.message.guild.id)]['logtype'] = False
-                json.dump(logs, f, indent=4)
-                await ctx.send('Mod-logs are disabled for this guild.')
-            else:
-                logs[str(ctx.message.guild.id)]['logtype'] = True
-                await ctx.send('Which channel do you want the events to be logged in? Use a channel mention.')
-                channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
-                id = channel.content.strip('<#').strip('>')
-                if id == channel.content:
-                    return await ctx.send('Please mention a channel.')
-                logs[str(ctx.message.guild.id)]['logchannel'] = id
-                json.dump(logs, f, indent=4)
-                await ctx.send(f'Mod-logs have been successfully set in <#{id}>')
+        if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
+            config['logtype'] = False
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await ctx.send('Mod-logs are disabled for this guild.')
+        else:
+            config['logtype'] = True
+            await ctx.send('Which channel do you want the events to be logged in? Use a channel mention.')
+            channel = await self.bot.wait_for('message', check=pred, timeout=60.0)
+            id = channel.content.strip('<#').strip('>')
+            if id == channel.content:
+                return await ctx.send('Please mention a channel.')
+            config['logchannel'] = str(id)
+            await ctx.send(f'Mod-logs have been successfully set in <#{id}>')
 
     # ------------Welcome and leave----------------
 
@@ -190,19 +188,19 @@ class Config:
 
     # ------------Mod-log events below-------------
 
-    def logtype(self, item):
-        with open('./data/config.json') as f:
-            type = json.load(f)
-            try:
-                enabled = type[str(item.guild.id)]['logtype']
-                channel = type[str(item.guild.id)]['logchannel']
-            except KeyError:
-                return
-            else:
-                if enabled:
-                    return True, self.bot.get_channel(int(channel))
-                else:
-                    return False
+    async def logtype(self, item):
+        config = await self.db.config.find_one({'_id': str(item.guild.id)})
+        if not config:
+            return
+        try:
+            enabled = config['logtype']
+            channel = config['logchannel']
+        except KeyError:
+            return
+        else:
+            if enabled:
+                return True, self.bot.get_channel(int(channel))
+            return False
 
     # async def on_message_delete(self, msg):
     #     if not self.logtype(msg)[0]:
@@ -214,50 +212,57 @@ class Config:
 
     async def on_guild_channel_create(self, channel):
         try:
-            if not self.logtype(channel)[0]:
+            type = await self.logtype(channel)[0]
+            if not type:
                 return
         except TypeError:
             return
         em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=0x00ff00)
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
-        await self.logtype(channel)[1].send(embed=em)
+        ch = await self.logtype(channel)[1]
+        await ch.send(embed=em)
 
     async def on_guild_channel_delete(self, channel):
         try:
-            if not self.logtype(channel)[0]:
+            type = await self.logtype(channel)[0]
+            if not type:
                 return
         except TypeError:
             return
         em = discord.Embed(title='Channel Deleted', description=f'Channel {channel.mention} was deleted.', color=0xff0000)
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
-        await self.logtype(channel)[1].send(embed=em)
+        ch = await self.logtype(channel)[1]
+        await ch.send(embed=em)
 
     async def on_member_ban(self, guild, user):
         try:
-            if not self.logtype(user)[0]:
+            type = await self.logtype(user)[0]
+            if not type:
                 return
         except TypeError:
             return
         em = discord.Embed(description=f'`{user.name}` was banned from {guild.name}.', color=0xff0000)
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
-        await self.logtype(user)[1].send(embed=em)
+        channel = await self.logtype(user)[1]
+        await channel.send(embed=em)
 
     async def on_member_unban(self, guild, user):
-        with open('./data/config.json') as f:
-            type = json.load(f)
-            try:
-                enabled = type[str(guild.id)]['logtype']
-                channel = type[str(guild.id)]['logchannel']
-            except KeyError:
-                return
+        config = await self.db.config.find_one({'_id': str(guild.id)})
+        if not config:
+            return
+        try:
+            enabled = config['logtype']
+            channel = config['logchannel']
+        except KeyError:
+            return
+        else:
+            if enabled:
+                channel = self.bot.get_channel(int(channel))
             else:
-                if enabled:
-                    channel = self.bot.get_channel(int(channel))
-                else:
-                    return False
+                return False
         em = discord.Embed(description=f'`{user.name}` was unbanned from {guild.name}.', color=0x00ff00)
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
@@ -265,23 +270,27 @@ class Config:
 
     async def on_guild_role_create(self, role):
         try:
-            if not self.logtype(role)[0]:
+            type = await self.logtype(role)[0]
+            if not type:
                 return
         except TypeError:
             return
         em = discord.Embed(title='Role created', color=0x00ff00, description=f'Role `{role.name}` was created.')
         em.set_footer(text=f'Role ID: {role.id}')
-        await self.logtype(role)[1].send(embed=em)
+        channel = await self.logtype(role)[1]
+        await channel.send(embed=em)
 
     async def on_guild_role_delete(self, role):
         try:
-            if not self.logtype(role)[0]:
+            type = await self.logtype(role)[0]
+            if not type:
                 return
         except TypeError:
             return
         em = discord.Embed(title='Role deleted', color=0xff0000, description=f'Role `{role.name}` was deleted.')
         em.set_footer(text=f'Role ID: {role.id}')
-        await self.logtype(role)[1].send(embed=em)
+        channel = await self.logtype(role)[1]
+        await channel.send(embed=em)
 
 
 def setup(bot):
