@@ -50,13 +50,13 @@ class BrawlStars:
         return soup.find_all(type, class_=attr)
 
     async def get_tag(self, userid):
-        result = await self.db.clashroyale.find_one({'_id': userid})
+        result = await self.db.brawlstars.find_one({'_id': userid})
         if not result:
             return 'None'
         return result['tag']
 
     async def save_tag(self, userid, tag):
-        await self.db.clashroyale.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
+        await self.db.brawlstars.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
 
     def check_tag(self, tag):
         for char in tag:
