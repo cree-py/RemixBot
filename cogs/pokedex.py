@@ -155,16 +155,16 @@ class Pokedex:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             
     @pokemon.command()
-    async def move(self, ctx, move):
+    async def move(self, ctx, *, move):
         '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
         await ctx.trigger_typing()
         try:
             async with aiohttp.ClientSession() as session:
-                async with session.get(f'https://pokeapi.co/api/v2/move/{move}/') as resp:
+                async with session.get(f'https://pokeapi.co/api/v2/move/{move.lower().replace(' ', '-')}/') as resp:
                     data = await resp.json()
                     id = data['id']
                     em = discord.Embed(color=discord.Color(value=0x00FF00))
-                    em.title = data['name'].title()
+                    em.title = data['name'].title().replace('-', ' ')
                     em.add_field(name="Accuracy", value=data['accuracy'])
                     em.add_field(name="PP", value=data['pp'])
                     em.add_field(name="Priority", value=data['priority'])
