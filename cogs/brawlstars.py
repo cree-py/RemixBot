@@ -43,20 +43,14 @@ class BrawlStars:
     def get_all_attrs(self, type: str, attr: str):
         return soup.find_all(type, class_=attr)
 
-    def get_tag(self, userid):
-        with open('./data/tags/bstags.json') as f:
-            config = json.load(f)
-            try:
-                tag = config[userid]
-            except KeyError:
-                return 'None'
-        return tag
+    async def get_tag(self, userid):
+        result = await self.db.clashroyale.find_one({'_id': userid})
+        if not result:
+            return 'None'
+        return result['tag']
 
-    def save_tag(self, userid, tag):
-        with open('./data/tags/bstags.json', 'r+') as f:
-            config = json.load(f)
-            config[userid] = tag
-            json.dump(config, f, indent=4)
+    async def save_tag(self, userid, tag):
+        await self.db.clashroyale.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
 
     def check_tag(self, tag):
         for char in tag:
@@ -84,7 +78,7 @@ class BrawlStars:
             return soup.find_all(type, class_=attr)
 
         if not id:
-            id = self.get_tag(str(ctx.message.author.id)).strip('#').replace('O', '0')
+            id = await self.get_tag(str(ctx.message.author.id)).strip('#').replace('O', '0')
             if id == 'None':
                 return await ctx.send(f"Please save your player tag using `{ctx.prefix}bs save <tag>`")
             else:
@@ -149,7 +143,7 @@ class BrawlStars:
         else:
             id = id.strip('#').replace('O', '0')
             if self.check_tag(id):
-                self.save_tag(str(ctx.author.id), id)
+                await self.save_tag(str(ctx.author.id), id)
                 await ctx.send(f'Your tag (#{id}) has been successfully saved.')
             else:
                 await ctx.send("Your tag is invalid. Please make sure you only have the characters `0289PYLQGRJCUV` in the tag.")
@@ -160,9 +154,9 @@ class BrawlStars:
         em = discord.Embed(title='brawlstats.io URL')
         em.color = discord.Color(value=0x00ff00)
         if id is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}brawlstars save <tag>` to save a tag to your discord profile.')
-            id = self.get_tag(str(ctx.author.id))
+            id = await self.get_tag(str(ctx.author.id))
         else:
             if not self.check_tag(id.strip('#').replace('O', '0')):
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
@@ -186,10 +180,10 @@ class BrawlStars:
 
         await ctx.trigger_typing()
         if id is None:
-            if self.get_tag(str(ctx.author.id)) == 'None':
+            if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}bs save <tag>` to save a tag to your discord profile.')
             else:
-                id = self.get_tag(str(ctx.author.id))
+                id = await self.get_tag(str(ctx.author.id))
                 # get player stats
                 try:
                     async with aiohttp.ClientSession() as session:
@@ -265,7 +259,7 @@ class BrawlStars:
                 src = source.split('src="')[1]
                 imgpathbeta = src.split('" w')[0]
                 imgpath = imgpathbeta.split('"')[0]
-                
+
                 em = discord.Embed(color=discord.Color(value=0x00FF00))
                 em.title = name + " (#" + bandtag + ")"
                 em.description = desc
@@ -288,8 +282,8 @@ class BrawlStars:
         else:
             # don't want to fix indentation level
             try:
-            # Get ID 
-            # get player stats
+                # Get ID
+                # get player stats
                 bandtag = id.strip('#')
                 try:
                     async with aiohttp.ClientSession() as session:
@@ -357,7 +351,7 @@ class BrawlStars:
                 src = source.split('src="')[1]
                 imgpathbeta = src.split('" w')[0]
                 imgpath = imgpathbeta.split('"')[0]
-                
+
                 em = discord.Embed(color=discord.Color(value=0x00FF00))
                 em.title = name + " (#" + bandtag + ")"
                 em.description = desc
@@ -441,7 +435,7 @@ class BrawlStars:
             await ctx.trigger_typing()
             j = 6
             if dayofwk in [1, 2, 3, 4, 5]:
-                em2.title="Upcoming events"
+                em2.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 3].text)
                     val += '\n'
@@ -456,7 +450,7 @@ class BrawlStars:
                 em2.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
                 await ctx.send(embed=em2)
             else:
-                em2.title="Upcoming events"
+                em2.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 4].text)
                     val += '\n'
@@ -467,7 +461,7 @@ class BrawlStars:
                     val += ' Coins'
                     j += 1
                     em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
-                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6','card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
                 await ctx.send(embed=em2)
         elif when == "both":
             await ctx.trigger_typing()
@@ -484,8 +478,7 @@ class BrawlStars:
                     j += 1
                     em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
 
-
-                em2.title="Upcoming events"
+                em2.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 3].text)
                     val += '\n'
@@ -514,7 +507,7 @@ class BrawlStars:
                     j += 1
                     em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
                 em.add_field(name=str(get_all_attrs('h4', 'card-title')[3].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[3].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
-                em2.title="Upcoming events"
+                em2.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 4].text)
                     val += '\n'
@@ -525,12 +518,13 @@ class BrawlStars:
                     val += ' Coins'
                     j += 1
                     em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
-                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6','card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
                 await ctx.send(embed=em)
                 await ctx.send(embed=em2)
         else:
             await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
             return
-        
+
+
 def setup(bot):
     bot.add_cog(BrawlStars(bot))
