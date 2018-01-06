@@ -244,7 +244,7 @@ class Config:
         await ch.send(embed=em)
 
     async def on_member_ban(self, guild, user):
-        type = await self.logtype(user)[0]
+        type = await self.logtype(user)
         if not type:
             return
         em = discord.Embed(description=f'`{user.name}` was banned from {guild.name}.', color=0xff0000)
