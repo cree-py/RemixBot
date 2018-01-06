@@ -33,14 +33,13 @@ If you need support with the bot or would like to *contribute to RemixBot*, join
 ### Features
 - [x] Evalulate python code and more commands for creators!
 - [x] Get info about a user, server, or role
-- [x] Custom Embed help command
+- [x] Custom prefix
 - [x] Moderator commands
 - [x] Fun commands (8ball, Roll dice, etc.)
 - [x] Clash Royale Stats
-- [ ] Clash of Clans Stats
-- [x] Brawl Stars Box Simulator
+- [x] Clash of Clans Stats
 - [x] Utility (Embed, Urban Dictionary, Wikipedia)
 - [x] Mod-log
 
-### BETA
-This bot is under development. If you would like to contribute, join [the discord server](https://discord.gg/RzsYQ9f). If you need help with any of the commands, just hop in the server and ask the developers there!
+### Official Release
+This bot has finished the stages of it where there will be lots of bugs, and we have decided to release an early official version. It will still be actively worked on, but there will be less bugs. If you spot any, open an issue on this repo or use the suggest command.
