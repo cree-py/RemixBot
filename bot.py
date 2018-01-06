@@ -95,8 +95,7 @@ def cleanup_code(content):
 
 @bot.event
 async def onready():
-    print("Bot Is Online.")
-    await bot.change_presence(game=discord.Game(name=f"-help | {len(bot.guilds)} servers | {version}", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
     headers = {
@@ -112,6 +111,8 @@ async def onready():
 
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
+
+    print('Bot is Online.')
 
 
 @bot.event
@@ -165,7 +166,7 @@ async def on_guild_join(g):
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
 
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | {version}", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
 
 @bot.event
@@ -182,7 +183,7 @@ async def on_guild_remove(g):
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
 
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | {version}", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
 
 @bot.command()
