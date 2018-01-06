@@ -55,8 +55,8 @@ class Clash_of_Clans:
     async def get_tag(self, userid):
         result = await self.db.clashofclans.find_one({'_id': userid})
         if not result:
-            return result
-        return 'None'
+            return 'None'
+        return result
 
     async def save_tag(self, userid, tag):
         await self.db.clashofclans.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
