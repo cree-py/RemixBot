@@ -67,7 +67,7 @@ class BrawlStars:
     @commands.group(invoke_without_command=True)
     async def bs(self, ctx):
         '''Command group for all BrawlStars commands.'''
-        await ctx.send(f'Commands:\n`{ctx.prefix}bs save <tag>` Saves a tag to your profile.\n`{ctx.prefix}bs profile [tag]` Get a brawl stars profile.\n`{ctx.prefix}bs weburl [tag]` Get the url for more info on a profile.\n`{ctx.prefix}bs band [tag]` Get information about a band. If no tag is specified it will default to the band you are in.')
+        await ctx.send(f'Commands:\n`{ctx.prefix}bs save [tag]` Saves a tag to your profile.\n`{ctx.prefix}bs profile [tag]` Get a brawl stars profile.\n`{ctx.prefix}bs weburl [tag]` Get the url for more info on a profile.\n`{ctx.prefix}bs band [tag]` Get information about a band. If no tag is specified it will default to the band you are in.\n`{ctx.prefix}bs events` Info about events.')
 
     @bs.command()
     async def profile(self, ctx, id=None):
