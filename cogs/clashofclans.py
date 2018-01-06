@@ -25,6 +25,7 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
+from motor.motor_asyncio import AsyncIOMotorClient
 import aiohttp
 import json
 import re
@@ -37,7 +38,10 @@ class Clash_of_Clans:
         with open('data/auths.json') as f:
             coc = json.load(f)
             apikey = coc.get('COC-API')
+            mongo_uri = coc.get('MONGODB')
         self.headers = {'Authorization': apikey}
+        mongo = AsyncIOMotorClient(mongo_uri)
+        self.db = mongo.RemixBot
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
@@ -48,21 +52,14 @@ class Clash_of_Clans:
         return self.all_cap_re.sub(r'\1 \2', s1).title()
     # This marks the end of that code. We give full credit to Kyber
 
-    def get_tag(self, userid):
-        with open('./data/tags/coctags.json') as f:
-            config = json.load(f)
-            try:
-                tag = config[userid]
-            except KeyError:
-                return 'None'
-        return tag
+    async def get_tag(self, userid):
+        result = await self.db.clashofclans.find_one({'_id': userid})
+        if not result:
+            return result
+        return 'None'
 
-    def save_tag(self, userid, tag):
-        with open('./data/tags/coctags.json', 'r+') as f:
-            config = json.load(f)
-            f.seek(0)
-            config[userid] = tag
-            json.dump(config, f, indent=4)
+    async def save_tag(self, userid, tag):
+        await self.db.clashofclans.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
 
     def check_tag(self, tag):
         for char in tag:
