@@ -24,6 +24,7 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
+from motor.motor_asyncio import AsyncIOMotorClient
 import datetime
 import json
 
@@ -32,19 +33,23 @@ class Config:
 
     def __init__(self, bot):
         self.bot = bot
+        with open('./data/auths.json') as f:
+            auth = json.load(f)
+            mongo_uri = auth.get('MONGODB')
+        mongo = AsyncIOMotorClient(mongo_uri)
+        self.db = mongo.RemixBot
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def prefix(self, ctx, *, pre):
         '''Set a custom prefix for the guild.'''
-        with open('./data/config.json', 'r+') as f:
-            prefix = json.load(f)
-            if str(ctx.guild.id) not in prefix:
-                prefix[str(ctx.message.guild.id)] = {'prefix': '-'}
-
-            prefix[str(ctx.message.guild.id)]['prefix'] = str(pre)
-            json.dump(prefix, f, indent=4)
-            await ctx.send(f'The guild prefix has been set to `{pre}` Use `{pre}prefix <prefix>` to change it again.')
+        result = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        if not result:
+            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': {'_id': str(ctx.guild.id), 'prefix': str(pre)}})
+            return ctx.send(f'The guild prefix has been set to `{pre}` Use `{pre}prefix <prefix>` to change it again.')
+        result['prefix'] = str(pre)
+        await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': result})
+        await ctx.send(f'The guild prefix has been set to `{pre}` Use `{pre}prefix <prefix>` to change it again.')
 
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
     @commands.has_permissions(manage_guild=True)

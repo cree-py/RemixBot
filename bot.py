@@ -30,24 +30,27 @@ import traceback
 import textwrap
 import inspect
 import aiohttp
+from motor.motor_asyncio import AsyncIOMotorClient
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
 
 
+with open('./data/auths.json') as f:
+    auth = json.load(f)
+    mongo_uri = auth.get('MONGODB')
+
+mongo = AsyncIOMotorClient(mongo_uri)
+db = mongo.RemixBot
+
+
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
-    try:
-        with open('data/config.json') as f:
-            config = json.load(f)
-    except:
+    result = await db.config.find_one({'_id': str(message.guild.id)})
+    if not result:
         return '-'
-
-    if str(message.guild.id) not in config:
-        return '-'
-
     try:
-        return config[str(message.guild.id)]['prefix']
+        return result['prefix']
     except KeyError:
         return '-'
 
