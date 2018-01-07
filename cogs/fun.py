@@ -91,7 +91,7 @@ class Fun:
                 await ctx.send(embed=em)
 
     @commands.command(aliases=['number'])
-    async def numberfact(self, ctx, *, number: int):
+    async def numberfact(self, ctx, number: int):
         '''Get a fact about a number. Usage: {p}numberfact <number>.'''
         if not number:
             await ctx.send(f'Usage: `{ctx.prefix}numberfact <number>`')
@@ -121,7 +121,7 @@ class Fun:
             await ctx.send("No facts are available for that number.")
 
     @commands.command(aliases=['trump', 'trumpquote'])
-    async def asktrump(self, ctx, question):
+    async def asktrump(self, ctx, *, question):
         '''Ask Donald Trump a question! Usage: {p}asktrump <yourquestion>'''
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}') as resp:
