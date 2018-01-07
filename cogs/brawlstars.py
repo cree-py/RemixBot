@@ -233,8 +233,8 @@ class BrawlStars:
             name = str(get_attr('div', 'name'))
             desc = str(get_attr('div', 'clan-description'))
 
-            trophies = str(get_all_attrs('div', 'trophies')[0]).text
-            required = str(get_all_attrs('div', 'trophies')[1]).text
+            trophies = get_all_attrs('div', 'trophies')[0].text
+            required = get_all_attrs('div', 'trophies')[1].text
 
             n = 1
             r = 0
@@ -243,9 +243,9 @@ class BrawlStars:
 
             for i in range(4):
                 player = {}
-                player['name'] = str(get_all_attrs('div', 'name')[1])
-                player['rank'] = str(get_all_attrs('span', 'topbox')[0])
-                player['trophies'] = str(get_all_attrs('div', 'trophy-count')[0])
+                player['name'] = get_all_attrs('div', 'name'[1].text)
+                player['rank'] = get_all_attrs('span', 'topbox')[0].text
+                player['trophies'] = get_all_attrs('div', 'trophy-count')[0].text
                 info.append(player)
                 n += 1
                 r += 1
