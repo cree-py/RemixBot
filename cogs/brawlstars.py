@@ -424,7 +424,7 @@ class BrawlStars:
             return
 
     @bs.command()
-    async def brawlers(self, ctx, tag:None):
+    async def brawlers(self, ctx, tag=None):
         '''Get the level and trophies of a players brawlers.'''
         def get_attr(type: str, attr: str):
             return soup.find(type, class_=attr).text
