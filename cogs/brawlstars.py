@@ -74,7 +74,6 @@ class BrawlStars:
         '''Get a brawl stars profile.'''
 
         # ID is the player tag
-        # Also I probably could have done the same thing with less lines
         await ctx.trigger_typing()
 
         def get_attr(type: str, attr: str):
@@ -89,6 +88,7 @@ class BrawlStars:
             if id == 'None':
                 return await ctx.send(f"Please save your player tag using `{ctx.prefix}bs save <tag>`")
             else:
+                id = await self.get_tag(str(ctx.author.id))
                 if self.check_tag(id):
                     try:
                         async with aiohttp.ClientSession() as session:
@@ -186,111 +186,37 @@ class BrawlStars:
             return soup.find_all(type, class_=attr)
 
         await ctx.trigger_typing()
-        if id is None:
-            if await self.get_tag(str(ctx.author.id)) == 'None':
-                return await ctx.send(f'No tag found. Please use `{ctx.prefix}bs save <tag>` to save a tag to your discord profile.')
+        if not id:
+            id = await self.get_tag(str(ctx.message.author.id))
+            id = id.strip('#').replace('O', '0')
+            if id == 'None':
+                return await ctx.send(f'Please save your player tag using `{ctx.prefix}bs save <tag>`')
             else:
                 id = await self.get_tag(str(ctx.author.id))
-                # get player stats
-                try:
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(f'https://brawlstats.io/players/{id}') as resp:
-                            data = await resp.read()
-                    soup = BeautifulSoup(data, 'lxml')
-                except Exception as e:
-                    await ctx.send(f'`{e}`')
-                bandtag = get_attr('div', 'band-tag').strip("#")
-                try:
-                    async with aiohttp.ClientSession() as session:
-                        async with session.get(f'https://brawlstats.io/bands/{bandtag}') as resp:
-                            data = await resp.read()
-                    soup = BeautifulSoup(data, 'lxml')
-                except Exception as e:
-                    await ctx.send(f'`{e}`')
-
-                name = str(get_attr('div', 'name'))
-                desc = str(get_attr('div', 'clan-description'))
-
-                totaltrophiesbeta = str(get_all_attrs('div', 'trophies')[0]).split(">")
-                totaltrophiesgamma = totaltrophiesbeta[1].split("<")
-                totaltrophies = totaltrophiesgamma[0]
-                reqdtrophiesbeta = str(get_all_attrs('div', 'trophies')[1]).split(">")
-                reqdtrophiesgamma = reqdtrophiesbeta[1].split("<")
-                reqdtrophies = reqdtrophiesgamma[0]
-
-                memberonenamealpha = str(get_all_attrs('tr', 'jumpc')[0])
-                memberonenamebeta = memberonenamealpha.split('<div class="name">')
-                memberonenamegamma = memberonenamebeta[1].split('</div><div class="clan">')
-                memberonename = memberonenamegamma[0]
-                memberonerankbeta = memberonenamegamma[1].split('</div></div><div class="trophy-count">')
-                memberonerank = memberonerankbeta[0]
-                memberonetrophybeta = memberonerankbeta[1]
-                memberonetrophygamma = memberonetrophybeta.split("</div>")
-                memberonetrophy = memberonetrophygamma[0]
-
-                membertwonamealpha = str(get_all_attrs('tr', 'jumpc')[1])
-                membertwonamebeta = membertwonamealpha.split('<div class="name">')
-                membertwonamegamma = membertwonamebeta[1].split('</div><div class="clan">')
-                membertwoname = membertwonamegamma[0]
-                membertworankbeta = membertwonamegamma[1].split('</div></div><div class="trophy-count">')
-                membertworank = membertworankbeta[0]
-                membertwotrophybeta = membertworankbeta[1]
-                membertwotrophygamma = membertwotrophybeta.split("</div>")
-                membertwotrophy = membertwotrophygamma[0]
-
-                memberthreenamealpha = str(get_all_attrs('tr', 'jumpc')[2])
-                memberthreenamebeta = memberthreenamealpha.split('<div class="name">')
-                memberthreenamegamma = memberthreenamebeta[1].split('</div><div class="clan">')
-                memberthreename = memberthreenamegamma[0]
-                memberthreerankbeta = memberthreenamegamma[1].split('</div></div><div class="trophy-count">')
-                memberthreerank = memberthreerankbeta[0]
-                memberthreetrophybeta = memberthreerankbeta[1]
-                memberthreetrophygamma = memberthreetrophybeta.split("</div>")
-                memberthreetrophy = memberthreetrophygamma[0]
-
-                memberfournamealpha = str(get_all_attrs('tr', 'jumpc')[3])
-                memberfournamebeta = memberfournamealpha.split('<div class="name">')
-                memberfournamegamma = memberfournamebeta[1].split('</div><div class="clan">')
-                memberfourname = memberfournamegamma[0]
-                memberfourrankbeta = memberfournamegamma[1].split('</div></div><div class="trophy-count">')
-                memberfourrank = memberfourrankbeta[0]
-                memberfourtrophybeta = memberfourrankbeta[1]
-                memberfourtrophygamma = memberfourtrophybeta.split("</div>")
-                memberfourtrophy = memberfourtrophygamma[0]
-
-                text = str(get_attr('div', 'board-header my-3'))
-                thing = text.split(' ')
-                members = thing[2].strip('(')
-
-                source = str(get_all_attrs('div', 'badge'))
-                src = source.split('src="')[1]
-                imgpathbeta = src.split('" w')[0]
-                imgpath = imgpathbeta.split('"')[0]
-
-                em = discord.Embed(color=discord.Color(value=0x00FF00))
-                em.title = name + " (#" + bandtag + ")"
-                em.description = desc
-                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                em.add_field(name="Total trophies", value=totaltrophies)
-                em.add_field(name="Required trophies", value=reqdtrophies)
-
-                em2 = discord.Embed(color=discord.Color(value=0x00FF00))
-                em2.title = "Top members"
-                em2.description = "This is calculated through total trophy count."
-                em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
-                em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
-                em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
-                em2.add_field(name=memberfourname, value=memberfourrank + "\n" + memberfourtrophy)
-
-                await ctx.send(embed=em)
-                await ctx.send(embed=em2)
-
+                if self.check_tag(id):
+                    # get player stats
+                    try:
+                        async with aiohttp.ClientSession() as session:
+                            async with session.get(f'https://brawlstats.io/players/{id}') as resp:
+                                data = await resp.read()
+                        soup = BeautifulSoup(data, 'lxml')
+                    except Exception as e:
+                        await ctx.send(f'`{e}`')
+                    bandtag = get_attr('div', 'band-tag').strip("#")
+                    try:
+                        async with aiohttp.ClientSession() as session:
+                            async with session.get(f'https://brawlstats.io/bands/{bandtag}') as resp:
+                                data = await resp.read()
+                        soup = BeautifulSoup(data, 'lxml')
+                    except Exception as e:
+                        await ctx.send(f'`{e}`')
+                    else:
+                        success = True
+                else:
+                    return await ctx.send("You have an invalid tag.")
         else:
-            # don't want to fix indentation level
-            try:
-                # Get ID
-                # get player stats
+            id = id.strip('#').replace('O', '0')
+            if self.check_tag(id):
                 bandtag = id.strip('#')
                 try:
                     async with aiohttp.ClientSession() as session:
@@ -299,88 +225,53 @@ class BrawlStars:
                     soup = BeautifulSoup(data, 'lxml')
                 except Exception as e:
                     await ctx.send(f'`{e}`')
+                else:
+                    success = True
+            else:
+                await ctx.send("Invalid tag. Tags can only contain the following characters: `0289PYLQGRJCUV`")
+        if success:
+            name = str(get_attr('div', 'name'))
+            desc = str(get_attr('div', 'clan-description'))
 
-                name = str(get_attr('div', 'name'))
-                desc = str(get_attr('div', 'clan-description'))
+            trophies = str(get_all_attrs('div', 'trophies')[0]).text
+            required = str(get_all_attrs('div', 'trophies')[1]).text
 
-                totaltrophiesbeta = str(get_all_attrs('div', 'trophies')[0]).split(">")
-                totaltrophiesgamma = totaltrophiesbeta[1].split("<")
-                totaltrophies = totaltrophiesgamma[0]
-                reqdtrophiesbeta = str(get_all_attrs('div', 'trophies')[1]).split(">")
-                reqdtrophiesgamma = reqdtrophiesbeta[1].split("<")
-                reqdtrophies = reqdtrophiesgamma[0]
+            n = 1
+            r = 0
+            t = 0
+            info = []
 
-                memberonenamealpha = str(get_all_attrs('tr', 'jumpc')[0])
-                memberonenamebeta = memberonenamealpha.split('<div class="name">')
-                memberonenamegamma = memberonenamebeta[1].split('</div><div class="clan">')
-                memberonename = memberonenamegamma[0]
-                memberonerankbeta = memberonenamegamma[1].split('</div></div><div class="trophy-count">')
-                memberonerank = memberonerankbeta[0]
-                memberonetrophybeta = memberonerankbeta[1]
-                memberonetrophygamma = memberonetrophybeta.split("</div>")
-                memberonetrophy = memberonetrophygamma[0]
+            for i in range(4):
+                player = {}
+                player['name'] = str(get_all_attrs('div', 'name')[1])
+                player['rank'] = str(get_all_attrs('span', 'topbox')[0])
+                player['trophies'] = str(get_all_attrs('div', 'trophy-count')[0])
+                info.append(player)
+                n += 1
+                r += 1
+                t += 1
 
-                membertwonamealpha = str(get_all_attrs('tr', 'jumpc')[1])
-                membertwonamebeta = membertwonamealpha.split('<div class="name">')
-                membertwonamegamma = membertwonamebeta[1].split('</div><div class="clan">')
-                membertwoname = membertwonamegamma[0]
-                membertworankbeta = membertwonamegamma[1].split('</div></div><div class="trophy-count">')
-                membertworank = membertworankbeta[0]
-                membertwotrophybeta = membertworankbeta[1]
-                membertwotrophygamma = membertwotrophybeta.split("</div>")
-                membertwotrophy = membertwotrophygamma[0]
+            source = str(get_all_attrs('div', 'badge'))
+            src = source.split('src="')[1]
+            url = src.split('" w')[0]
+            imgpath = url.split('"')[0]
 
-                memberthreenamealpha = str(get_all_attrs('tr', 'jumpc')[2])
-                memberthreenamebeta = memberthreenamealpha.split('<div class="name">')
-                memberthreenamegamma = memberthreenamebeta[1].split('</div><div class="clan">')
-                memberthreename = memberthreenamegamma[0]
-                memberthreerankbeta = memberthreenamegamma[1].split('</div></div><div class="trophy-count">')
-                memberthreerank = memberthreerankbeta[0]
-                memberthreetrophybeta = memberthreerankbeta[1]
-                memberthreetrophygamma = memberthreetrophybeta.split("</div>")
-                memberthreetrophy = memberthreetrophygamma[0]
+            em = discord.Embed(color=discord.Color(value=0x00FF00))
+            em.title = f'{name} (#{bandtag})'
+            em.description = desc
+            em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+            em.add_field(name="Total trophies", value=trophies)
+            em.add_field(name="Required trophies", value=required)
 
-                memberfournamealpha = str(get_all_attrs('tr', 'jumpc')[3])
-                memberfournamebeta = memberfournamealpha.split('<div class="name">')
-                memberfournamegamma = memberfournamebeta[1].split('</div><div class="clan">')
-                memberfourname = memberfournamegamma[0]
-                memberfourrankbeta = memberfournamegamma[1].split('</div></div><div class="trophy-count">')
-                memberfourrank = memberfourrankbeta[0]
-                memberfourtrophybeta = memberfourrankbeta[1]
-                memberfourtrophygamma = memberfourtrophybeta.split("</div>")
-                memberfourtrophy = memberfourtrophygamma[0]
+            em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+            em2.title = "Top members"
+            em2.description = "This is calculated through total trophy count."
+            em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+            for entry in info:
+                em2.add_field(name=entry['name'], value=f"{entry['rank'].replace(' ', '-')}\n{entry['trophies']}")
 
-                text = str(get_attr('div', 'board-header my-3'))
-                thing = text.split(' ')
-                members = thing[2].strip('(')
-
-                source = str(get_all_attrs('div', 'badge'))
-                src = source.split('src="')[1]
-                imgpathbeta = src.split('" w')[0]
-                imgpath = imgpathbeta.split('"')[0]
-
-                em = discord.Embed(color=discord.Color(value=0x00FF00))
-                em.title = name + " (#" + bandtag + ")"
-                em.description = desc
-                em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                em.add_field(name="Total trophies", value=totaltrophies)
-                em.add_field(name="Required trophies", value=reqdtrophies)
-
-                em2 = discord.Embed(color=discord.Color(value=0x00FF00))
-                em2.title = "Top members"
-                em2.description = "This is calculated through total trophy count."
-                em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-                em2.add_field(name=memberonename, value=memberonerank + "\n" + memberonetrophy)
-                em2.add_field(name=membertwoname, value=membertworank + "\n" + membertwotrophy)
-                em2.add_field(name=memberthreename, value=memberthreerank + "\n" + memberthreetrophy)
-                em2.add_field(name=memberfourname, value=memberfourrank + "\n" + memberfourtrophy)
-
-                await ctx.send(embed=em)
-                await ctx.send(embed=em2)
-
-            except Exception as e:
-                await ctx.send("This tag is invalid. Make sure that you have a band tag, not a player tag, and that it only contains the characters `0289PYLQGRJCUV`.")
-                await ctx.send(e)
+            await ctx.send(embed=em)
+            await ctx.send(embed=em2)
 
     @bs.command()
     async def events(self, ctx, when=None):
