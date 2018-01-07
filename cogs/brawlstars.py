@@ -493,8 +493,8 @@ class BrawlStars:
             for i in range(len(get_all_attrs('span', 'trophy-nr'))):
                 tooprint = ""
                 tooprint += str(get_all_attrs('span', 'lbskew-power-txt')[i].text + ' :cloud_lightning:') + '\n'
-                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text + ' ' + str(bot.get_emoji(emoji(ctx, 'bstrophy')))) + '\n'
-                em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(bot.get_emoji(emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
+                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text + ' ' + str(self.bot.get_emoji(emoji(ctx, 'bstrophy')))) + '\n'
+                em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(self.bot.get_emoji(emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
 
             em.set_thumbnail(url=f'https://brawlstats.io{str(imglist[0])}')
             await ctx.send(embed=em)
