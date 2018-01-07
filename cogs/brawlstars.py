@@ -423,6 +423,82 @@ class BrawlStars:
             await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
             return
 
+    @bs.command()
+    async def brawlers(self, ctx, tag:None):
+        '''Get the level and trophies of a players brawlers.'''
+        def get_attr(type: str, attr: str):
+            return soup.find(type, class_=attr).text
+        def get_all_attrs(type: str, attr: str):
+            return soup.find_all(type, class_=attr)
+        def emoji(ctx, emoji):
+            with open('data/emojis.json') as f:
+                emojis = json.load(f)
+                e = emojis[emoji]
+            return e
+
+        if tag is None:
+            tag = await self.get_tag(str(ctx.message.author.id))
+            tag = tag.strip('#').replace('O', '0')
+            if tag == 'None':
+                return await ctx.send(f'You do not have a saved tag. Please save your player tag using `{ctx.prefix}bs save <tag>`')
+            else:
+                tag = await self.get_tag(str(ctx.author.id))
+                if self.check_tag(tag):
+                    # get player stats
+                    try:
+                        async with aiohttp.ClientSession() as session:
+                            async with session.get(f'https://brawlstats.io/players/{tag}') as resp:
+                                data = await resp.read()
+                        soup = BeautifulSoup(data, 'lxml')
+                    except Exception as e:
+                        await ctx.send(f'`{e}`')
+                    else:
+                        success = True
+                else:
+                    return await ctx.send("You have an invalid tag.")
+        else:
+            tag = tag.strip('#').replace('O', '0')
+            if self.check_tag(tag):
+                tag = tag.strip('#')
+                try:
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get(f'https://brawlstats.io/players/{tag}') as resp:
+                            data = await resp.read()
+                    soup = BeautifulSoup(data, 'lxml')
+                except Exception as e:
+                    await ctx.send(f'`{e}`')
+                else:
+                    success = True
+            else:
+                await ctx.send("Invalid tag. Tags can only contain the following characters: `0289PYLQGRJCUV`")
+
+        if success:
+
+            em = discord.Embed(color=discord.Color(value=0x00FF00))
+            everything = (str(get_all_attrs('div', 'brawlers-brawler-slot d-inline-block')))
+            one = everything.split('url("')
+
+            tobeprinted = ""
+
+            for i in range(len(one)-1):
+                plist = one[i + 1].split('");";')
+                tobeprinted +=  plist[0] + '\n'
+
+            playername = get_attr('div', 'player-name brawlstars-font')
+            playertag = "Q8P2ULP"
+
+            imglist = tobeprinted.split('\n')
+            em.title="Brawlers"
+            em.description = playername + " (#" + playertag + ")"
+            for i in range(len(get_all_attrs('span', 'trophy-nr'))):
+                tooprint = ""
+                tooprint += str(get_all_attrs('span', 'lbskew-power-txt')[i].text + ' :cloud_lightning:') + '\n'
+                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text + ' ' + str(bot.get_emoji(emoji(ctx, 'bstrophy')))) + '\n'
+                em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(bot.get_emoji(emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
+
+            em.set_thumbnail(url=f'https://brawlstats.io{str(imglist[0])}')
+            await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(BrawlStars(bot))
