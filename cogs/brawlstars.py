@@ -244,7 +244,7 @@ class BrawlStars:
             for i in range(4):
                 player = {}
                 player['name'] = get_all_attrs('div', 'name')[n].text
-                player['rank'] = get_all_attrs('div', 'clan')[r].text
+                player['role'] = get_all_attrs('div', 'clan')[r].text
                 player['trophies'] = get_all_attrs('div', 'trophy-count')[t].text
                 info.append(player)
                 n += 1
@@ -268,7 +268,7 @@ class BrawlStars:
             em2.description = "This is calculated through total trophy count."
             em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
             for entry in info:
-                em2.add_field(name=entry['name'], value=f"{entry['rank'].replace(' ', '-')}\n{entry['trophies']}")
+                em2.add_field(name=entry['name'], value=f"{entry['role'].replace(' ', '-')}\n{entry['trophies']}")
 
             await ctx.send(embed=em)
             await ctx.send(embed=em2)
