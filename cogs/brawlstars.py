@@ -140,6 +140,8 @@ class BrawlStars:
             em.add_field(name="Showdown Victories", value=get_attr('div', 'showdown-victories'))
             em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
             em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
+            em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
+                      icon_url='http://brawlstats.io/images/bs-stats.png')
             await ctx.send(embed=em)
 
     @bs.command()
@@ -262,11 +264,15 @@ class BrawlStars:
             em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
             em.add_field(name="Total trophies", value=trophies)
             em.add_field(name="Required trophies", value=required)
+            em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
+                      icon_url='http://brawlstats.io/images/bs-stats.png')
 
             em2 = discord.Embed(color=discord.Color(value=0x00FF00))
             em2.title = "Top members"
             em2.description = "This is calculated through total trophy count."
             em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+            em2.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
+                      icon_url='http://brawlstats.io/images/bs-stats.png')
             for entry in info:
                 em2.add_field(name=entry['name'], value=f"{entry['role'].replace(' ', '-')}\n{entry['trophies']}")
 
@@ -296,6 +302,10 @@ class BrawlStars:
 
         em = discord.Embed(color=discord.Color(value=0x00FF00))
         em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+        em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
+                      icon_url='http://brawlstats.io/images/bs-stats.png')
+        em2.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
+                      icon_url='http://brawlstats.io/images/bs-stats.png')
 
         if when is None:
             await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
@@ -497,6 +507,8 @@ class BrawlStars:
                 em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(self.bot.get_emoji(emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
 
             em.set_thumbnail(url=f'https://brawlstats.io{str(imglist[0])}')
+            em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
+                      icon_url='http://brawlstats.io/images/bs-stats.png')
             await ctx.send(embed=em)
 
 
