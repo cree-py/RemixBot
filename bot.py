@@ -35,7 +35,7 @@ from contextlib import redirect_stdout
 from discord.ext import commands
 import json
 import subprocess
-
+import asyncio
 
 with open('./data/auths.json') as f:
     auth = json.load(f)
