@@ -305,7 +305,7 @@ async def update(ctx):
     """Pulls from github and updates bot"""
     if not dev_check(ctx.author.id):
         return await ctx.send("You cannot use this because your not a developer")
-    await ctx.send(subprocess.run("git pull",stdout=subprocess.PIPE).stdout.decode('utf-8'))
+    await ctx.send(f"```{subprocess.run("git pull",stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
 
 
 @bot.command(name='eval')
