@@ -34,6 +34,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 from contextlib import redirect_stdout
 from discord.ext import commands
 import json
+import subprocess
 
 
 with open('./data/auths.json') as f:
