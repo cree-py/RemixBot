@@ -281,6 +281,30 @@ async def suggest(ctx, *, idea: str):
     em.set_footer(text=f"From {ctx.author.guild} | Server ID: {ctx.author.guild.id}", icon_url=ctx.guild.icon_url)
     await suggest.send(embed=em)
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
+    
+    
+    
+    
+@bot.command()
+async def reload(ctx, cog):
+    """Reloads a cog"""
+    if not dev_check(ctx.author.id):
+        return await ctx.send("You cannot use this because your not a developer")
+    try:
+        bot.unload_extension(f"cogs.{cog}")
+        asyncio.sleep(1)
+        bot.load_extension(f"cogs.{cog}")
+        await ctx.send(f"Reloaded {cog} Cog Succesfully :white_check_mark:")
+    except:
+        await ctx.send(f"An Error occured while reloading {cog} maybe it doesn't exist, if it exists check your console for error details :x:")
+
+
+@bot.command()
+async def update(ctx):
+    """Pulls from github and updates bot"""
+    if not dev_check(ctx.author.id):
+        return await ctx.send("You cannot use this because your not a developer")
+    await ctx.send(subprocess.run("git pull",stdout=subprocess.PIPE).stdout.decode('utf-8'))
 
 
 @bot.command(name='eval')
