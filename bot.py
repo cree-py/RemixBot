@@ -296,8 +296,8 @@ async def reload(ctx, cog):
         asyncio.sleep(1)
         bot.load_extension(f"cogs.{cog}")
         await ctx.send(f"Reloaded {cog} Cog Succesfully :white_check_mark:")
-    except:
-        await ctx.send(f"An Error occured while reloading {cog} maybe it doesn't exist, if it exists check your console for error details :x:")
+    except Exception as e:
+        await ctx.send(f"An Error occured while reloading {cog}, error details: \n ```{e}```")
 
 
 @bot.command()
