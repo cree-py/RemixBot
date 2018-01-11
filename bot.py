@@ -286,18 +286,18 @@ async def suggest(ctx, *, idea: str):
     
     
     
-@bot.command()
+@bot.command(hidden=True)
 async def reload(ctx, cog):
     """Reloads a cog"""
     if not dev_check(ctx.author.id):
-        return await ctx.send("You cannot use this because your not a developer")
+        return await ctx.send("You cannot use this because you're not a developer.")
     try:
         bot.unload_extension(f"cogs.{cog}")
         asyncio.sleep(1)
         bot.load_extension(f"cogs.{cog}")
-        await ctx.send(f"Reloaded {cog} Cog Succesfully :white_check_mark:")
+        await ctx.send(f"Reloaded the {cog} cog successfully :white_check_mark:")
     except Exception as e:
-        await ctx.send(f"An Error occured while reloading {cog}, error details: \n ```{e}```")
+        await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
 
 
 @bot.command()
@@ -305,6 +305,9 @@ async def update(ctx):
     """Pulls from github and updates bot"""
     if not dev_check(ctx.author.id):
         return await ctx.send("You cannot use this because your not a developer")
+    for cog in bot.cogs:
+        bot.unload_extension(f'cogs.{cog.name}')
+        bot.load_extension(f'cogs.{cog.name}')
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
 
 
