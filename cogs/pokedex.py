@@ -28,6 +28,7 @@ from discord.ext import commands
 import json
 import aiohttp
 import random
+from bs4 import BeautifulSoup
 
 class Pokedex:
     def __init__(self, bot):
