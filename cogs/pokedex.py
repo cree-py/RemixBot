@@ -36,7 +36,7 @@ class Pokedex:
     @commands.group(invoke_without_command=True)
     async def pokemon(self, ctx):
         '''Base group for pokemon commands.'''
-        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n`-pokemon move <move>` Get info about a move. You can use the name or pokeapi.co ID.\n**Note:** A lot of the time the API response time is slow so please be patient.")
+        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n`-pokemon move <move>` Get info about a move. You can use the name or pokeapi.co ID.\n`-pokemon fusion` Get a pokemon fusion.\n**Note:** A lot of the time the API response time is slow so please be patient.")
         
     @pokemon.command()
     async def random(self, ctx):
@@ -192,6 +192,18 @@ class Pokedex:
         except Exception as e:
             await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
             await ctx.send(e)
+
+    @pokemon.command()
+    async def fusion(self, ctx):
+        '''Get a pokemon fusion.'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get('http://pokemon.alexonsager.net/') as resp:
+                data = await resp.read()
+        soup = BeautifulSoup(data, 'lxml')
+        em = discord.Embed(color=discord.Color(value=0x00FF00))
+        em.title = soup.find('div', class_='title').text
+        em.set_image(url=str(soup.find_all('img')[0].get('src')))
+        await ctx.send(embed=em)
 
          
 def setup(bot):
