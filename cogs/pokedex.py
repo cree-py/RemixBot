@@ -151,8 +151,9 @@ class Pokedex:
                         moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
             em.add_field(name="Learnable Moves", value=moves)
             await ctx.send(embed=em)
-        except:
+        except Exception as e:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
+            await ctx.send(e)
             
     @pokemon.command()
     async def move(self, ctx, *, move=None):
@@ -184,8 +185,9 @@ class Pokedex:
                     em.description=description.replace('\n', ' ')
                     em.set_thumbnail(url=f'https://remixweb.herokuapp.com/assets/{type}.png')
             await ctx.send(embed=em)
-        except:
+        except Exception as e:
             await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
+            await ctx.send(e)
 
          
 def setup(bot):
