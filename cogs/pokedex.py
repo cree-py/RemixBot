@@ -92,8 +92,10 @@ class Pokedex:
                     if not i == 0:
                         moves += ", "
                     moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
-        em.add_field(name="Learnable Moves", value=moves)
+        em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+        em2.add_field(name="Learnable Moves", value=moves)
         await ctx.send(embed=em)
+        await ctx.send(embed=em2)
         
     @pokemon.command()
     async def info(self, ctx, pokemon):
@@ -149,8 +151,10 @@ class Pokedex:
                         if not i == 0:
                             moves += ", "
                         moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
-            em.add_field(name="Learnable Moves", value=moves)
+            em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+            em2.add_field(name="Learnable Moves", value=moves)
             await ctx.send(embed=em)
+            await ctx.send(embed=em2)
         except Exception as e:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             await ctx.send(e)
