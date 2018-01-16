@@ -209,7 +209,8 @@ async def on_command_error(ctx, error):
         pass
 
     elif isinstance(error, send_help):
-        await ctx.send(embed=send_cmd_help(ctx))
+        _help = await send_cmd_help(ctx)
+        await ctx.send(embed=_help)
 
     elif isinstance(error, commands.MissingPermissions):
         await ctx.send('You do not have the permissions to use this command.')
