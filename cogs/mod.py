@@ -22,24 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# Import dependencies
+
 import discord
 from discord.ext import commands
-import json
+import asyncio
 
-# Declare Mod class
+
 class Mod:
-    
-    # Define initialization method
+
     def __init__(self, bot):
         self.bot = bot
 
-    # DO NOT change the error messages again
-    # The @commands check eliminates user perms
-    # So the only possible way is for the bot to not have perms.
-    # The old error message is inaccurate.
-
-    # Kick command
     @commands.command()
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, user: discord.Member):
@@ -50,7 +43,6 @@ class Mod:
         except discord.Forbidden:
             await ctx.send("I could not kick the user. Make sure I have the kick members permission.")
 
-    # Ban command
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, user: discord.Member):
@@ -61,29 +53,40 @@ class Mod:
         except discord.Forbidden:
             await ctx.send("I could not ban the user. Make sure I have the ban members permission.")
 
-    # Mute command
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def mute(self, ctx, user: discord.Member):
-        '''Mute a member in the channel'''
+    async def mute(self, ctx, user: discord.Member, time: int=15):
+        '''Mute a member in the guild'''
         try:
-            await ctx.channel.set_permissions(user, send_messages=False)
-            await ctx.channel.send(f"{user.mention} has been muted from this channel")
+            secs = time * 60
+            for channel in ctx.guild.channels:
+                if isinstance(channel, discord.TextChannel):
+                    await ctx.channel.set_permissions(user, send_messages=False)
+                elif isinstance(channel, discord.VoiceChannel):
+                    await channel.set_permissions(user, connect=False)
+            await ctx.send(f"{user.mention} for {time} minutes.")
+            await asyncio.sleep(secs)
+            for channel in ctx.guild.channels:
+                if isinstance(channel, discord.TextChannel):
+                    await ctx.channel.set_permissions(user, send_messages=None)
+                elif isinstance(channel, discord.VoiceChannel):
+                    await channel.set_permissions(user, connect=None)
         except discord.Forbidden:
-            await ctx.send("I could not unmute the user. Make sure I have the manage channels permission.")
+            await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
 
-    # Unmute command
     @commands.command()
     @commands.has_permissions(ban_members=True)
     async def unmute(self, ctx, user: discord.Member):
-        '''Unmute a member from the channel'''
+        '''Unmute a member in the guild'''
         try:
-            await ctx.channel.set_permissions(user, send_messages=True)
-            await ctx.channel.send(f"{user.mention} has been unmuted from this channel.")
+            for channel in ctx.guild.channels:
+                if isinstance(channel, discord.TextChannel):
+                    await ctx.channel.set_permissions(user, send_messages=None)
+                elif isinstance(channel, discord.VoiceChannel):
+                    await channel.set_permissions(user, connect=None)
         except discord.Forbidden:
             await ctx.send("I could not unmute the user. Make sure I have the manage channels permission.")
 
-    # Warn command
     @commands.command()
     @commands.has_permissions(kick_members=True)
     async def warn(self, ctx, user: discord.Member, *, reason: str):
@@ -94,11 +97,10 @@ class Mod:
         await user.send(warning)
         await ctx.send(f"**{user}** has been **warned**")
 
-    # Purge command
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def purge(self, ctx, messages: int):
-        '''Delete messages'''
+        '''Delete messages a certain number of messages from a channel.'''
         if messages > 99:
             messages = 99
 
@@ -109,6 +111,6 @@ class Mod:
         else:
             await ctx.send(f'{messages} messages deleted. 👌', delete_after=3)
 
-# Setup bot
+
 def setup(bot):
     bot.add_cog(Mod(bot))
