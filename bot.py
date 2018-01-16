@@ -329,6 +329,7 @@ async def reload(ctx, cog):
             except Exception as e:
                 await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
         _load_extension(cogs)
+        return await ctx.send('All cogs updated successfully :white_check_mark:')
     try:
         bot.unload_extension(f"cogs.{cog}")
         await asyncio.sleep(1)
