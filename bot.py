@@ -47,6 +47,8 @@ db = mongo.RemixBot
 
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
+    if not message.guild:
+        return '-'
     result = await db.config.find_one({'_id': str(message.guild.id)})
     if not result:
         return '-'
@@ -59,19 +61,22 @@ async def get_pre(bot, message):
 bot = commands.Bot(command_prefix=get_pre)
 dbltoken = "token"
 directory = 'cogs'
-cogs = [x.replace('.y', '') for x in os.listdir('cogs') if x.endswith('.y')]
+cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
 
-for cog in cogs:
-    members = inspect.getmembers(cog)
-    for name, member in members:
-        if name.startswith('no'):
-            bot.add_listener(member, name)
-    try:
-        bot.load_cog(f'path{cog}')
-    except Exception as e:
-        print(f'LoadError: {cog}\n'
-              f'{type(e).__name__}: {e}')
+def _load_extension(cogs):
+    for cog in cogs:
+        members = inspect.getmembers(cog)
+        for name, member in members:
+            if name.startswith('on_'):
+                bot.add_listener(member, name)
+        try:
+            bot.load_extension(f'{directory}{cog}')
+        except Exception as e:
+            print(f'LoadError: {cog}\n{type(e).__name__}: {e}')
+
+
+_load_extension(cogs)
 
 
 bot.remove_command('help')
@@ -187,9 +192,36 @@ async def on_guild_remove(g):
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
 
+async def send_cmd_help(self, ctx):
+    if ctx.invoked_subcommand:
+        cmd = ctx.invoked_subcommand
+    else:
+        cmd = ctx.command
+    em = discord.Embed(title=f'Usage: {ctx.prefix + cmd.signature}')
+    em.color = discord.Color(value=0x00f00)
+    em.description = cmd.help
+    return em
+
+
+async def on_command_error(ctx, error):
+
+    send_help = (commands.MissingRequiredArgument, commands.BadArgument, commands.TooManyArguments, commands.UserInputError)
+
+    if isinstance(error, commands.CommandNotFound):  # fails silently
+        pass
+
+    elif isinstance(error, send_help):
+        await ctx.send(embed=send_cmd_help(ctx))
+
+    elif isinstance(error, commands.MissingPermissions):
+        await ctx.send('You do not have the permissions to use this command.')
+    # If any other error occurs, prints to console.
+
+
 @bot.command()
 async def help(ctx):
     '''Shows this message'''
+    signatures = []
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
     em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n\n"
@@ -199,6 +231,8 @@ async def help(ctx):
             if not cmd.hidden:
                 if cmd.instance is cog:
                     cc.append(cmd)
+                    signatures.append(len(cmd.name) + len(ctx.prefix))
+        max_length = max(signatures)
         abc = sorted(cc, key=lambda x: x.name)
         cmds = ''
         for c in abc:
@@ -282,36 +316,41 @@ async def suggest(ctx, *, idea: str):
     em.set_footer(text=f"From {ctx.author.guild} | Server ID: {ctx.author.guild.id}", icon_url=ctx.guild.icon_url)
     await suggest.send(embed=em)
     await ctx.send("Your idea has been successfully sent to support server. Thank you!")
-    
-    
-    
-    
+
+
 @bot.command(hidden=True)
 async def reload(ctx, cog):
     """Reloads a cog"""
     if not dev_check(ctx.author.id):
         return await ctx.send("You cannot use this because you're not a developer.")
+    if cog.lower() == 'all':
+        for cog in cogs:
+            try:
+                bot.unload_extension(f"cogs.{cog}")
+            except Exception as e:
+                await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
+        _load_extension(cogs)
     try:
         bot.unload_extension(f"cogs.{cog}")
-        asyncio.sleep(1)
+        await asyncio.sleep(1)
         bot.load_extension(f"cogs.{cog}")
         await ctx.send(f"Reloaded the {cog} cog successfully :white_check_mark:")
     except Exception as e:
         await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
 
 
-@bot.command()
+@bot.command(hidden=True)
 async def update(ctx):
     """Pulls from github and updates bot"""
     if not dev_check(ctx.author.id):
         return await ctx.send("You cannot use this because your not a developer")
-    for cog in bot.cogs:
-        bot.unload_extension(f'cogs.{cog.name}')
-        bot.load_extension(f'cogs.{cog.name}')
+    for cog in cogs:
+        bot.unload_extension(f'{directory}{cog}')
+        bot.load_extension(f'{directory}{cog}')
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
 
 
-@bot.command(name='eval')
+@bot.command(name='eval', hidden=True)
 async def _eval(ctx, *, body):
     """Evaluates python code"""
     if not dev_check(ctx.author.id):
@@ -402,9 +441,13 @@ async def invite(ctx):
 
 
 @bot.command()
+@bot.has_permissions(manage_messages=True)
 async def say(ctx, *, message: str):
     '''Say something as the bot'''
-    await ctx.message.delete
+    try:
+        await ctx.message.delete
+    except discord.Forbidden:
+        pass
     await ctx.send(message)
 
 
