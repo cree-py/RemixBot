@@ -100,7 +100,7 @@ def cleanup_code(content):
 
 
 @bot.event
-async def onready():
+async def on_ready():
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
@@ -438,17 +438,6 @@ async def _eval(ctx, *, body):
 async def invite(ctx):
     '''Invite the bot to your server'''
     await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542")
-
-
-@bot.command()
-@bot.has_permissions(manage_messages=True)
-async def say(ctx, *, message: str):
-    '''Say something as the bot'''
-    try:
-        await ctx.message.delete
-    except discord.Forbidden:
-        pass
-    await ctx.send(message)
 
 
 @bot.command(hidden=True)
