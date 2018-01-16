@@ -193,10 +193,7 @@ async def on_guild_remove(g):
 
 
 async def send_cmd_help(self, ctx):
-    if ctx.invoked_subcommand:
-        cmd = ctx.invoked_subcommand
-    else:
-        cmd = ctx.command
+    cmd = ctx.command
     em = discord.Embed(title=f'Usage: {ctx.prefix + cmd.signature}')
     em.color = discord.Color(value=0x00f00)
     em.description = cmd.help
