@@ -192,7 +192,7 @@ async def on_guild_remove(g):
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
 
-async def send_cmd_help(self, ctx):
+async def send_cmd_help(ctx):
     cmd = ctx.command
     em = discord.Embed(title=f'Usage: {ctx.prefix + cmd.signature}')
     em.color = discord.Color(value=0x00f00)
