@@ -235,7 +235,8 @@ async def help(ctx):
         abc = sorted(cc, key=lambda x: x.name)
         cmds = ''
         for c in abc:
-            cmds += f'`{ctx.prefix + c.name:<{max_length}} {c.short_doc:<{maxlen}}`\n'
+            cmds += f'`{ctx.prefix + c.name:<{max_length}} '
+            cmds += f'{c.short_doc:<{max_length}}`\n'
         em.add_field(name=type(cog).__name__.replace('_', ' '), value=cmds)
     none = ''
     nonec = []
@@ -246,7 +247,8 @@ async def help(ctx):
                 signatures.append(len(cmd.name) + len(ctx.prefix))
     abc = sorted(nonec, key=lambda x: x.name)
     for c in abc:
-        none += f'`{ctx.prefix + c.name:<{max_length}} {c.short_doc:<{max_length}}`\n'
+        none += f'`{ctx.prefix + c.name:<{max_length}} '
+        none += f'{c.short_doc:<{max_length}}`\n'
     em.add_field(name='Bot', value=none)
 
 
