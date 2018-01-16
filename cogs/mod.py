@@ -71,7 +71,7 @@ class Mod:
                     await ctx.channel.set_permissions(user, send_messages=None)
                 elif isinstance(channel, discord.VoiceChannel):
                     await channel.set_permissions(user, connect=None)
-                await ctx.send(f'{user.mention} has been unmuted from the guild.')
+            await ctx.send(f'{user.mention} has been unmuted from the guild.')
         except discord.Forbidden:
             await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
 
