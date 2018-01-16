@@ -64,13 +64,14 @@ class Mod:
                     await ctx.channel.set_permissions(user, send_messages=False)
                 elif isinstance(channel, discord.VoiceChannel):
                     await channel.set_permissions(user, connect=False)
-            await ctx.send(f"{user.mention} for {time} minutes.")
+            await ctx.send(f"{user.mention} has been muted for {time} minutes.")
             await asyncio.sleep(secs)
             for channel in ctx.guild.channels:
                 if isinstance(channel, discord.TextChannel):
                     await ctx.channel.set_permissions(user, send_messages=None)
                 elif isinstance(channel, discord.VoiceChannel):
                     await channel.set_permissions(user, connect=None)
+                await ctx.send(f'{user.mention} has been unmuted from the guild.')
         except discord.Forbidden:
             await ctx.send("I could not mute the user. Make sure I have the manage channels permission.")
 
@@ -84,6 +85,7 @@ class Mod:
                     await ctx.channel.set_permissions(user, send_messages=None)
                 elif isinstance(channel, discord.VoiceChannel):
                     await channel.set_permissions(user, connect=None)
+            await ctx.send(f'{user.mention} has been unmuted from the guild.')
         except discord.Forbidden:
             await ctx.send("I could not unmute the user. Make sure I have the manage channels permission.")
 
