@@ -200,6 +200,7 @@ async def send_cmd_help(self, ctx):
     return em
 
 
+@bot.event
 async def on_command_error(ctx, error):
 
     send_help = (commands.MissingRequiredArgument, commands.BadArgument, commands.TooManyArguments, commands.UserInputError)
