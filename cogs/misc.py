@@ -40,7 +40,7 @@ class Misc:
         try:
             await ctx.message.delete()
         except discord.Forbidden:
-            pass
+            continue
         await ctx.send(message)
 
     @commands.command(aliases=['8ball'])
