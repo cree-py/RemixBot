@@ -26,6 +26,7 @@ SOFTWARE.
 import discord
 from discord.ext import commands
 import random
+import aiohttp
 
 
 class Misc:
@@ -40,7 +41,7 @@ class Misc:
         try:
             await ctx.message.delete()
         except discord.Forbidden:
-            return await ctx.send(message)
+            pass
         await ctx.send(message)
 
     @commands.command(aliases=['8ball'])
@@ -56,7 +57,7 @@ class Misc:
                      "Don't count on it", "My reply is no", "My sources say no", "Outlook not so good",
                      "Very doubtful"]
 
-        num = random.randint(0, 19)
+        num = random.randint(0, len(responses) - 1)
         if num < 10:
             em = discord.Embed(color=discord.Color(value=0x00ff00))
         elif num < 15:
@@ -69,11 +70,6 @@ class Misc:
         em.title = f"🎱{question}"
         em.description = response
         await ctx.send(embed=em)
-
-    @commands.command(aliases=['rn', 'randomnum', 'randnumber'])
-    async def randomnumber(self, ctx, min=1, max=100):
-        '''Get a random number between two numbers, or 1 and 100'''
-        await ctx.send(f'Your random number is: {random.randint(min, max)}')
 
     @commands.command(aliases=['coin'])
     async def flipcoin(self, ctx):
@@ -96,33 +92,139 @@ class Misc:
         em = discord.Embed(color=color, title='Roll a certain number of dice', description=fmt)
         await ctx.send(embed=em)
 
-    @commands.command(aliases=['randquote', 'quote'])
-    async def randomquote(self, ctx):
-        '''Get a random inspirational quote!'''
+    @commands.command(aliases=['lotto'])
+    async def lottery(self, ctx, *, guesses):
+        '''Enter the lottery and see if you win!'''
+        author = ctx.author
+        numbers = []
+        for x in range(3):
+            numbers.append(random.randint(1, 5))
 
-        quotes = ["*You can do anything, but not everything.*\n—David Allen",
-                  "*Perfection is achieved, not when there is nothing more to add, but when there is nothing left to take away.*\n—Antoine de Saint-Exupéry",
-                  "*You miss 100 percent of the shots you never take.*\n—Wayne Gretzky",
-                  "*Courage is not the absence of fear, but rather the judgement that something else is more important than fear.*\n—Ambrose Redmoon",
-                  "*You must be the change you wish to see in the world.*\n—Gandhi",
-                  "*To the man who only has a hammer, everything he encounters begins to look like a nail.*\n—Abraham Maslow",
-                  "*We are what we repeatedly do; excellence, then, is not an act but a habit.*\n—Aristotle",
-                  "*A wise man gets more use from his enemies than a fool from his friends.*\n—Baltasar Gracian",
-                  "*Do not seek to follow in the footsteps of the men of old; seek what they sought.*\n—Basho",
-                  "*Everyone is a genius at least once a year. The real geniuses simply have their bright ideas closer together.*\n—Georg Christoph Lichtenberg",
-                  "*The real voyage of discovery consists not in seeking new lands but seeing with new eyes.*\n—Marcel Proust",
-                  "*Even if you’re on the right track, you’ll get run over if you just sit there.*\n—Will Rogers",
-                  "*People often say that motivation doesn’t last. Well, neither does bathing – that’s why we recommend it daily.*\n—Zig Ziglar",
-                  "*I am cool.*\n—Victini",
-                  "*The way to get started is to quit talking and begin doing.*\n—Walt Disney",
-                  "*Don't let yesterday take up too much of today.*\n—Will Rogers",
-                  "*Do. Or do not. There is no try.*\n—Yoda",
-                  "*It's not about ideas. It's about making ideas happen.*\n—Scott Belsky",
-                  "*The best and most beautiful things in the world cannot be seen or even touched - they must be felt with the heart.*\n—Helen Keller"]
+        split = guesses.split(' ')
+        if len(split) != 3:
+            return await ctx.send('Please separate your numbers with a space, and make sure your numbers are between 0 and 5.')
 
-        num = random.randint(0, (len(quotes) - 1))
-        quote = quotes[num]
-        await ctx.send(quote)
+        string_numbers = [str(i) for i in numbers]
+        if split[0] == string_numbers[0] and split[1] == string_numbers[1] and split[2] == string_numbers[2]:
+            await ctx.send(f'{author.mention} You won! Congratulations on winning the lottery!')
+        else:
+            await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
+
+    @commands.command(aliases=['cnjoke'])
+    async def chucknorris(self, ctx):
+        '''Facts about Chuck Norris.'''
+        url = "http://api.icndb.com/jokes/random"
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as resp:
+                data = await resp.json()
+        await ctx.send(data['value']['joke'])
+
+    @commands.command(aliases=['xkcd', 'comic'])
+    async def randomcomic(self, ctx):
+        '''Get a comic from xkcd.'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'http://xkcd.com/info.0.json') as resp:
+                data = await resp.json()
+                currentcomic = data['num']
+        rand = random.randint(0, currentcomic)  # max = current comic
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'http://xkcd.com/{rand}/info.0.json') as resp:
+                data = await resp.json()
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = f"XKCD Number {data['num']}- \"{data['title']}\""
+        em.set_footer(text=f"Published on {data['month']}/{data['day']}/{data['year']}")
+        em.set_image(url=data['img'])
+        await ctx.send(embed=em)
+
+    @commands.command(aliases=['number'])
+    async def numberfact(self, ctx, number: int):
+        '''Get a fact about a number. Usage: {p}numberfact <number>.'''
+        if not number:
+            await ctx.send(f'Usage: `{ctx.prefix}numberfact <number>`')
+            return
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(f'http://numbersapi.com/{number}?json') as resp:
+                    file = await resp.json()
+                    fact = file['text']
+                    await ctx.send(f"**Did you know?**\n*{fact}*")
+        except KeyError:
+            await ctx.send("No facts are available for that number.")
+
+    @commands.command(aliases=['trump', 'trumpquote'])
+    async def asktrump(self, ctx, *, question):
+        '''Ask Donald Trump a question! Usage: {p}asktrump <yourquestion>'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}') as resp:
+                file = await resp.json()
+        quote = file['message']
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = "What does Trump say?"
+        em.description = quote
+        em.set_footer(text="Made possible by whatdoestrumpthink.com", icon_url="http://www.stickpng.com/assets/images/5841c17aa6515b1e0ad75aa1.png")
+        await ctx.send(embed=em)
+
+    @commands.command(aliases=['joke'])
+    async def badjoke(self, ctx):
+        '''Get a bad joke.'''
+        async with aiohttp.ClientSession() as session:
+            async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as resp:
+                data = await resp.json()
+        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em.title = data['setup']
+        em.description = data['punchline']
+        await ctx.send(embed=em)
+
+    @commands.command(aliases=['open', 'box'])
+    async def boxsim(self, ctx):
+        '''Simulate a box opening in Brawl Stars'''
+        common = ["Shelly", "El Primo", "Colt", "Nita", "Dynamike"]
+        rare = ["Bull", "Brock", "Barley", "Jessie"]
+        superrare = ["Poco", "Ricochet", "Bo"]
+        epic = ["Pam", "Piper"]
+        mythic = ["Mortis", "Tara"]
+        legendary = ["Spike", "Crow"]
+
+        num = random.randint(0, 100)
+        if num < 35:
+            result = "1 Elixir"
+        elif num < 40:
+            result = "2 Elixir"
+        elif num < 44:
+            result = "3 Elixir"
+        elif num < 47:
+            result = "5 Elixir"
+        elif num < 49:
+            result = "7 Elixir"
+        elif num < 50:
+            result = "10 Elixir"
+        elif num < 85:
+            rand = random.randint(0, 4)
+            result = common[rand]
+        elif num < 85:
+            rand = random.randint(0, 3)
+            result = rare[rand]
+        elif num < 94:
+            rand = random.randint(0, 2)
+            result = superrare[rand]
+        elif num < 97:
+            rand = random.randint(0, 1)
+            result = epic[rand]
+        elif num < 99:
+            rand = random.randint(0, 1)
+            result = mythic[rand]
+        else:
+            rand = random.randint(0, 1)
+            result = legendary[rand]
+
+        await ctx.send("**Tap! Tap!**")
+        await ctx.send(result)
+        result = result.replace(" ", "-")
+        if num >= 50:
+            try:
+                await ctx.send(file=discord.File(f'./data/img/{result.lower()}.png'))
+            except Exception as e:
+                print(e)
 
 
 def setup(bot):

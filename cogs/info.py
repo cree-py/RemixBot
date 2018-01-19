@@ -22,19 +22,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# Import dependencies
 import discord
 from discord.ext import commands
 
-# Declare info class
+
 class Info:
     '''Get info for a user, server, or role'''
 
-    # Initialization method
     def __init__(self, bot):
         self.bot = bot
 
-    # Serverinfo command
     @commands.command(aliases=['si', 'server'])
     @commands.guild_only()
     async def serverinfo(self, ctx):
@@ -56,7 +53,6 @@ class Info:
         em.set_author(name=guild.name, icon_url=None or guild.icon_url)
         await ctx.send(embed=em)
 
-    # Userinfo command
     @commands.command(aliases=['ui', 'user'])
     async def userinfo(self, ctx, user: discord.Member = None):
         '''Get user info for yourself or someone in the guild'''
@@ -74,7 +70,7 @@ class Info:
 
         rolenames = ', '.join([r.name for r in roles if r != '@everyone']) or 'None'
         time = ctx.message.created_at
-        desc = f'{user.name} is chilling in {user.status} mode.'
+        desc = f'{user.name} is currently in {user.status} mode.'
         member_number = sorted(guild.members, key=lambda m: m.joined_at).index(user) + 1
         em = discord.Embed(color=color, description=desc, timestamp=time)
         em.add_field(name='Name', value=user.name),
@@ -85,6 +81,6 @@ class Info:
         em.set_thumbnail(url=avi or None)
         await ctx.send(embed=em)
 
-# Add cog to bot
+
 def setup(bot):
     bot.add_cog(Info(bot))

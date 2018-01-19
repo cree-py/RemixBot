@@ -217,13 +217,35 @@ async def on_command_error(ctx, error):
     # If any other error occurs, prints to console.
 
 
+def format_command_help(ctx, cmd):
+    color = discord.Color(value=0x00ff00)
+    em = discord.Embed(color=color, description=cmd.help)
+
+    if hasattr(cmd, 'invoke_without_command') and cmd.invoke_without_command:
+        em.title = f'`Usage: {ctx.prefix}{cmd.signature}`'
+    else:
+        em.title = f'`{ctx.prefix}{cmd.signature}`'
+
+    return em
+
+
 @bot.command()
-async def help(ctx):
+async def help(ctx, *, command: str=None):
     '''Shows this message'''
+
+    await ctx.trigger_typing()
+
+    if command is not None:
+        cmd = bot.get_command(command)
+        if cmd is not None:
+            em = format_command_help(ctx, cmd)
+        return await ctx.send(embed=em)
+
     signatures = []
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Help"
-    em.description = "A bot under development by Antony, Sleedyak, Victini, Free TNT, and SharpBit. Feel free to drop into the server and help with development and for support [here](https://discord.gg/RzsYQ9f).\n\n"
+    em.description = "A bot created by the cree-py organization. Feel free to drop into the server and help with development and support [here](https://discord.gg/RzsYQ9f).\n\n"
+
     for cog in bot.cogs.values():
         cc = []
         for cmd in bot.commands:
@@ -260,8 +282,8 @@ async def ping(ctx):
     em.description = f'{bot.latency * 1000:} s'
 
 
-@bot.command(aliases=['bot', 'about'])
-async def info(ctx):
+@bot.command()
+async def bot(ctx):
     '''Shows info about bot'''
     em = discord.Embed(color=discord.Color(value=0x00ff00))
     em.title = "Bot Info"
@@ -306,18 +328,6 @@ async def _presence(ctx, type=None, *, game=None):
             await ctx.send('Cleared Presence')
         else:
             await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
-
-
-@bot.command()
-async def suggest(ctx, *, idea: str):
-    """Suggest an idea. Your idea will be sent to the developer server"""
-    suggest = bot.get_channel(384111952798154752)
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
-    em.title = f"{ctx.author} | User ID: {ctx.author.id}"
-    em.description = idea
-    em.set_footer(text=f"From {ctx.author.guild} | Server ID: {ctx.author.guild.id}", icon_url=ctx.guild.icon_url)
-    await suggest.send(embed=em)
-    await ctx.send("Your idea has been successfully sent to support server. Thank you!")
 
 
 @bot.command(hidden=True)
