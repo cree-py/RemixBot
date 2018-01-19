@@ -217,29 +217,9 @@ async def on_command_error(ctx, error):
     # If any other error occurs, prints to console.
 
 
-def format_command_help(ctx, cmd):
-    color = discord.Color(value=0x00ff00)
-    em = discord.Embed(color=color, description=cmd.help)
-
-    if hasattr(cmd, 'invoke_without_command') and cmd.invoke_without_command:
-        em.title = f'`Usage: {ctx.prefix}{cmd.signature}`'
-    else:
-        em.title = f'`{ctx.prefix}{cmd.signature}`'
-
-    return em
-
-
 @bot.command()
 async def help(ctx, *, command: str=None):
     '''Shows this message'''
-
-    await ctx.trigger_typing()
-
-    if command is not None:
-        cmd = bot.get_command(command)
-        if cmd is not None:
-            em = format_command_help(ctx, cmd)
-        return await ctx.send(embed=em)
 
     signatures = []
     em = discord.Embed(color=discord.Color(value=0x00ff00))
