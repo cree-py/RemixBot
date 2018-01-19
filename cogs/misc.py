@@ -22,7 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-
 import discord
 from discord.ext import commands
 import random
@@ -40,9 +39,10 @@ class Misc:
         '''Say something as the bot'''
         try:
             await ctx.message.delete()
+            await ctx.send(message)
         except discord.Forbidden:
-            pass
-        await ctx.send(message)
+            await ctx.send("Bot has insufficient permissions.")
+        
 
     @commands.command(aliases=['8ball'])
     async def eightball(self, ctx, *, question: str):
