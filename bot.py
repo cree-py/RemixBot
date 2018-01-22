@@ -271,6 +271,7 @@ async def help(ctx, *, command: str=None):
         none += f'`{ctx.prefix + c.name:<{max_length}} '
         none += f'{c.short_doc:<{max_length}}`\n'
     em.add_field(name='Bot', value=none)
+    em.set_footer(text=f'Use {ctx.prefix}help <command> for more help on a command.')
 
 
 @bot.command()
