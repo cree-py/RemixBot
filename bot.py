@@ -333,7 +333,7 @@ async def _eval(ctx, *, body):
             ret = await func()
     except Exception as e:
         value = stdout.getvalue()
-        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n')
+        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
     else:
         value = stdout.getvalue()
         if ret is None:
