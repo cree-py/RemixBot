@@ -56,8 +56,8 @@ class Utility:
 
         return em
 
-    @commands.command()
-    async def help(self, ctx, *, command: str=None):
+    @commands.command(name='help')
+    async def _help(self, ctx, *, command: str=None):
         '''Shows this message'''
         await ctx.trigger_typing()
 
