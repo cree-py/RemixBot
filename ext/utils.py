@@ -24,3 +24,11 @@ def paginate(text: str):
     if appd_index != len(text) - 1:
         pages.append(text[last:curr])
     return list(filter(lambda a: a != '', pages))
+
+
+def cleanup_code(content):
+    '''Automatically removes code blocks from the code.'''
+    # remove ```py\n```
+    if content.startswith('```') and content.endswith('```'):
+        return '\n'.join(content.split('\n')[1:-1])
+    return content.strip('` \n')

@@ -36,7 +36,7 @@ from discord.ext import commands
 import json
 import subprocess
 import asyncio
-from ext.utils import developer
+from ext.utils import developer, paginate, cleanup_code
 
 
 def load_json(path, key):
@@ -299,6 +299,70 @@ async def _bot(ctx):
     em.add_field(name="Upvote this bot!", value=f"[Click here](https://discordbots.org/bot/{bot.user.id}) :reminder_ribbon:")
 
     em.set_footer(text="RemixBot | Powered by discord.py")
+
+
+@bot.command(name='eval', hidden=True)
+@developer()
+async def _eval(ctx, *, body):
+    """Evaluates python code"""
+    env = {
+        'ctx': ctx,
+        'channel': ctx.channel,
+        'author': ctx.author,
+        'guild': ctx.guild,
+        'message': ctx.message,
+        '_': bot._last_result,
+        'source': inspect.getsource,
+        'session': bot.session
+    }
+
+    env.update(globals())
+    body = cleanup_code(body)
+    stdout = io.StringIO()
+    err = out = None
+    to_compile = f'async def func(): \n{textwrap.indent(body, "  ")}'
+    try:
+        exec(to_compile, env)
+    except Exception as e:
+        err = await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
+        return await ctx.message.add_reaction('\u2049')
+    func = env['func']
+    try:
+        with redirect_stdout(stdout):
+            ret = await func()
+    except Exception as e:
+        value = stdout.getvalue()
+        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n')
+    else:
+        value = stdout.getvalue()
+        if ret is None:
+            if value:
+                try:
+                    out = await ctx.send(f'```py\n{value}\n```')
+                except:
+                    paginated_text = paginate(value)
+                    for page in paginated_text:
+                        if page == paginated_text[-1]:
+                            out = await ctx.send(f'```py\n{page}\n```')
+                            break
+                        await ctx.send(f'```py\n{page}\n```')
+        else:
+            bot._last_result = ret
+            try:
+                out = await ctx.send(f'```py\n{value}{ret}\n```')
+            except:
+                paginated_text = paginate(f"{value}{ret}")
+                for page in paginated_text:
+                    if page == paginated_text[-1]:
+                        out = await ctx.send(f'```py\n{page}\n```')
+                        break
+                    await ctx.send(f'```py\n{page}\n```')
+    if out:
+        await ctx.message.add_reaction('\u2705')  # tick
+    elif err:
+        await ctx.message.add_reaction('\u2049')  # x
+    else:
+        await ctx.message.add_reaction('\u2705')
 
 
 @bot.command(name='presence', hidden=True)
