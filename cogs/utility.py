@@ -56,8 +56,8 @@ class Utility:
             return '\n'.join(content.split('\n')[1:-1])
         return content.strip('` \n')
 
-    @developer
     @commands.command(name='eval', hidden=True)
+    @developer()
     async def _eval(self, ctx, *, body):
         """Evaluates python code"""
         env = {
