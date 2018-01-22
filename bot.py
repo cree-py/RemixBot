@@ -275,7 +275,7 @@ async def _eval(ctx, *, body):
             ret = await func()
     except Exception as e:
         value = stdout.getvalue()
-        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
+        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n')
     else:
         value = stdout.getvalue()
         if ret is None:
@@ -306,6 +306,33 @@ async def _eval(ctx, *, body):
         await ctx.message.add_reaction('\u2049')  # x
     else:
         await ctx.message.add_reaction('\u2705')
+
+
+@bot.command(name='presence', hidden=True)
+@developer()
+async def _presence(ctx, type=None, *, game=None):
+    '''Change the bot's presence'''
+
+    if type is None:
+        await ctx.send(f'Usage: `{ctx.prefix}presence [game/stream/watch/listen] [message]`')
+    else:
+        if type.lower() == 'stream':
+            await bot.change_presence(game=discord.Game(name=game, type=1, url='https://www.twitch.tv/a'), status='online')
+            await ctx.send(f'Set presence to. `Streaming {game}`')
+        elif type.lower() == 'game':
+            await bot.change_presence(game=discord.Game(name=game))
+            await ctx.send(f'Set presence to `Playing {game}`')
+        elif type.lower() == 'watch':
+            await bot.change_presence(game=discord.Game(name=game, type=3), afk=True)
+            await ctx.send(f'Set presence to `Watching {game}`')
+        elif type.lower() == 'listen':
+            await bot.change_presence(game=discord.Game(name=game, type=2), afk=True)
+            await ctx.send(f'Set presence to `Listening to {game}`')
+        elif type.lower() == 'clear':
+            await bot.change_presence(game=None)
+            await ctx.send('Cleared Presence')
+        else:
+            await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
 
 @bot.command(hidden=True)

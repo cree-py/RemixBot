@@ -29,8 +29,12 @@ import urbandictionary as ud
 import datetime
 import pytz
 import wikipedia
+<<<<<<< HEAD
 import inspect
 from ext.utils import developer, paginate, cleanup_code
+=======
+from ext.utils import cleanup_code
+>>>>>>> parent of fcb6db5... codeblock and presence to utils
 
 
 def random_color():
@@ -45,6 +49,7 @@ class Utility:
     def __init__(self, bot):
         self.bot = bot
 
+<<<<<<< HEAD
     def format_command_help(self, ctx, cmd):
         color = discord.Color.green()
         em = discord.Embed(color=color, description=cmd.help)
@@ -124,6 +129,8 @@ class Utility:
             else:
                 await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
+=======
+>>>>>>> parent of fcb6db5... codeblock and presence to utils
     @commands.command()
     @developer()
     async def source(self, ctx, command):
