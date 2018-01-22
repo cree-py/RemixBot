@@ -25,7 +25,6 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
-from motor.motor_asyncio import AsyncIOMotorClient
 import clashroyale
 import json
 import re
@@ -38,10 +37,7 @@ class Clash_Royale:
         with open('./data/auths.json') as f:
             auth = json.load(f)
             self.token = auth.get('CR-API')
-            mongo_uri = auth.get('MONGODB')
         self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
-        mongo = AsyncIOMotorClient(mongo_uri)
-        self.db = mongo.RemixBot
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
@@ -53,13 +49,13 @@ class Clash_Royale:
     # This marks the end of that code. We give full credit to Kyber
 
     async def get_tag(self, userid):
-        result = await self.db.clashroyale.find_one({'_id': userid})
+        result = await self.bot.db.clashroyale.find_one({'_id': userid})
         if not result:
             return 'None'
         return result['tag']
 
     async def save_tag(self, userid, tag):
-        await self.db.clashroyale.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
+        await self.bot.db.clashroyale.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
 
     def check_tag(self, tag):
         for char in tag:

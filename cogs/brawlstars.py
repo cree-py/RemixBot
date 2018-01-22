@@ -25,7 +25,6 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
-from motor.motor_asyncio import AsyncIOMotorClient
 from bs4 import BeautifulSoup
 import aiohttp
 import datetime
@@ -39,9 +38,6 @@ class BrawlStars:
         self.bot = bot
         with open('./data/auths.json') as f:
             auth = json.load(f)
-            mongo_uri = auth.get('MONGODB')
-        mongo = AsyncIOMotorClient(mongo_uri)
-        self.db = mongo.RemixBot
 
     def get_attr(self, type: str, attr: str):
         return soup.find(type, class_=attr).text
@@ -50,13 +46,13 @@ class BrawlStars:
         return soup.find_all(type, class_=attr)
 
     async def get_tag(self, userid):
-        result = await self.db.brawlstars.find_one({'_id': userid})
+        result = await self.bot.db.brawlstars.find_one({'_id': userid})
         if not result:
             return 'None'
         return result['tag']
 
     async def save_tag(self, userid, tag):
-        await self.db.brawlstars.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
+        await self.bot.db.brawlstars.update_one({'_id': userid}, {'$set': {'_id': userid, 'tag': tag}}, upsert=True)
 
     def check_tag(self, tag):
         for char in tag:
@@ -141,7 +137,7 @@ class BrawlStars:
             em.add_field(name="Best time as boss", value=get_attr('div', 'boss-time'))
             em.add_field(name="Best robo rumble time", value=get_attr('div', 'robo-time'))
             em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                      icon_url='http://brawlstats.io/images/bs-stats.png')
+                          icon_url='http://brawlstats.io/images/bs-stats.png')
             await ctx.send(embed=em)
 
     @bs.command()
@@ -265,14 +261,14 @@ class BrawlStars:
             em.add_field(name="Total trophies", value=trophies)
             em.add_field(name="Required trophies", value=required)
             em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                      icon_url='http://brawlstats.io/images/bs-stats.png')
+                          icon_url='http://brawlstats.io/images/bs-stats.png')
 
             em2 = discord.Embed(color=discord.Color(value=0x00FF00))
             em2.title = "Top members"
             em2.description = "This is calculated through total trophy count."
             em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
             em2.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                      icon_url='http://brawlstats.io/images/bs-stats.png')
+                           icon_url='http://brawlstats.io/images/bs-stats.png')
             for entry in info:
                 em2.add_field(name=entry['name'], value=f"{entry['role'].replace(' ', '-')}\n{entry['trophies']}")
 
@@ -305,7 +301,7 @@ class BrawlStars:
         em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
                       icon_url='http://brawlstats.io/images/bs-stats.png')
         em2.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                      icon_url='http://brawlstats.io/images/bs-stats.png')
+                       icon_url='http://brawlstats.io/images/bs-stats.png')
 
         if when is None:
             await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
@@ -438,8 +434,10 @@ class BrawlStars:
         '''Get the level and trophies of a players brawlers.'''
         def get_attr(type: str, attr: str):
             return soup.find(type, class_=attr).text
+
         def get_all_attrs(type: str, attr: str):
             return soup.find_all(type, class_=attr)
+
         def emoji(ctx, emoji):
             with open('data/emojis.json') as f:
                 emojis = json.load(f)
@@ -492,15 +490,15 @@ class BrawlStars:
 
             tobeprinted = ""
 
-            for i in range(len(one)-1):
+            for i in range(len(one) - 1):
                 plist = one[i + 1].split('");";')
-                tobeprinted +=  plist[0] + '\n'
+                tobeprinted += plist[0] + '\n'
 
             playername = get_attr('div', 'player-name brawlstars-font')
             playertag = "Q8P2ULP"
 
             imglist = tobeprinted.split('\n')
-            em.title="Brawlers"
+            em.title = "Brawlers"
             em.description = playername + " (#" + playertag + ")"
             for i in range(len(get_all_attrs('span', 'trophy-nr'))):
                 tooprint = ""
@@ -510,7 +508,7 @@ class BrawlStars:
 
             em.set_thumbnail(url=f'https://brawlstats.io{str(imglist[0])}')
             em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                      icon_url='http://brawlstats.io/images/bs-stats.png')
+                          icon_url='http://brawlstats.io/images/bs-stats.png')
             await ctx.send(embed=em)
 
 
