@@ -34,7 +34,7 @@ import io
 import textwrap
 from contextlib import redirect_stdout
 import traceback
-from ext.utils import developer
+from ext.utils import developer, paginate
 
 
 def random_color():
@@ -61,6 +61,7 @@ class Utility:
     async def _eval(self, ctx, *, body):
         """Evaluates python code"""
         env = {
+            'bot': self.bot,
             'ctx': ctx,
             'channel': ctx.channel,
             'author': ctx.author,
@@ -78,19 +79,6 @@ class Utility:
         err = out = None
 
         to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
-
-        def paginate(text: str):
-            '''Simple generator that paginates text.'''
-            last = 0
-            pages = []
-            for curr in range(0, len(text)):
-                if curr % 1980 == 0:
-                    pages.append(text[last:curr])
-                    last = curr
-                    appd_index = curr
-            if appd_index != len(text) - 1:
-                pages.append(text[last:curr])
-            return list(filter(lambda a: a != '', pages))
 
         try:
             exec(to_compile, env)
@@ -161,14 +149,15 @@ class Utility:
     @commands.command()
     async def hastebin(self, ctx, *, code):
         '''Hastebin-ify your code!'''
-        async with self.bot.post("https://hastebin.com/documents", data=code) as resp:
+        code = self.cleanup_code(code)
+        async with self.bot.session.post("https://hastebin.com/documents", data=code) as resp:
             data = await resp.json()
             key = data['key']
-        await ctx.message.edit(content=f"Hastebin-ified! <https://hastebin.com/{key}.py>")
+        await ctx.send(f"Hastebin-ified! <https://hastebin.com/{key}.py>")
 
     @commands.command()
-    async def date(self, ctx, tz=None):
-        """Get the current date for a time zone or UTC."""
+    async def datetime(self, ctx, tz=None):
+        """Get the current date and time for a time zone or UTC."""
         now = datetime.datetime.now(tz=pytz.UTC)
         if tz:
             try:
@@ -178,21 +167,7 @@ class Utility:
                 em.title = "Invalid timezone"
                 em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
                 return await ctx.send(embed=em)
-        await ctx.send(f'The current date is {now:%A, %B %d, %Y}.')
-
-    @commands.command()
-    async def time(self, ctx, tz=None):
-        """Get the current time for a timezone or UTC."""
-        now = datetime.datetime.now(pytz.UTC)
-        if tz:
-            try:
-                now = now.astimezone(pytz.timezone(tz))
-            except:
-                em = discord.Embed(color=discord.Color(value=0xff0000))
-                em.title = "Invalid timezone"
-                em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
-                return await ctx.send(embed=em)
-        await ctx.send(f'It is currently {now:%I:%M:%S %p}.')
+        await ctx.send(f'It is currently {now:%A, %B %d, %Y} at {now:%I:%M:%S %p}.')
 
     @commands.command(aliases=['urban'])
     async def ud(self, ctx, *, query):
