@@ -216,6 +216,63 @@ async def on_command_error(ctx, error):
     # If any other error occurs, prints to console.
 
 
+def format_command_help(ctx, cmd):
+    color = discord.Color(value=0x00ff00)
+    em = discord.Embed(color=color, description=cmd.help)
+
+    if hasattr(cmd, 'invoke_without_command') and cmd.invoke_without_command:
+        em.title = f'`Usage: {ctx.prefix}{cmd.signature}`'
+    else:
+        em.title = f'`{ctx.prefix}{cmd.signature}`'
+
+    return em
+
+
+@bot.command()
+async def help(ctx, *, command: str=None):
+    '''Shows this message'''
+
+    await ctx.trigger_typing()
+
+    if command is not None:
+        cmd = bot.get_command(command)
+        if cmd is not None:
+            em = format_command_help(ctx, cmd)
+        return await ctx.send(embed=em)
+
+    signatures = []
+    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em.title = "Help"
+    em.description = "A bot created by the cree-py organization. Feel free to drop into the server and help with development and support [here](https://discord.gg/RzsYQ9f).\n\n"
+
+    for cog in bot.cogs.values():
+        cc = []
+        for cmd in bot.commands:
+            if not cmd.hidden:
+                if cmd.instance is cog:
+                    cc.append(cmd)
+                    signatures.append(len(cmd.name) + len(ctx.prefix))
+        max_length = max(signatures)
+        abc = sorted(cc, key=lambda x: x.name)
+        cmds = ''
+        for c in abc:
+            cmds += f'`{ctx.prefix + c.name:<{max_length}} '
+            cmds += f'{c.short_doc:<{max_length}}`\n'
+        em.add_field(name=type(cog).__name__.replace('_', ' '), value=cmds)
+    none = ''
+    nonec = []
+    for c in bot.commands:
+        if not c.hidden:
+            if type(c.instance).__name__ == 'none':
+                nonec.append(c)
+                signatures.append(len(cmd.name) + len(ctx.prefix))
+    abc = sorted(nonec, key=lambda x: x.name)
+    for c in abc:
+        none += f'`{ctx.prefix + c.name:<{max_length}} '
+        none += f'{c.short_doc:<{max_length}}`\n'
+    em.add_field(name='Bot', value=none)
+
+
 @bot.command()
 async def ping(ctx):
     '''Pong! Get the bot's response time'''
