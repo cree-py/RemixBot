@@ -29,7 +29,8 @@ import urbandictionary as ud
 import datetime
 import pytz
 import wikipedia
-from ext.utils import developer, cleanup_code
+import inspect
+from ext.utils import developer, paginate, cleanup_code
 
 
 def random_color():
@@ -43,6 +44,60 @@ class Utility:
 
     def __init__(self, bot):
         self.bot = bot
+
+    def format_command_help(self, ctx, cmd):
+        color = discord.Color.green()
+        em = discord.Embed(color=color, description=cmd.help)
+
+        if hasattr(cmd, 'invoke_without_command') and cmd.invoke_without_command:
+            em.title = f'`Usage: {ctx.prefix}{cmd.signature}`'
+        else:
+            em.title = f'`{ctx.prefix}{cmd.signature}`'
+
+        return em
+
+    @commands.command()
+    async def help(self, ctx, *, command: str=None):
+        '''Shows this message'''
+        await ctx.trigger_typing()
+
+        if command is not None:
+            cmd = self.bot.get_command(command)
+            if cmd is not None:
+                em = self.format_command_help(ctx, cmd)
+            return await ctx.send(embed=em)
+
+        signatures = []
+        em = discord.Embed(color=discord.Color.green())
+        em.title = "Help"
+        em.description = "A bot created by the cree-py organization. Feel free to   drop into the server and help with development and support [here](https://discord.gg/RzsYQ9f).\n\n"
+
+        for cog in self.bot.cogs.values():
+            cc = []
+            for cmd in self.bot.commands:
+                if not cmd.hidden:
+                    if cmd.instance is cog:
+                        cc.append(cmd)
+                        signatures.append(len(cmd.name) + len(ctx.prefix))
+            max_length = max(signatures)
+            abc = sorted(cc, key=lambda x: x.name)
+            cmds = ''
+            for c in abc:
+                cmds += f'`{ctx.prefix + c.name:<{max_length}} '
+                cmds += f'{c.short_doc:<{max_length}}`\n'
+            em.add_field(name=type(cog).__name__.replace('_', ' '), value=cmds)
+        none = ''
+        nonec = []
+        for c in self.bot.commands:
+            if not c.hidden:
+                if type(c.instance).__name__ == 'none':
+                    nonec.append(c)
+                    signatures.append(len(cmd.name) + len(ctx.prefix))
+        abc = sorted(nonec, key=lambda x: x.name)
+        for c in abc:
+            none += f'`{ctx.prefix + c.name:<{max_length}} '
+            none += f'{c.short_doc:<{max_length}}`\n'
+        em.add_field(name='Bot', value=none)
 
     @commands.command(name='presence', hidden=True)
     @developer()
@@ -68,6 +123,22 @@ class Utility:
                 await ctx.send('Cleared Presence')
             else:
                 await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
+
+    @commands.command()
+    @developer()
+    async def source(self, ctx, command):
+        source = inspect.getsource(self.bot.get_command(command).callback)
+        if not source:
+            return await ctx.send(f'{command} is not a valid command.')
+        try:
+            await ctx.send(f'```py\n{source}\n```')
+        except:
+            paginated_text = paginate(source)
+            for page in paginated_text:
+                if page == paginated_text[-1]:
+                    await ctx.send(f'```py\n{page}\n```')
+                    break
+                await ctx.send(f'```py\n{page}\n```')
 
     @commands.command()
     async def embedsay(self, ctx, *, body: str):
