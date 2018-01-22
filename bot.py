@@ -301,8 +301,8 @@ async def _bot(ctx):
     em.set_footer(text="RemixBot | Powered by discord.py")
 
 
-@developer
 @bot.command(name='presence', hidden=True)
+@developer()
 async def _presence(ctx, type=None, *, game=None):
     '''Change the bot's presence'''
 
@@ -329,7 +329,7 @@ async def _presence(ctx, type=None, *, game=None):
 
 
 @bot.command(hidden=True)
-@developer
+@developer()
 async def reload(ctx, cog):
     """Reloads a cog"""
     if cog.lower() == 'all':
@@ -350,7 +350,7 @@ async def reload(ctx, cog):
 
 
 @bot.command(hidden=True)
-@developer
+@developer()
 async def update(ctx):
     """Pulls from github and updates bot"""
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
@@ -367,7 +367,7 @@ async def invite(ctx):
 
 
 @bot.command(hidden=True)
-@developer
+@developer()
 async def shutdown(ctx):
     '''Shut down the bot'''
     await ctx.send("Shutting down....")
