@@ -36,20 +36,23 @@ from discord.ext import commands
 import json
 import subprocess
 import asyncio
+from ext.utils import developer
 
-with open('./data/auths.json') as f:
-    auth = json.load(f)
-    mongo_uri = auth.get('MONGODB')
 
-mongo = AsyncIOMotorClient(mongo_uri)
-db = mongo.RemixBot
+def load_json(path, key):
+    with open(f'./data/{path}') as f:
+        config = json.load(f)
+    return config.get(key)
+
+
+mongo = AsyncIOMotorClient(load_json('auths.json', 'MONGODB'))
 
 
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
     if not message.guild:
         return '-'
-    result = await db.config.find_one({'_id': str(message.guild.id)})
+    result = await bot.db.config.find_one({'_id': str(message.guild.id)})
     if not result:
         return '-'
     try:
@@ -59,44 +62,40 @@ async def get_pre(bot, message):
 
 
 bot = commands.Bot(command_prefix=get_pre)
-dbltoken = "token"
-directory = 'cogs'
-cogs = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
+bot.db = mongo.RemixBot
+dbltoken = load_json('token.json', 'DBLTOKEN')
+path = 'cogs'
+extensions = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
 
-def _load_extension(cogs):
+def load_extension(cog, path='cogs.'):
+    members = inspect.getmembers(cog)
+    for name, member in members:
+        if name.startswith('on_'):
+            bot.add_listener(member, name)
+    try:
+        bot.load_extension(f'{path}{cog}')
+    except Exception as e:
+        print(f'LoadError: {cog}\n{type(e).__name__}: {e}')
+
+
+def load_extensions(cogs, path='cogs.'):
     for cog in cogs:
         members = inspect.getmembers(cog)
         for name, member in members:
             if name.startswith('on_'):
                 bot.add_listener(member, name)
         try:
-            bot.load_extension(f'{directory}{cog}')
+            bot.load_extension(f'{path}{cog}')
         except Exception as e:
             print(f'LoadError: {cog}\n{type(e).__name__}: {e}')
 
 
-_load_extension(cogs)
+load_extensions(extensions)
 
 
 bot.remove_command('help')
 version = "v2.0.0"
-
-
-def dev_check(id):
-    with open('data/devs.json') as f:
-        devs = json.load(f)
-    if id in devs:
-        return True
-    return False
-
-
-def cleanup_code(content):
-    '''Automatically removes code blocks from the code.'''
-    # remove ```py\n```
-    if content.startswith('```') and content.endswith('```'):
-        return '\n'.join(content.split('\n')[1:-1])
-    return content.strip('` \n')
 
 
 @bot.event
@@ -126,7 +125,7 @@ async def on_message(message):
     channel = message.channel
 
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
-        result = await db.config.find_one({'_id': str(message.guild.id)})
+        result = await bot.db.config.find_one({'_id': str(message.guild.id)})
         if not result:
             prefix = '-'
         try:
@@ -302,11 +301,10 @@ async def _bot(ctx):
     em.set_footer(text="RemixBot | Powered by discord.py")
 
 
+@developer
 @bot.command(name='presence', hidden=True)
 async def _presence(ctx, type=None, *, game=None):
     '''Change the bot's presence'''
-    if not dev_check(ctx.author.id):
-        return
 
     if type is None:
         await ctx.send(f'Usage: `{ctx.prefix}presence [game/stream/watch/listen] [message]`')
@@ -331,17 +329,16 @@ async def _presence(ctx, type=None, *, game=None):
 
 
 @bot.command(hidden=True)
+@developer
 async def reload(ctx, cog):
     """Reloads a cog"""
-    if not dev_check(ctx.author.id):
-        return await ctx.send("You cannot use this because you're not a developer.")
     if cog.lower() == 'all':
-        for cog in cogs:
+        for cog in extensions:
             try:
                 bot.unload_extension(f"cogs.{cog}")
             except Exception as e:
                 await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
-        _load_extension(cogs)
+        load_extensions(extensions)
         return await ctx.send('All cogs updated successfully :white_check_mark:')
     try:
         bot.unload_extension(f"cogs.{cog}")
@@ -353,98 +350,14 @@ async def reload(ctx, cog):
 
 
 @bot.command(hidden=True)
+@developer
 async def update(ctx):
     """Pulls from github and updates bot"""
-    if not dev_check(ctx.author.id):
-        return await ctx.send("You cannot use this because your not a developer")
-    for cog in cogs:
-        bot.unload_extension(f'{directory}{cog}')
-        bot.load_extension(f'{directory}{cog}')
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
-
-
-@bot.command(name='eval', hidden=True)
-async def _eval(ctx, *, body):
-    """Evaluates python code"""
-    if not dev_check(ctx.author.id):
-        return await ctx.send("You cannot use this because you are not a developer.")
-    env = {
-        'ctx': ctx,
-        'channel': ctx.channel,
-        'author': ctx.author,
-        'guild': ctx.guild,
-        'message': ctx.message,
-        '_': bot._last_result,
-        'source': inspect.getsource,
-        'session': bot.session
-    }
-
-    env.update(globals())
-
-    body = cleanup_code(body)
-    stdout = io.StringIO()
-    err = out = None
-
-    to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
-
-    def paginate(text: str):
-        '''Simple generator that paginates text.'''
-        last = 0
-        pages = []
-        for curr in range(0, len(text)):
-            if curr % 1980 == 0:
-                pages.append(text[last:curr])
-                last = curr
-                appd_index = curr
-        if appd_index != len(text) - 1:
-            pages.append(text[last:curr])
-        return list(filter(lambda a: a != '', pages))
-
-    try:
-        exec(to_compile, env)
-    except Exception as e:
-        err = await ctx.send(f'```py\n{e.__class__.__name__}: {e}\n```')
-        return await ctx.message.add_reaction('\u2049')
-
-    func = env['func']
-    try:
-        with redirect_stdout(stdout):
-            ret = await func()
-    except Exception as e:
-        value = stdout.getvalue()
-        err = await ctx.send(f'```py\n{value}{traceback.format_exc()}\n```')
-    else:
-        value = stdout.getvalue()
-        if ret is None:
-            if value:
-                try:
-
-                    out = await ctx.send(f'```py\n{value}\n```')
-                except:
-                    paginated_text = paginate(value)
-                    for page in paginated_text:
-                        if page == paginated_text[-1]:
-                            out = await ctx.send(f'```py\n{page}\n```')
-                            break
-                        await ctx.send(f'```py\n{page}\n```')
-        else:
-            bot._last_result = ret
-            try:
-                out = await ctx.send(f'```py\n{value}{ret}\n```')
-            except:
-                paginated_text = paginate(f"{value}{ret}")
-                for page in paginated_text:
-                    if page == paginated_text[-1]:
-                        out = await ctx.send(f'```py\n{page}\n```')
-                        break
-                    await ctx.send(f'```py\n{page}\n```')
-
-    if out:
-        await ctx.message.add_reaction('\u2705')  # tick
-    elif err:
-        await ctx.message.add_reaction('\u2049')  # x
-    else:
-        await ctx.message.add_reaction('\u2705')
+    for cog in extensions:
+        bot.unload_extension(f'{path}{cog}')
+        bot.load_extension(f'{path}{cog}')
+    await ctx.send('All cogs reloaded :white_check_mark:')
 
 
 @bot.command()
@@ -454,11 +367,9 @@ async def invite(ctx):
 
 
 @bot.command(hidden=True)
+@developer
 async def shutdown(ctx):
     '''Shut down the bot'''
-    if not dev_check(ctx.author.id):
-        return await ctx.send("You can't use this command because you are not a RemixBot developer!")
-
     await ctx.send("Shutting down....")
     await bot.logout()
 
