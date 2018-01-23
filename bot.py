@@ -286,7 +286,7 @@ async def help(ctx, *, command: str=None):
         cmd = bot.get_command(command)
         if cog is not None:
             em = format_cog_help(ctx, cog)
-        if cmd is not None:
+        elif cmd is not None:
             em = format_command_help(ctx, cmd)
         else:
             await ctx.send('No commands found.')
