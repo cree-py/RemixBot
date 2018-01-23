@@ -26,6 +26,7 @@ SOFTWARE.
 import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
+from ext.paginator import PaginatorSession
 import aiohttp
 import datetime
 import json
@@ -37,14 +38,12 @@ class Brawl_Stars:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('./data/auths.json') as f:
-            auth = json.load(f)
 
-    def get_attr(self, type: str, attr: str):
-        return soup.find(type, class_=attr).text
-
-    def get_all_attrs(self, type: str, attr: str):
-        return soup.find_all(type, class_=attr)
+    def emoji(ctx, emoji):
+        with open('data/emojis.json') as f:
+            emojis = json.load(f)
+            e = emojis[emoji]
+        return e
 
     async def get_tag(self, userid):
         result = await self.bot.db.brawlstars.find_one({'_id': userid})
@@ -61,13 +60,8 @@ class Brawl_Stars:
                 return False
         return True
 
-    @commands.group(invoke_without_command=True)
-    async def bs(self, ctx):
-        '''Command group for all BrawlStars commands.'''
-        await ctx.send(f'Commands:\n`{ctx.prefix}bs save [tag]` Saves a tag to your profile.\n`{ctx.prefix}bs profile [tag]` Get a brawl stars profile.\n`{ctx.prefix}bs weburl [tag]` Get the url for more info on a profile.\n`{ctx.prefix}bs band [tag]` Get information about a band. If no tag is specified it will default to the band you are in.\n`{ctx.prefix}bs events` Info about events.\n`{ctx.prefix}bs brawlers [tag]` View your brawlers.')
-
-    @bs.command()
-    async def profile(self, ctx, id=None):
+    @commands.command()
+    async def bsprofile(self, ctx, id=None):
         '''Get a brawl stars profile.'''
 
         # ID is the player tag
@@ -141,8 +135,8 @@ class Brawl_Stars:
                           icon_url='http://brawlstats.io/images/bs-stats.png')
             await ctx.send(embed=em)
 
-    @bs.command()
-    async def save(self, ctx, id=None):
+    @commands.command()
+    async def bssave(self, ctx, id=None):
         '''Save a tag.'''
         if not id:
             await ctx.send("Please specify a tag to save.")
@@ -154,8 +148,9 @@ class Brawl_Stars:
             else:
                 await ctx.send("Your tag is invalid. Please make sure you only have the characters `0289PYLQGRJCUV` in the tag.")
 
-    @bs.command()
-    async def weburl(self, ctx, id=None):
+    @commands.command()
+    async def bsweburl(self, ctx, id=None):
+        '''Get the url to your brawl stars profile'''
         await ctx.trigger_typing()
         em = discord.Embed(title='brawlstats.io URL')
         em.color = discord.Color(value=0x00ff00)
@@ -176,8 +171,9 @@ class Brawl_Stars:
 
         await ctx.send(embed=em)
 
-    @bs.command()
-    async def band(self, ctx, id=None):
+    @commands.command()
+    async def bsband(self, ctx, id=None):
+        '''Get a brawl stars band's stats'''
         def get_attr(type: str, attr: str):
             return soup.find(type, class_=attr).text
 
@@ -276,8 +272,8 @@ class Brawl_Stars:
             await ctx.send(embed=em)
             await ctx.send(embed=em2)
 
-    @bs.command()
-    async def events(self, ctx, when=None):
+    @commands.command()
+    async def bsevents(self, ctx, when=None):
         '''Information about events.'''
 
         url = 'https://brawlstats.io/events/'
@@ -297,18 +293,12 @@ class Brawl_Stars:
                 data = await resp.read()
         soup = BeautifulSoup(data, 'lxml')
 
-        em = discord.Embed(color=discord.Color(value=0x00FF00))
-        em2 = discord.Embed(color=discord.Color(value=0x00FF00))
-        em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                      icon_url='http://brawlstats.io/images/bs-stats.png')
-        em2.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                       icon_url='http://brawlstats.io/images/bs-stats.png')
-
-        if when is None:
-            await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
-            return
-        elif when == "current":
+        if when not in ('current', 'upcoming', 'both'):
+            return await ctx.send(f'Usage: `{ctx.prefix}bsevents <current|upcoming|both>`')
+        if when == "current":
             await ctx.trigger_typing()
+            em = discord.Embed(color=discord.Color.green())
+            em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats', icon_url='http://brawlstats.io/images/bs-stats.png')
             if dayofwk in [1, 2, 3, 4, 5]:
                 em.title = "Current events"
                 j = 0
@@ -323,6 +313,8 @@ class Brawl_Stars:
                     em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
                 await ctx.send(embed=em)
             else:
+                em = discord.Embed(color=discord.Color.green())
+                em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats', icon_url='http://brawlstats.io/images/bs-stats.png')
                 em.title = "Current events"
                 j = 0
                 for i in range(3):
@@ -338,9 +330,11 @@ class Brawl_Stars:
                 await ctx.send(embed=em)
         elif when == "upcoming":
             await ctx.trigger_typing()
+            em = discord.Embed(color=discord.Color.green())
+            em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats', icon_url='http://brawlstats.io/images/bs-stats.png')
             j = 6
             if dayofwk in [1, 2, 3, 4, 5]:
-                em2.title = "Upcoming events"
+                em.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 3].text)
                     val += '\n'
@@ -350,12 +344,12 @@ class Brawl_Stars:
                     val += str(get_all_attrs('div', 'card-map-coins')[j].text)
                     val += ' Coins'
                     j += 1
-                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 3].text), value=val)
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 3].text), value=val)
 
-                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
-                await ctx.send(embed=em2)
+                em.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                await ctx.send(embed=em)
             else:
-                em2.title = "Upcoming events"
+                em.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 4].text)
                     val += '\n'
@@ -365,10 +359,13 @@ class Brawl_Stars:
                     val += str(get_all_attrs('div', 'card-map-coins')[j].text)
                     val += ' Coins'
                     j += 1
-                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
-                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
-                await ctx.send(embed=em2)
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
+                em.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                await ctx.send(embed=em)
         elif when == "both":
+            em = discord.Embed(color=discord.Color.green())
+            em.set_footer(icon_url='http://brawlstats.io/images/bs-stats.png')
+            pages = []
             await ctx.trigger_typing()
             if dayofwk in [1, 2, 3, 4, 5]:
                 em.title = "Current events"
@@ -382,8 +379,11 @@ class Brawl_Stars:
                     val += ' Coins'
                     j += 1
                     em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
+                pages.append(em)
 
-                em2.title = "Upcoming events"
+                em = discord.Embed(color=discord.Color.green())
+                em.set_footer(icon_url='http://brawlstats.io/images/bs-stats.png')
+                em.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 3].text)
                     val += '\n'
@@ -393,13 +393,16 @@ class Brawl_Stars:
                     val += str(get_all_attrs('div', 'card-map-coins')[j].text)
                     val += ' Coins'
                     j += 1
-                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 3].text), value=val)
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 3].text), value=val)
 
-                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                em.add_field(name=str(get_all_attrs('h4', 'card-title')[6].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[6].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                pages.append(em)
 
-                await ctx.send(embed=em)
-                await ctx.send(embed=em2)
+                p_session = PaginatorSession(ctx, footer='Stats made by Cree-Py | Powered by brawlstats', pages=pages)
+                await p_session.run()
             else:
+                em = discord.Embed(color=discord.Color.green())
+                em.set_footer(icon_url='http://brawlstats.io/images/bs-stats.png')
                 em.title = "Current events"
                 j = 0
                 for i in range(3):
@@ -412,7 +415,11 @@ class Brawl_Stars:
                     j += 1
                     em.add_field(name=str(get_all_attrs('h4', 'card-title')[i].text), value=val)
                 em.add_field(name=str(get_all_attrs('h4', 'card-title')[3].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[3].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
-                em2.title = "Upcoming events"
+                pages.append(em)
+
+                em = discord.Embed(color=discord.Color.green())
+                em.set_footer(icon_url='http://brawlstats.io/images/bs-stats.png')
+                em.title = "Upcoming events"
                 for i in range(3):
                     val = str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[i + 4].text)
                     val += '\n'
@@ -422,28 +429,20 @@ class Brawl_Stars:
                     val += str(get_all_attrs('div', 'card-map-coins')[j].text)
                     val += ' Coins'
                     j += 1
-                    em2.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
-                em2.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
-                await ctx.send(embed=em)
-                await ctx.send(embed=em2)
-        else:
-            await ctx.send(f'Commands:\n`{ctx.prefix}bs events current` Get the events that are running right now.\n`{ctx.prefix}bs events upcoming` Get the events that are upcoming.\n`{ctx.prefix}bs events both` Get both at the same time! Man, science is so amazing.')
-            return
+                    em.add_field(name=str(get_all_attrs('h4', 'card-title')[i + 4].text), value=val)
+                em.add_field(name=str(get_all_attrs('h4', 'card-title')[7].text), value=str(get_all_attrs('h6', 'card-subtitle mb-2 text-muted')[7].text) + '\n' + str(get_attr('div', 'card-map-tickets')) + ' Tickets')
+                pages.append(em)
+                p_session = PaginatorSession(ctx, footer='Stats made by Cree-Py | Powered by brawlstats', pages=pages)
+                await p_session.run()
 
-    @bs.command()
-    async def brawlers(self, ctx, tag=None):
+    @commands.command()
+    async def bsbrawlers(self, ctx, tag=None):
         '''Get the level and trophies of a players brawlers.'''
         def get_attr(type: str, attr: str):
             return soup.find(type, class_=attr).text
 
         def get_all_attrs(type: str, attr: str):
             return soup.find_all(type, class_=attr)
-
-        def emoji(ctx, emoji):
-            with open('data/emojis.json') as f:
-                emojis = json.load(f)
-                e = emojis[emoji]
-            return e
 
         await ctx.trigger_typing()
 
@@ -504,8 +503,8 @@ class Brawl_Stars:
             for i in range(len(get_all_attrs('span', 'trophy-nr'))):
                 tooprint = ""
                 tooprint += str(get_all_attrs('span', 'lbskew-power-txt')[i].text + ' :cloud_lightning:') + '\n'
-                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text + ' ' + str(self.bot.get_emoji(emoji(ctx, 'bstrophy')))) + '\n'
-                em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(self.bot.get_emoji(emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
+                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text + ' ' + str(self.bot.get_emoji(self.emoji(ctx, 'bstrophy')))) + '\n'
+                em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(self.bot.get_emoji(self.emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
 
             em.set_thumbnail(url=f'https://brawlstats.io{str(imglist[0])}')
             em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',

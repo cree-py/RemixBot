@@ -74,6 +74,7 @@ class Utility:
     @commands.command()
     @utils.developer()
     async def source(self, ctx, command):
+        '''Get the source code for any command.'''
         source = inspect.getsource(self.bot.get_command(command).callback)
         if not source:
             return await ctx.send(f'{command} is not a valid command.')

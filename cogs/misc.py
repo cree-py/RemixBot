@@ -111,15 +111,6 @@ class Misc:
         else:
             await ctx.send(f"{author.mention} Better luck next time... You were one of the 124/125 who lost the lottery...\nThe numbers were `{', '.join(string_numbers)}`")
 
-    @commands.command(aliases=['cnjoke'])
-    async def chucknorris(self, ctx):
-        '''Facts about Chuck Norris.'''
-        url = "http://api.icndb.com/jokes/random"
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as resp:
-                data = await resp.json()
-        await ctx.send(data['value']['joke'])
-
     @commands.command(aliases=['xkcd', 'comic'])
     async def randomcomic(self, ctx):
         '''Get a comic from xkcd.'''
@@ -139,7 +130,7 @@ class Misc:
 
     @commands.command(aliases=['number'])
     async def numberfact(self, ctx, number: int):
-        '''Get a fact about a number. Usage: {p}numberfact <number>.'''
+        '''Get a fact about a number.'''
         if not number:
             await ctx.send(f'Usage: `{ctx.prefix}numberfact <number>`')
             return
@@ -154,7 +145,7 @@ class Misc:
 
     @commands.command(aliases=['trump', 'trumpquote'])
     async def asktrump(self, ctx, *, question):
-        '''Ask Donald Trump a question! Usage: {p}asktrump <yourquestion>'''
+        '''Ask Donald Trump a question!'''
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}') as resp:
                 file = await resp.json()
