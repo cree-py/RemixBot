@@ -80,7 +80,7 @@ class Clash_Royale:
         return (chests, special)
 
     @commands.command()
-    async def save(self, ctx, tag=None):
+    async def crsave(self, ctx, tag=None):
         '''Save a tag to your discord profile'''
         if tag is None:
             return await ctx.send(f'Please enter a tag.\nExample: `{ctx.prefix}save #CY8G8VVQ`')
@@ -91,7 +91,7 @@ class Clash_Royale:
         await ctx.send(f'Your tag (#{tag}) has been successfully saved.')
 
     @commands.command()
-    async def profile(self, ctx, tag=None):
+    async def crprofile(self, ctx, tag=None):
         '''Fetch a profile by tag'''
         await ctx.trigger_typing()
         em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
@@ -183,7 +183,7 @@ class Clash_Royale:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def chests(self, ctx, tag=None):
+    async def crchests(self, ctx, tag=None):
         '''Get a profile's chest cycle'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
@@ -216,7 +216,7 @@ class Clash_Royale:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def clan(self, ctx, tag=None):
+    async def crclan(self, ctx, tag=None):
         '''Gets a clan's info by clan tag'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
@@ -285,11 +285,11 @@ class Clash_Royale:
         await ctx.send(embed=em)
 
     @commands.group(invoke_without_command=True)
-    async def members(self, ctx):
+    async def crmembers(self, ctx):
         '''A command group that finds the worst and best members in a clan'''
         await ctx.send(f'Proper usage: `{ctx.prefix}members <best | worst> <clan_tag>`')
 
-    @members.command()
+    @crmembers.command()
     async def worst(self, ctx, tag=None):
         '''Find the worst members in a clan'''
         await ctx.trigger_typing()
@@ -337,7 +337,7 @@ class Clash_Royale:
 
             await ctx.send(embed=em)
 
-    @members.command()
+    @crmembers.command()
     async def best(self, ctx, tag=None):
         '''Find the best members in a clan'''
         await ctx.trigger_typing()
@@ -386,7 +386,7 @@ class Clash_Royale:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def trophies(self, ctx, tag=None):
+    async def crtrophies(self, ctx, tag=None):
         '''Get your current, record, and legend trophies'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Trophies')
@@ -417,7 +417,7 @@ class Clash_Royale:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def deck(self, ctx, tag=None):
+    async def crdeck(self, ctx, tag=None):
         '''View a player's current battle deck'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Battle Deck')
@@ -456,7 +456,7 @@ class Clash_Royale:
         await ctx.send(embed=em)
 
     @commands.command()
-    async def weburl(self, ctx, tag=None):
+    async def crweburl(self, ctx, tag=None):
         '''Get the cr-api.com url for a player tag'''
         await ctx.trigger_typing()
         em = discord.Embed(title='cr-api.com URL')

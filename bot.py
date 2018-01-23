@@ -62,7 +62,7 @@ async def get_pre(bot, message):
         return '-'
 
 
-bot = commands.Bot(command_prefix=',.')
+bot = commands.Bot(command_prefix=get_pre)
 bot.db = mongo.RemixBot
 dbltoken = load_json('token.json', 'DBLTOKEN')
 path = 'cogs.'
@@ -441,11 +441,7 @@ async def shutdown(ctx):
     await bot.logout()
 
 
-# if __name__ == "main":
-#     print('Online.')
-# else:
-#     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
-
-if __name__ == '__main__':
-    token = load_json('token.json', 'TOKEN')
-    bot.run(token)
+if __name__ == "main":
+    print('Online.')
+else:
+    print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
