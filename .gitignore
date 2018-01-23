@@ -1,3 +1,6 @@
 data/auths.json
 data/emojis.json
 data/token.json
+cache.db
+cogs/__pycache__
+ext/__pycache__
