@@ -30,6 +30,7 @@ import aiohttp
 
 
 class Misc:
+    '''Miscellaneous and fun commands.'''
 
     def __init__(self, bot):
         self.bot = bot

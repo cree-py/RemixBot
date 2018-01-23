@@ -31,6 +31,7 @@ import re
 
 
 class Clash_of_Clans:
+    '''A cog for Clash of Clans stats.'''
 
     def __init__(self, bot):
         self.bot = bot

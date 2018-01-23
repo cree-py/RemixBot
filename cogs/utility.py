@@ -41,6 +41,7 @@ def random_color():
 
 
 class Utility:
+    '''Useful and utility commands.'''
 
     def __init__(self, bot):
         self.bot = bot

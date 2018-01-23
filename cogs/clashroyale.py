@@ -31,6 +31,7 @@ import re
 
 
 class Clash_Royale:
+    '''Clash Royale profile and clan stats.'''
 
     def __init__(self, bot):
         self.bot = bot

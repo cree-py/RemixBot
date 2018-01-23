@@ -30,6 +30,7 @@ import json
 
 
 class Config:
+    '''Customize your server with these config commands.'''
 
     def __init__(self, bot):
         self.bot = bot

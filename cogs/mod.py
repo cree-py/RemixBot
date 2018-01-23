@@ -29,6 +29,7 @@ import asyncio
 
 
 class Mod:
+    '''Commands for modeators in a guild.'''
 
     def __init__(self, bot):
         self.bot = bot

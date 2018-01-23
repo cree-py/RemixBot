@@ -33,6 +33,7 @@ import pytz
 
 
 class Brawl_Stars:
+    '''Brawl Stars stats.'''
 
     def __init__(self, bot):
         self.bot = bot

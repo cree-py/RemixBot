@@ -22,15 +22,17 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# Import dependencies
+
 import discord
 from discord.ext import commands
-import json
 import aiohttp
 import random
 from bs4 import BeautifulSoup
 
+
 class Pokedex:
+    '''Pokemon cog for pokedex entries.'''
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -38,7 +40,7 @@ class Pokedex:
     async def pokemon(self, ctx):
         '''Base group for pokemon commands.'''
         await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n`-pokemon move <move>` Get info about a move. You can use the name or pokeapi.co ID.\n`-pokemon fusion` Get a pokemon fusion.\n**Note:** A lot of the time the API response time is slow so please be patient.")
-        
+
     @pokemon.command()
     async def random(self, ctx):
         '''Get stats about a random pokemon.'''
@@ -51,8 +53,8 @@ class Pokedex:
                 em = discord.Embed(color=discord.Color(value=0x00FF00))
                 em.title = data['name'].title()
                 em.set_thumbnail(url=data['sprites']['front_default'])
-                em.add_field(name="Height", value=str(data['height']/10) + ' meters')
-                em.add_field(name="Weight", value=str(data['weight']/10) + ' kilograms')
+                em.add_field(name="Height", value=str(data['height'] / 10) + ' meters')
+                em.add_field(name="Weight", value=str(data['weight'] / 10) + ' kilograms')
                 j = 0
                 abilities = ""
                 for i in range(len(data['abilities'])):
@@ -74,7 +76,7 @@ class Pokedex:
         async with aiohttp.ClientSession() as session:
             async with session.get('https://pokeapi.co/api/v2/pokedex/national/') as resp:
                 data = await resp.json()
-                pokedex = data['pokemon_entries'][id-1]['pokemon_species']['url']
+                pokedex = data['pokemon_entries'][id - 1]['pokemon_species']['url']
         async with aiohttp.ClientSession() as session:
             async with session.get(pokedex) as resp:
                 data = await resp.json()
@@ -83,8 +85,8 @@ class Pokedex:
                         description = data['flavor_text_entries'][i]['flavor_text']
                         break
                     else:
-                        pass       
-                em.description=description
+                        pass
+                em.description = description
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
@@ -97,7 +99,7 @@ class Pokedex:
         em2.add_field(name="Learnable Moves", value=moves)
         await ctx.send(embed=em)
         await ctx.send(embed=em2)
-        
+
     @pokemon.command()
     async def info(self, ctx, pokemon):
         '''Get stats about a pokemon. You can specify either its pokedex number or name.'''
@@ -110,8 +112,8 @@ class Pokedex:
                     em = discord.Embed(color=discord.Color(value=0x00FF00))
                     em.title = data['name'].title()
                     em.set_thumbnail(url=data['sprites']['front_default'])
-                    em.add_field(name="Height", value=str(data['height']/10) + ' meters')
-                    em.add_field(name="Weight", value=str(data['weight']/10) + ' kilograms')
+                    em.add_field(name="Height", value=str(data['height'] / 10) + ' meters')
+                    em.add_field(name="Weight", value=str(data['weight'] / 10) + ' kilograms')
                     j = 0
                     abilities = ""
                     for i in range(len(data['abilities'])):
@@ -133,7 +135,7 @@ class Pokedex:
             async with aiohttp.ClientSession() as session:
                 async with session.get('https://pokeapi.co/api/v2/pokedex/national/') as resp:
                     data = await resp.json()
-                    pokedex = data['pokemon_entries'][id-1]['pokemon_species']['url']
+                    pokedex = data['pokemon_entries'][id - 1]['pokemon_species']['url']
             async with aiohttp.ClientSession() as session:
                 async with session.get(pokedex) as resp:
                     data = await resp.json()
@@ -142,8 +144,8 @@ class Pokedex:
                             description = data['flavor_text_entries'][i]['flavor_text']
                             break
                         else:
-                            pass       
-                    em.description=description
+                            pass
+                    em.description = description
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
@@ -159,7 +161,7 @@ class Pokedex:
         except Exception as e:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             await ctx.send(e)
-            
+
     @pokemon.command()
     async def move(self, ctx, *, move=None):
         '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
@@ -185,9 +187,9 @@ class Pokedex:
                             description = data['flavor_text_entries'][i]['flavor_text']
                             break
                         else:
-                            pass       
+                            pass
                     type = data['type']['name']
-                    em.description=description.replace('\n', ' ')
+                    em.description = description.replace('\n', ' ')
                     em.set_thumbnail(url=f'https://remixweb.herokuapp.com/assets/{type}.png')
             await ctx.send(embed=em)
         except Exception as e:
@@ -206,6 +208,6 @@ class Pokedex:
         em.set_image(url=str(soup.find_all('img')[0].get('src')))
         await ctx.send(embed=em)
 
-         
+
 def setup(bot):
     bot.add_cog(Pokedex(bot))

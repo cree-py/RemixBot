@@ -27,7 +27,7 @@ from discord.ext import commands
 
 
 class Info:
-    '''Get info for a user, server, or role'''
+    '''Get info for a user, server, or role.'''
 
     def __init__(self, bot):
         self.bot = bot
