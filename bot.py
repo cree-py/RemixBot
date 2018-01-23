@@ -282,12 +282,14 @@ async def help(ctx, *, command: str=None):
     '''Shows this message'''
 
     if command is not None:
-        cog = bot.get_cog(command)
+        cog = bot.get_cog(command.title().replace(' ', '_'))
         cmd = bot.get_command(command)
         if cog is not None:
             em = format_cog_help(ctx, cog)
         if cmd is not None:
             em = format_command_help(ctx, cmd)
+        else:
+            await ctx.send('No commands found.')
         return await ctx.send(embed=em)
 
     pages = []

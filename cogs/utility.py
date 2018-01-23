@@ -33,13 +33,6 @@ import inspect
 from ext import utils
 
 
-def random_color():
-    color = ('#%06x' % random.randint(8, 0xFFFFFF))
-    color = int(color[1:], 16)
-    color = discord.Color(value=color)
-    return color
-
-
 class Utility:
     '''Useful and utility commands.'''
 
@@ -91,7 +84,7 @@ class Utility:
     @commands.command()
     async def embedsay(self, ctx, *, body: str):
         '''Send a simple embed'''
-        em = discord.Embed(description=body, color=random_color())
+        em = discord.Embed(description=body, color=utils.random_color())
         await ctx.send(embed=em)
 
     @commands.command()

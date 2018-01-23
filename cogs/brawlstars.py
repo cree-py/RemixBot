@@ -225,6 +225,7 @@ class Brawl_Stars:
             else:
                 await ctx.send("Invalid tag. Tags can only contain the following characters: `0289PYLQGRJCUV`")
         if success:
+            pages = []
             name = str(get_attr('div', 'name'))
             desc = str(get_attr('div', 'clan-description'))
 
@@ -257,20 +258,20 @@ class Brawl_Stars:
             em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
             em.add_field(name="Total trophies", value=trophies)
             em.add_field(name="Required trophies", value=required)
-            em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                          icon_url='http://brawlstats.io/images/bs-stats.png')
+            em.set_footer(icon_url='http://brawlstats.io/images/bs-stats.png')
+            pages.append(em)
 
-            em2 = discord.Embed(color=discord.Color.green())
-            em2.title = "Top members"
-            em2.description = "This is calculated through total trophy count."
-            em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
-            em2.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
-                           icon_url='http://brawlstats.io/images/bs-stats.png')
+            em = discord.Embed(color=discord.Color.green())
+            em.title = "Top members"
+            em.description = "This is calculated through total trophy count."
+            em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
+            em.set_footer(icon_url='http://brawlstats.io/images/bs-stats.png')
             for entry in info:
-                em2.add_field(name=entry['name'], value=f"{entry['role'].replace(' ', '-')}\n{entry['trophies']}")
+                em.add_field(name=entry['name'], value=f"{entry['role'].replace(' ', '-')}\n{entry['trophies']}")
+            pages.append(em)
 
-            await ctx.send(embed=em)
-            await ctx.send(embed=em2)
+            p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by brawlstats', pages=pages)
+            await p_session.run()
 
     @commands.command()
     async def bsevents(self, ctx, when=None):

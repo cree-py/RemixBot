@@ -1,4 +1,6 @@
+import discord
 from discord.ext import commands
+import random
 import json
 
 
@@ -36,3 +38,10 @@ def cleanup_code(content):
     if content.startswith('```') and content.endswith('```'):
         return '\n'.join(content.split('\n')[1:-1])
     return content.strip('` \n')
+
+
+def random_color():
+    color = ('#%06x' % random.randint(8, 0xFFFFFF))
+    color = int(color[1:], 16)
+    color = discord.Color(value=color)
+    return color
