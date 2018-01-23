@@ -28,6 +28,7 @@ from discord.ext import commands
 import aiohttp
 import random
 from bs4 import BeautifulSoup
+from ext.paginator import PaginatorSession
 
 
 class Pokedex:
@@ -46,6 +47,7 @@ class Pokedex:
         '''Get stats about a random pokemon.'''
         await ctx.trigger_typing()
         num = random.randint(1, 721)
+        pages = []
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
@@ -87,6 +89,7 @@ class Pokedex:
                     else:
                         pass
                 em.description = description
+        pages.append(em)
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
@@ -95,15 +98,18 @@ class Pokedex:
                     if not i == 0:
                         moves += ", "
                     moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
-        em2 = discord.Embed(color=discord.Color.green())
-        em2.add_field(name="Learnable Moves", value=moves)
-        await ctx.send(embed=em)
-        await ctx.send(embed=em2)
+        em = discord.Embed(color=discord.Color.green())
+        em.add_field(name="Learnable Moves", value=moves)
+        pages.append(em)
+
+        p_session = PaginatorSession(ctx, pages=pages)
+        await p_session.run()
 
     @pokemon.command()
     async def info(self, ctx, pokemon):
         '''Get stats about a pokemon. You can specify either its pokedex number or name.'''
         await ctx.trigger_typing()
+        pages = []
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
@@ -146,6 +152,7 @@ class Pokedex:
                         else:
                             pass
                     em.description = description
+            pages.append(em)
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
@@ -154,27 +161,26 @@ class Pokedex:
                         if not i == 0:
                             moves += ", "
                         moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
-            em2 = discord.Embed(color=discord.Color.green())
-            em2.add_field(name="Learnable Moves", value=moves)
-            await ctx.send(embed=em)
-            await ctx.send(embed=em2)
+            em = discord.Embed(color=discord.Color.green())
+            em.add_field(name="Learnable Moves", value=moves)
+            pages.append(em)
+
+            p_session = PaginatorSession(ctx, pages=pages)
+            await p_session.run()
         except Exception as e:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             await ctx.send(e)
 
     @pokemon.command()
-    async def move(self, ctx, *, move=None):
-        '''Get information about a pokemon move. Accepts name of the move or its pokeapi.co ID.'''
-        if move is None:
-            await ctx.send("Usage: `-pokemon move <name of the move or its pokeapi.co ID>`")
-            return
+    async def move(self, ctx, *, move):
+        '''Get information about a pokemon move.
+        Accepts name of the move or its pokeapi.co ID.'''
         await ctx.trigger_typing()
         urlmove = move.lower().replace(' ', '-')
         try:
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/move/{urlmove}/') as resp:
                     data = await resp.json()
-                    id = data['id']
                     em = discord.Embed(color=discord.Color.green())
                     em.title = data['name'].title().replace('-', ' ')
                     em.add_field(name="Accuracy", value=data['accuracy'])
