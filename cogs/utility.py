@@ -104,8 +104,7 @@ class Utility:
         emb = discord.Embed(color=random_color())
         emb.add_field(name="Original Link", value=link, inline=False)
         emb.add_field(name="Shortened Link", value=new, inline=False)
-        emb.set_footer(text='Powered by tinyurl.com',
-                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
+        emb.set_footer(text='Powered by tinyurl.com', icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
         await ctx.send(embed=emb)
 
     @commands.command()
@@ -121,20 +120,21 @@ class Utility:
     async def datetime(self, ctx, tz=None):
         """Get the current date and time for a time zone or UTC."""
         now = datetime.datetime.now(tz=pytz.UTC)
+        all_tz = 'https://github.com/cree-py/RemixBot/blob/master/data/timezones.json'
         if tz:
             try:
                 now = now.astimezone(pytz.timezone(tz))
             except:
-                em = discord.Embed(color=discord.Color(value=0xff0000))
+                em = discord.Embed(color=discord.Color.red())
                 em.title = "Invalid timezone"
-                em.description = 'Please take a look at the [list](https://github.com/cree-py/creepy.py/blob/master/data/timezones.json) of timezones.'
+                em.description = f'Please take a look at the [list]({all_tz}) of timezones.'
                 return await ctx.send(embed=em)
         await ctx.send(f'It is currently {now:%A, %B %d, %Y} at {now:%I:%M:%S %p}.')
 
     @commands.command(aliases=['urban'])
     async def ud(self, ctx, *, query):
         '''Search terms with urbandictionary.com'''
-        em = discord.Embed(title=f'{query}', color=0x00ff00)
+        em = discord.Embed(title=f'{query}', color=discord.Color.green())
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_footer(text='Powered by urbandictionary.com')
         defs = ud.define(query)
@@ -154,19 +154,19 @@ class Utility:
         try:
             result = wikipedia.summary(query)
             if len(result) > 2000:
-                em.color = 0xff0000
+                em.color = discord.Color.red()
                 em.description = f"Result is too long. View the website [here](https://wikipedia.org/wiki/{query.replace(' ', '_')}), or just google the subject."
                 return await ctx.send(embed=em)
-            em.color = 0x00ff00
+            em.color = discord.Color.green()
             em.description = result
             await ctx.send(embed=em)
         except wikipedia.exceptions.DisambiguationError as e:
-            em.color = 0xff0000
+            em.color = discord.Color.red()
             options = '\n'.join(e.options)
             em.description = f"**Options:**\n\n{options}"
             await ctx.send(embed=em)
         except wikipedia.exceptions.PageError:
-            em.color = 0xff0000
+            em.color = discord.Color.red()
             em.description = 'Error: Page not found.'
             await ctx.send(embed=em)
 
@@ -236,7 +236,7 @@ class Utility:
     @math.command(aliases=['*', 'x'])
     async def multiply(self, ctx, a: int, b: int):
         '''Multiply two numbers'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = "Result"
         em.description = f'❓ Problem: `{a}*{b}`\n✅ Solution: `{a * b}`'
         await ctx.send(embed=em)
@@ -245,12 +245,12 @@ class Utility:
     async def divide(self, ctx, a: int, b: int):
         '''Divide a number by a number'''
         try:
-            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color.green())
             em.title = "Result"
             em.description = f'❓ Problem: `{a}/{b}`\n✅ Solution: `{a / b}`'
             await ctx.send(embed=em)
         except ZeroDivisionError:
-            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color.green())
             em.title = "Error"
             em.description = "You can't divide by zero"
             await ctx.send(embed=em)
@@ -258,7 +258,7 @@ class Utility:
     @math.command(aliases=['+'])
     async def add(self, ctx, a: int, b: int):
         '''Add a number to a number'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = "Result"
         em.description = f'❓ Problem: `{a}+{b}`\n✅ Solution: `{a + b}`'
         await ctx.send(embed=em)
@@ -266,7 +266,7 @@ class Utility:
     @math.command(aliases=['-'])
     async def subtract(self, ctx, a: int, b: int):
         '''Substract two numbers'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = "Result"
         em.description = f'❓ Problem: `{a}-{b}`\n✅ Solution: `{a - b}`'
         await ctx.send(embed=em)
@@ -274,7 +274,7 @@ class Utility:
     @math.command(aliases=['%'])
     async def remainder(self, ctx, a: int, b: int):
         '''Gets a remainder'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = "Result"
         em.description = f'❓ Problem: `{a}%{b}`\n✅ Solution: `{a % b}`'
         await ctx.send(embed=em)
@@ -282,7 +282,7 @@ class Utility:
     @math.command(aliases=['^', '**'])
     async def power(self, ctx, a: int, b: int):
         '''Raise A to the power of B'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = "Result"
         em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
         await ctx.send(embed=em)
@@ -293,7 +293,7 @@ class Utility:
         if a > 813:
             await ctx.send("That number is too high to fit within the message limit for discord.")
         else:
-            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color.green())
             em.title = "Result"
             result = 1
             problem = a

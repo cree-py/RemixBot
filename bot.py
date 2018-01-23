@@ -304,7 +304,7 @@ async def help(ctx, *, command: str=None):
 @bot.command()
 async def ping(ctx):
     '''Pong! Get the bot's response time'''
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em = discord.Embed(color=discord.Color.green())
     em.title = "Pong!"
     em.description = f'{bot.latency * 1000:.4f} ms'
     await ctx.send(embed=em)
@@ -313,7 +313,7 @@ async def ping(ctx):
 @bot.command(name='bot')
 async def _bot(ctx):
     '''Shows info about bot'''
-    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em = discord.Embed(color=discord.Color.green())
     em.title = "Bot Info"
     em.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
     em.description = "A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)"

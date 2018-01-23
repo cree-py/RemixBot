@@ -117,7 +117,7 @@ class Brawl_Stars:
             name_after = top.split('brawlers/')[1]
             highestbrawler = name_after.split('"')[0].title()
 
-            em = discord.Embed(color=discord.Color(value=0x00FF00))
+            em = discord.Embed(color=discord.Color.green())
             em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
             em.title = f"{get_attr('div', 'player-name brawlstars-font')} (#{id})"
             em.description = f"Band: {get_attr('div', 'band-name mr-2')} ({get_attr('div', 'band-tag')})"
@@ -153,7 +153,7 @@ class Brawl_Stars:
         '''Get the url to your brawl stars profile'''
         await ctx.trigger_typing()
         em = discord.Embed(title='brawlstats.io URL')
-        em.color = discord.Color(value=0x00ff00)
+        em.color = discord.Color.green()
         if id is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}brawlstars save <tag>` to save a tag to your discord profile.')
@@ -251,7 +251,7 @@ class Brawl_Stars:
             url = src.split('" w')[0]
             imgpath = url.split('"')[0]
 
-            em = discord.Embed(color=discord.Color(value=0x00FF00))
+            em = discord.Embed(color=discord.Color.green())
             em.title = f'{name} (#{bandtag})'
             em.description = desc
             em.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
@@ -260,7 +260,7 @@ class Brawl_Stars:
             em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
                           icon_url='http://brawlstats.io/images/bs-stats.png')
 
-            em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+            em2 = discord.Embed(color=discord.Color.green())
             em2.title = "Top members"
             em2.description = "This is calculated through total trophy count."
             em2.set_thumbnail(url=f'https://brawlstats.io{imgpath}')
@@ -484,7 +484,7 @@ class Brawl_Stars:
 
         if success:
 
-            em = discord.Embed(color=discord.Color(value=0x00FF00))
+            em = discord.Embed(color=discord.Color.green())
             everything = (str(get_all_attrs('div', 'brawlers-brawler-slot d-inline-block')))
             one = everything.split('url("')
 

@@ -50,7 +50,7 @@ class Pokedex:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
                 id = data['id']
-                em = discord.Embed(color=discord.Color(value=0x00FF00))
+                em = discord.Embed(color=discord.Color.green())
                 em.title = data['name'].title()
                 em.set_thumbnail(url=data['sprites']['front_default'])
                 em.add_field(name="Height", value=str(data['height'] / 10) + ' meters')
@@ -95,7 +95,7 @@ class Pokedex:
                     if not i == 0:
                         moves += ", "
                     moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
-        em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+        em2 = discord.Embed(color=discord.Color.green())
         em2.add_field(name="Learnable Moves", value=moves)
         await ctx.send(embed=em)
         await ctx.send(embed=em2)
@@ -109,7 +109,7 @@ class Pokedex:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
                     id = data['id']
-                    em = discord.Embed(color=discord.Color(value=0x00FF00))
+                    em = discord.Embed(color=discord.Color.green())
                     em.title = data['name'].title()
                     em.set_thumbnail(url=data['sprites']['front_default'])
                     em.add_field(name="Height", value=str(data['height'] / 10) + ' meters')
@@ -154,7 +154,7 @@ class Pokedex:
                         if not i == 0:
                             moves += ", "
                         moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
-            em2 = discord.Embed(color=discord.Color(value=0x00FF00))
+            em2 = discord.Embed(color=discord.Color.green())
             em2.add_field(name="Learnable Moves", value=moves)
             await ctx.send(embed=em)
             await ctx.send(embed=em2)
@@ -175,7 +175,7 @@ class Pokedex:
                 async with session.get(f'https://pokeapi.co/api/v2/move/{urlmove}/') as resp:
                     data = await resp.json()
                     id = data['id']
-                    em = discord.Embed(color=discord.Color(value=0x00FF00))
+                    em = discord.Embed(color=discord.Color.green())
                     em.title = data['name'].title().replace('-', ' ')
                     em.add_field(name="Accuracy", value=data['accuracy'])
                     em.add_field(name="PP", value=data['pp'])
@@ -203,7 +203,7 @@ class Pokedex:
             async with session.get('http://pokemon.alexonsager.net/') as resp:
                 data = await resp.read()
         soup = BeautifulSoup(data, 'lxml')
-        em = discord.Embed(color=discord.Color(value=0x00FF00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = soup.find('div', class_='title').text
         em.set_image(url=str(soup.find_all('img')[0].get('src')))
         await ctx.send(embed=em)

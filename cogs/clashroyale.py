@@ -94,7 +94,7 @@ class Clash_Royale:
     async def crprofile(self, ctx, tag=None):
         '''Fetch a profile by tag'''
         await ctx.trigger_typing()
-        em = discord.Embed(title="Profile", color=discord.Color(value=0x00ff00))
+        em = discord.Embed(title="Profile", color=discord.Color.green())
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
@@ -186,7 +186,7 @@ class Clash_Royale:
     async def crchests(self, ctx, tag=None):
         '''Get a profile's chest cycle'''
         await ctx.trigger_typing()
-        em = discord.Embed(title='Upcoming Chests', color=discord.Color(value=0x00ff00))
+        em = discord.Embed(title='Upcoming Chests', color=discord.Color.green())
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
@@ -219,7 +219,7 @@ class Clash_Royale:
     async def crclan(self, ctx, tag=None):
         '''Gets a clan's info by clan tag'''
         await ctx.trigger_typing()
-        em = discord.Embed(title='Clan Info', color=discord.Color(value=0x00ff00))
+        em = discord.Embed(title='Clan Info', color=discord.Color.green())
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')
@@ -294,7 +294,7 @@ class Clash_Royale:
         '''Find the worst members in a clan'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Least Valuable Members')
-        em.color = discord.Color(value=0x00ff00)
+        em.color = discord.Color.green()
 
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
@@ -342,7 +342,7 @@ class Clash_Royale:
         '''Find the best members in a clan'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Most Valuable Members')
-        em.color = discord.Color(value=0x00ff00)
+        em.color = discord.Color.green()
 
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
@@ -390,7 +390,7 @@ class Clash_Royale:
         '''Get your current, record, and legend trophies'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Trophies')
-        em.color = discord.Color(value=0x00ff00)
+        em.color = discord.Color.green()
 
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
@@ -421,7 +421,7 @@ class Clash_Royale:
         '''View a player's current battle deck'''
         await ctx.trigger_typing()
         em = discord.Embed(title='Battle Deck')
-        em.color = discord.Color(value=0x00ff00)
+        em.color = discord.Color.green()
 
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
@@ -460,7 +460,7 @@ class Clash_Royale:
         '''Get the cr-api.com url for a player tag'''
         await ctx.trigger_typing()
         em = discord.Embed(title='cr-api.com URL')
-        em.color = discord.Color(value=0x00ff00)
+        em.color = discord.Color.green()
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
                 return await ctx.send(f'No tag found. Please use `{ctx.prefix}save <tag>` to save a tag to your discord profile.')

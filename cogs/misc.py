@@ -60,11 +60,11 @@ class Misc:
 
         num = random.randint(0, len(responses) - 1)
         if num < 10:
-            em = discord.Embed(color=discord.Color(value=0x00ff00))
+            em = discord.Embed(color=discord.Color.green())
         elif num < 15:
             em = discord.Embed(color=discord.Color(value=0xffff00))
         else:
-            em = discord.Embed(color=discord.Color(value=0xff0000))
+            em = discord.Embed(color=discord.Color.red())
 
         response = responses[num]
 
@@ -76,7 +76,7 @@ class Misc:
     async def flipcoin(self, ctx):
         '''Flips a coin'''
         choices = ['You got Heads', 'You got Tails']
-        color = discord.Color(value=0x00ff00)
+        color = discord.Color.green()
         em = discord.Embed(color=color, title='Coinflip:', description=random.choice(choices))
         await ctx.send(embed=em)
 
@@ -89,7 +89,7 @@ class Misc:
         fmt = ''
         for i in range(1, number + 1):
             fmt += f'`Dice {i}: {random.randint(1, 6)}`\n'
-            color = discord.Color(value=0x00ff00)
+            color = discord.Color.green()
         em = discord.Embed(color=color, title='Roll a certain number of dice', description=fmt)
         await ctx.send(embed=em)
 
@@ -122,7 +122,7 @@ class Misc:
         async with aiohttp.ClientSession() as session:
             async with session.get(f'http://xkcd.com/{rand}/info.0.json') as resp:
                 data = await resp.json()
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = f"XKCD Number {data['num']}- \"{data['title']}\""
         em.set_footer(text=f"Published on {data['month']}/{data['day']}/{data['year']}")
         em.set_image(url=data['img'])
@@ -150,7 +150,7 @@ class Misc:
             async with session.get(f'https://api.whatdoestrumpthink.com/api/v1/quotes/personalized?q={question}') as resp:
                 file = await resp.json()
         quote = file['message']
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = "What does Trump say?"
         em.description = quote
         em.set_footer(text="Made possible by whatdoestrumpthink.com", icon_url="http://www.stickpng.com/assets/images/5841c17aa6515b1e0ad75aa1.png")
@@ -162,7 +162,7 @@ class Misc:
         async with aiohttp.ClientSession() as session:
             async with session.get('https://08ad1pao69.execute-api.us-east-1.amazonaws.com/dev/random_joke') as resp:
                 data = await resp.json()
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
         em.title = data['setup']
         em.description = data['punchline']
         await ctx.send(embed=em)

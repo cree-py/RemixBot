@@ -84,7 +84,7 @@ class Clash_of_Clans:
     @commands.command()
     async def cocprofile(self, ctx, tag=None):
         '''Get a Clash of Clans profile by tag'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
 
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':
@@ -145,7 +145,7 @@ class Clash_of_Clans:
     @commands.command()
     async def cocclan(self, ctx, tag=None):
         '''Get the stats of a clan in CoC'''
-        em = discord.Embed(color=discord.Color(value=0x00ff00))
+        em = discord.Embed(color=discord.Color.green())
 
         if tag is None:
             if await self.get_tag(str(ctx.author.id)) == 'None':

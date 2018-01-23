@@ -221,7 +221,7 @@ class Config:
     # async def on_message_delete(self, msg):
     #     if not self.logtype(msg)[0]:
     #         return
-    #     em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {msg.channel.mention}**\n{msg.content}', color=0xff0000)
+    #     em = discord.Embed(description=f'**Message sent by {msg.author.mention} deleted in {msg.channel.mention}**\n{msg.content}', color=discord.Color.red())
     #     em.set_author(name=msg.author.name, icon_url=msg.author.avatar_url)
     #     em.set_footer(f'ID: {msg.id}')
     #     await self.logtype(msg)[1].send(embed=em)
@@ -230,7 +230,7 @@ class Config:
         type = await self.logtype(channel)
         if not type:
             return
-        em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=0x00ff00)
+        em = discord.Embed(title='Channel Created', description=f'Channel {channel.mention} was created.', color=discord.Color.green())
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
         ch = await self.logchannel(channel)
@@ -240,7 +240,7 @@ class Config:
         type = await self.logtype(channel)
         if not type:
             return
-        em = discord.Embed(title='Channel Deleted', description=f'Channel {channel.mention} was deleted.', color=0xff0000)
+        em = discord.Embed(title='Channel Deleted', description=f'Channel {channel.mention} was deleted.', color=discord.Color.red())
         em.timestamp = datetime.datetime.utcnow()
         em.set_footer(text=f'ID: {channel.id}')
         ch = await self.logchannel(channel)
@@ -250,7 +250,7 @@ class Config:
         type = await self.logtype(user)
         if not type:
             return
-        em = discord.Embed(description=f'`{user.name}` was banned from {guild.name}.', color=0xff0000)
+        em = discord.Embed(description=f'`{user.name}` was banned from {guild.name}.', color=discord.Color.red())
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
         channel = await self.logchannel(user)
@@ -270,7 +270,7 @@ class Config:
                 channel = self.bot.get_channel(int(channel))
             else:
                 return False
-        em = discord.Embed(description=f'`{user.name}` was unbanned from {guild.name}.', color=0x00ff00)
+        em = discord.Embed(description=f'`{user.name}` was unbanned from {guild.name}.', color=discord.Color.green())
         em.set_author(name=user.name, icon_url=user.avatar_url)
         em.set_footer(text=f'User ID: {user.id}')
         await channel.send(embed=em)
@@ -279,7 +279,7 @@ class Config:
         type = await self.logtype(role)
         if not type:
             return
-        em = discord.Embed(title='Role created', color=0x00ff00, description=f'Role `{role.name}` was created.')
+        em = discord.Embed(title='Role created', color=discord.Color.green(), description=f'Role `{role.name}` was created.')
         em.set_footer(text=f'Role ID: {role.id}')
         channel = await self.logchannel(role)
         await channel.send(embed=em)
@@ -288,7 +288,7 @@ class Config:
         type = await self.logtype(role)
         if not type:
             return
-        em = discord.Embed(title='Role deleted', color=0xff0000, description=f'Role `{role.name}` was deleted.')
+        em = discord.Embed(title='Role deleted', color=discord.Color.red(), description=f'Role `{role.name}` was deleted.')
         em.set_footer(text=f'Role ID: {role.id}')
         channel = await self.logchannel(role)
         await channel.send(embed=em)
