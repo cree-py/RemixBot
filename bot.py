@@ -280,6 +280,7 @@ def format_bot_help(ctx):
 @bot.command()
 async def help(ctx, *, command: str=None):
     '''Shows this message'''
+    command = command.title()
     aliases = {
         'clash of clans': 'Clash_of_Clans',
         'coc': 'Clash_of_Clans',
@@ -292,7 +293,7 @@ async def help(ctx, *, command: str=None):
         command = aliases[command]
 
     if command is not None:
-        cog = bot.get_cog(command.title().replace(' ', '_'))
+        cog = bot.get_cog(command.replace(' ', '_'))
         cmd = bot.get_command(command)
         if cog is not None:
             em = format_cog_help(ctx, cog)
