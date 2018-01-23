@@ -2,13 +2,17 @@ from discord.ext import commands
 import json
 
 
+class DeveloperError(Exception):
+    pass
+
+
 def developer():
     def wrapper(ctx):
         with open('data/devs.json') as f:
             devs = json.load(f)
         if ctx.author.id in devs:
             return True
-        return False
+        raise DeveloperError('You cannot use this command because you are not a developer.')
     return commands.check(wrapper)
 
 

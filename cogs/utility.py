@@ -30,7 +30,7 @@ import datetime
 import pytz
 import wikipedia
 import inspect
-from ext.utils import developer, paginate, cleanup_code
+from ext import utils
 
 
 def random_color():
@@ -46,7 +46,7 @@ class Utility:
         self.bot = bot
 
     @commands.command(name='presence', hidden=True)
-    @developer()
+    @utils.developer()
     async def _presence(self, ctx, type=None, *, game=None):
         '''Change the bot's presence'''
         if type is None:
@@ -71,7 +71,7 @@ class Utility:
                 await ctx.send('Usage: `.presence [game/stream/watch/listen] [message]`')
 
     @commands.command()
-    @developer()
+    @utils.developer()
     async def source(self, ctx, command):
         source = inspect.getsource(self.bot.get_command(command).callback)
         if not source:
@@ -79,7 +79,7 @@ class Utility:
         try:
             await ctx.send(f'```py\n{source}\n```')
         except:
-            paginated_text = paginate(source)
+            paginated_text = utils.paginate(source)
             for page in paginated_text:
                 if page == paginated_text[-1]:
                     await ctx.send(f'```py\n{page}\n```')
@@ -109,7 +109,7 @@ class Utility:
     @commands.command()
     async def hastebin(self, ctx, *, code):
         '''Hastebin-ify your code!'''
-        code = cleanup_code(code)
+        code = utils.cleanup_code(code)
         async with self.bot.session.post("https://hastebin.com/documents", data=code) as resp:
             data = await resp.json()
             key = data['key']

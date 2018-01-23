@@ -32,7 +32,7 @@ import json
 import pytz
 
 
-class BrawlStars:
+class Brawl_Stars:
 
     def __init__(self, bot):
         self.bot = bot
@@ -513,4 +513,4 @@ class BrawlStars:
 
 
 def setup(bot):
-    bot.add_cog(BrawlStars(bot))
+    bot.add_cog(Brawl_Stars(bot))
