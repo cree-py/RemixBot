@@ -100,6 +100,7 @@ class Pokedex:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
                 moves = ""
+                tooMany = False
                 for i in range(len(data['moves'])):
                     if not i == 0:
                         moves += ", "
@@ -175,6 +176,7 @@ class Pokedex:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
                     moves = ""
+                    tooMany = False
                     for i in range(len(data['moves'])):
                         if not i == 0:
                             moves += ", "
