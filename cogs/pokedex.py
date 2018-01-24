@@ -100,7 +100,10 @@ class Pokedex:
                 for i in range(len(data['moves'])):
                     if not i == 0:
                         moves += ", "
-                    moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                    if not len(moves) >= 1024:
+                        moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                    else:
+                        moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
         em = discord.Embed(color=discord.Color.green())
         em.add_field(name="Learnable Moves", value=moves)
         em.set_thumbnail(url=data['sprites']['back_default'])
@@ -166,8 +169,12 @@ class Pokedex:
                     for i in range(len(data['moves'])):
                         if not i == 0:
                             moves += ", "
-                        moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                        if not len(moves) >= 1024:
+                            moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                        else:
+                            moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
             em = discord.Embed(color=discord.Color.green())
+
             em.add_field(name="Learnable Moves", value=moves)
             em.set_thumbnail(url=data['sprites']['back_default'])
             pages.append(em)
