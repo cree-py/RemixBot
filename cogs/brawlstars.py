@@ -39,7 +39,7 @@ class Brawl_Stars:
     def __init__(self, bot):
         self.bot = bot
 
-    def emoji(ctx, emoji):
+    def emoji(self, ctx, emoji):
         with open('data/emojis.json') as f:
             emojis = json.load(f)
             e = emojis[emoji]
@@ -454,6 +454,7 @@ class Brawl_Stars:
                 return await ctx.send(f'You do not have a saved tag. Please save your player tag using `{ctx.prefix}bs save <tag>`')
             else:
                 tag = await self.get_tag(str(ctx.author.id))
+                print("a thing")
                 if self.check_tag(tag):
                     # get player stats
                     try:
@@ -500,17 +501,28 @@ class Brawl_Stars:
 
             imglist = tobeprinted.split('\n')
             em.title = "Brawlers"
+
             em.description = playername + " (#" + playertag + ")"
+
             for i in range(len(get_all_attrs('span', 'trophy-nr'))):
+
                 tooprint = ""
+
                 tooprint += str(get_all_attrs('span', 'lbskew-power-txt')[i].text + ' :cloud_lightning:') + '\n'
-                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text + ' ' + str(self.bot.get_emoji(self.emoji(ctx, 'bstrophy')))) + '\n'
+
+                tooprint += str(get_all_attrs('span', 'trophy-nr')[i].text) + ' ' + str(self.bot.get_emoji(self.emoji(ctx, 'bstrophy'))) + '\n'
+
                 em.add_field(name=str(get_all_attrs('div', 'name')[i].text) + ' ' + str(self.bot.get_emoji(self.emoji(ctx, str(get_all_attrs('div', 'name')[i].text).replace(' ', '-').lower()))), value=tooprint)
+
 
             em.set_thumbnail(url=f'https://brawlstats.io{str(imglist[0])}')
             em.set_footer(text='Stats made by Cree-Py | Powered by brawlstats',
                           icon_url='http://brawlstats.io/images/bs-stats.png')
-            await ctx.send(embed=em)
+            try:
+                await ctx.send(embed=em)
+            except Exception as e:
+                print(e)
+                await ctx.send(e)
 
 
 def setup(bot):
