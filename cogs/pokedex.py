@@ -76,9 +76,6 @@ class Pokedex:
                 else:
                     em.add_field(name="Types", value=types)
 
-                for i in range(len(data['stats'])):
-                    print("hi")
-                    em.add_field(name=data['stats'][i]['stat']['name'].title(), value=data['stats'][i]['base_stat'])
         async with aiohttp.ClientSession() as session:
             async with session.get('https://pokeapi.co/api/v2/pokedex/national/') as resp:
                 data = await resp.json()
