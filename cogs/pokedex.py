@@ -100,7 +100,7 @@ class Pokedex:
                 for i in range(len(data['moves'])):
                     if not i == 0:
                         moves += ", "
-                    if not len(moves) < 1024:
+                    if len(moves) < 1024:
                         moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
                     else:
                         moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
@@ -169,7 +169,7 @@ class Pokedex:
                     for i in range(len(data['moves'])):
                         if not i == 0:
                             moves += ", "
-                        if not len(moves) < 1024:
+                        if len(moves) < 1024:
                             moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
                         else:
                             moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
