@@ -84,7 +84,7 @@ class Info:
     @commands.command(aliases=['role'])
     @commands.guild_only()
     async def roleinfo(self, ctx, *, rolename):
-        '''Get information about a role.'''
+        '''Get information about a role. Case Sensitive!'''
         try:
             role = discord.utils.get(ctx.message.guild.roles, name=rolename)
         except:
