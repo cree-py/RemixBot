@@ -37,7 +37,7 @@ class Misc:
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
-    async def say(ctx, *, message: str):
+    async def say(self, ctx, *, message: str):
         '''Say something as the bot'''
         try:
             await ctx.message.delete()
