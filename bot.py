@@ -446,7 +446,13 @@ async def invite(ctx):
     '''Invite the bot to your server'''
     await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542")
 
+@bot.command(hidden=True)
+@utils.developer()
+async def exec(ctx,*, code: str):
+    """Pulls from github and updates bot"""
+    await ctx.send(f"```{subprocess.run({code},stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
 
+    
 @bot.command(hidden=True)
 @utils.developer()
 async def shutdown(ctx):
