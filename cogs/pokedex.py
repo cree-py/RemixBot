@@ -37,12 +37,7 @@ class Pokedex:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(invoke_without_command=True)
-    async def pokemon(self, ctx):
-        '''Base group for pokemon commands.'''
-        await ctx.send("Pokemon commands:\n`-pokemon random` Get stats about a random pokemon.\n`-pokemon info <pokemon>` Get info about a pokemon. You can use the name or international pokedex ID.\n`-pokemon move <move>` Get info about a move. You can use the name or pokeapi.co ID.\n`-pokemon fusion` Get a pokemon fusion.\n**Note:** A lot of the time the API response time is slow so please be patient.")
-
-    @pokemon.command()
+    @commands.command()
     async def random(self, ctx):
         '''Get stats about a random pokemon.'''
         await ctx.trigger_typing()
@@ -118,7 +113,7 @@ class Pokedex:
         p_session = PaginatorSession(ctx, pages=pages)
         await p_session.run()
 
-    @pokemon.command()
+    @commands.command()
     async def info(self, ctx, pokemon):
         '''Get stats about a pokemon. You can specify either its pokedex number or name.'''
         await ctx.trigger_typing()
@@ -198,7 +193,7 @@ class Pokedex:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             await ctx.send(e)
 
-    @pokemon.command()
+    @commands.command()
     async def move(self, ctx, *, move):
         '''Get information about a pokemon move.
         Accepts name of the move or its pokeapi.co ID.'''
@@ -229,7 +224,7 @@ class Pokedex:
             await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
             await ctx.send(e)
 
-    @pokemon.command()
+    @commands.command()
     async def fusion(self, ctx):
         '''Get a pokemon fusion.'''
         async with aiohttp.ClientSession() as session:
