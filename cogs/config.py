@@ -22,8 +22,6 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-# MY 1000th COMMIT VICTINI
-
 import discord
 from discord.ext import commands
 from motor.motor_asyncio import AsyncIOMotorClient
