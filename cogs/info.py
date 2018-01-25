@@ -24,7 +24,7 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
-
+from ext.paginator import PaginatorSession
 
 class Info:
     '''Get info for a user, server, or role.'''
@@ -81,6 +81,97 @@ class Info:
         em.set_thumbnail(url=avi or None)
         await ctx.send(embed=em)
 
+    @commands.command(aliases=['role'])
+    @commands.guild_only()
+    async def roleinfo(self, ctx, rolename):
+        try:
+            role = discord.utils.get(message.guild.roles, name="RemixBot Devs")
+        except:
+            return await ctx.send("Role could not be found.")
+
+        em = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
+        em.title=role.name
+        perms = ""
+        if role.permissions.administrator:
+            perms += "Administrator, "
+        if role.permissions.create_instant_invite:
+            perms += "Create Instant Invite, "
+        if role.permissions.kick_members:
+            perms += "Kick Members, "
+        if role.permissions.ban_members:
+            perms += "Ban Members, "
+        if role.permissions.manage_channels:
+            perms += "Manage Channels, "
+        if role.permissions.manage_guild:
+            perms += "Manage Guild, "
+        if role.permissions.add_reactions:
+            perms += "Add Reactions, "
+        if role.permissions.view_audit_log:
+            perms += "View Audit Log, "
+        if role.permissions.read_messages:
+            perms += "Read Messages, "
+        if role.permissions.send_messages:
+            perms += "Send Messages, "
+        if role.permissions.send_tts_messages:
+            perms += "Send TTS Messages, "
+        if role.permissions.manage_messages:
+            perms += "Manage Messages, "
+        if role.permissions.embed_links:
+            perms += "Embed Links, "
+        if role.permissions.attach_files:
+            perms += "Attach Files, "
+        if role.permissions.read_message_history:
+            perms += "Read Message History, "
+        if role.permissions.mention_everyone:
+            perms += "Mention Everyone, "
+        if role.permissions.external_emojis:
+            perms += "Use External Emojis, "
+        if role.permissions.connect:
+            perms += "Connect to Voice, "
+        if role.permissions.speak:
+            perms += "Speak, "
+        if role.permissions.mute_members:
+            perms += "Mute Members, "
+        if role.permissions.deafen_members:
+            perms += "Deafen Members, "
+        if role.permissions.move_members:
+            perms += "Move Members, "
+        if role.permissions.use_voice_activation:
+            perms += "Use Voice Activation, "
+        if role.permissions.change_nickname:
+            perms += "Change Nickname, "
+        if role.permissions.change_nickname:
+            perms += "Manage Nicknames, "
+        if role.permissions.manage_roles:
+            perms += "Manage Roles, "
+        if role.permissions.manage_webhooks:
+            perms += "Manage Webhooks, "
+        if role.permissions.manage_emojis:
+            perms += "Manage Emojis, "
+
+        if perms is None:
+            perms = "None"
+        else:
+            perms = perms.strip(", ")
+
+
+        em.add_field(name='Hoisted', value=str(role.hoist))
+        em.add_field(name='Position from bottom', value=str(role.position))
+        em.add_field(name='Managed by Integration', value=str(role.managed))
+        em.add_field(name='Mentionable', value=str(role.mentionable))
+        em.add_field(name='People in this role', value=str(len(role.members)))
+
+        pages = []
+        pages.append(em)
+
+        em2 = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
+        em2.title=role.name
+        em2.add_field(name='Permissions', value=perms)
+
+        pages.append(em2)
+
+        p_session = PaginatorSession(ctx, footer='Created At: {str(role.created_at.__format__(\'%A, %B %d, %Y\'))}', pages=pages)
+        await p_session.run()
 
 def setup(bot):
     bot.add_cog(Info(bot))
