@@ -37,8 +37,8 @@ class Pokedex:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
-    async def random(self, ctx):
+    @commands.command(aliases=['prandom', 'pokemonrandom'])
+    async def pokerandom(self, ctx):
         '''Get stats about a random pokemon.'''
         await ctx.trigger_typing()
         num = random.randint(1, 721)
@@ -113,8 +113,8 @@ class Pokedex:
         p_session = PaginatorSession(ctx, pages=pages)
         await p_session.run()
 
-    @commands.command()
-    async def info(self, ctx, pokemon):
+    @commands.command(aliases=['pinfo', 'pokemoninfo'])
+    async def pokeinfo(self, ctx, pokemon):
         '''Get stats about a pokemon. You can specify either its pokedex number or name.'''
         await ctx.trigger_typing()
         pages = []
@@ -193,8 +193,8 @@ class Pokedex:
             await ctx.send("That is not a valid pokemon name or pokedex number. Please check your spelling or note that no Gen 7 pokemon are included in pokeapi.")
             await ctx.send(e)
 
-    @commands.command()
-    async def move(self, ctx, *, move):
+    @commands.command(aliases=['pmove', 'pokemonmove'])
+    async def pokemove(self, ctx, *, move):
         '''Get information about a pokemon move.
         Accepts name of the move or its pokeapi.co ID.'''
         await ctx.trigger_typing()
@@ -224,8 +224,8 @@ class Pokedex:
             await ctx.send("That is not a valid move name or ID. Please check your spelling or note that no Gen 7 moves are included in pokeapi.")
             await ctx.send(e)
 
-    @commands.command()
-    async def fusion(self, ctx):
+    @commands.command(alises=['pfusion', 'pokemonfusion'])
+    async def pokefusion(self, ctx):
         '''Get a pokemon fusion.'''
         async with aiohttp.ClientSession() as session:
             async with session.get('http://pokemon.alexonsager.net/') as resp:
