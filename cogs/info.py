@@ -88,8 +88,7 @@ class Info:
         try:
             role = discord.utils.get(ctx.message.guild.roles, name=rolename)
         except Exception as e:
-            await ctx.send(e)
-            return await ctx.send("Role could not be found.")
+            return await ctx.send(f"Role could not be found. {e}")
 
         em = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
         em.title=role.name
@@ -172,7 +171,7 @@ class Info:
 
         pages.append(em2)
 
-        p_session = PaginatorSession(ctx, footer='Created At: {str(role.created_at.__format__(\'%A, %B %d, %Y\'))}', pages=pages)
+        p_session = PaginatorSession(ctx, footer=f'Created At: {str(role.created_at.__format__('%A, %B %d, %Y'))}', pages=pages)
         await p_session.run()
 
 def setup(bot):
