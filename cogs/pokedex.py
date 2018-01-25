@@ -76,7 +76,10 @@ class Pokedex:
                 else:
                     em.add_field(name="Types", value=types)
                 for i in range(len(data['stats'])):
-                    em.add_field(name=data['stats'][i]['stat']['name'].title().replace('-', ' '), value=data['stats'][i]['base_stat'])
+                    name = data['stats'][i]['stat']['name'].title().replace('-', ' ')
+                    if name == "Hp":
+                        name = "HP"
+                    em.add_field(name=name, value=data['stats'][i]['base_stat'])
 
         async with aiohttp.ClientSession() as session:
             async with session.get('https://pokeapi.co/api/v2/pokedex/national/') as resp:
@@ -97,10 +100,16 @@ class Pokedex:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
                 moves = ""
+                tooMany = False
                 for i in range(len(data['moves'])):
                     if not i == 0:
                         moves += ", "
-                    moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                    if len(moves) < 1024:
+                        moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                    else:
+                        tooMany = True
+        if tooMany:
+            moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
         em = discord.Embed(color=discord.Color.green())
         em.add_field(name="Learnable Moves", value=moves)
         em.set_thumbnail(url=data['sprites']['back_default'])
@@ -143,7 +152,11 @@ class Pokedex:
                     else:
                         em.add_field(name="Types", value=types)
                     for i in range(len(data['stats'])):
-                        em.add_field(name=data['stats'][i]['stat']['name'].title().replace('-', ' '), value=data['stats'][i]['base_stat'])
+                        name = data['stats'][i]['stat']['name'].title().replace('-', ' ')
+                        if name == "Hp":
+                            name = "HP"
+                        em.add_field(name=name, value=data['stats'][i]['base_stat'])
+                        
             async with aiohttp.ClientSession() as session:
                 async with session.get('https://pokeapi.co/api/v2/pokedex/national/') as resp:
                     data = await resp.json()
@@ -163,11 +176,18 @@ class Pokedex:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
                     moves = ""
+                    tooMany = False
                     for i in range(len(data['moves'])):
                         if not i == 0:
                             moves += ", "
-                        moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                        if len(moves) < 1024:
+                            moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
+                        else:
+                            tooMany = True
+            if tooMany:
+                moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
             em = discord.Embed(color=discord.Color.green())
+
             em.add_field(name="Learnable Moves", value=moves)
             em.set_thumbnail(url=data['sprites']['back_default'])
             pages.append(em)
