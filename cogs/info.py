@@ -87,8 +87,8 @@ class Info:
         '''Get information about a role.'''
         try:
             role = discord.utils.get(ctx.message.guild.roles, name=rolename)
-        except Exception as e:
-            return await ctx.send(f"Role could not be found. {e}")
+        except:
+            return await ctx.send(f"Role could not be found. The system IS case sensitive!")
 
         em = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
         em.title=role.name
