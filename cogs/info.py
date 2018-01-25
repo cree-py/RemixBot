@@ -83,10 +83,11 @@ class Info:
 
     @commands.command(aliases=['role'])
     @commands.guild_only()
-    async def roleinfo(self, ctx, rolename):
+    async def roleinfo(self, ctx, *, rolename):
         try:
             role = discord.utils.get(message.guild.roles, name="RemixBot Devs")
-        except:
+        except Exception as e:
+            await ctx.send(e)
             return await ctx.send("Role could not be found.")
 
         em = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
