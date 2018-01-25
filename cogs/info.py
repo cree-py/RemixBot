@@ -84,8 +84,9 @@ class Info:
     @commands.command(aliases=['role'])
     @commands.guild_only()
     async def roleinfo(self, ctx, *, rolename):
+        '''Get information about a role.'''
         try:
-            role = discord.utils.get(message.guild.roles, name="RemixBot Devs")
+            role = discord.utils.get(ctx.message.guild.roles, name=rolename)
         except Exception as e:
             await ctx.send(e)
             return await ctx.send("Role could not be found.")
