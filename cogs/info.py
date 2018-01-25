@@ -171,7 +171,9 @@ class Info:
 
         pages.append(em2)
 
-        p_session = PaginatorSession(ctx, footer=f'Created At: {str(role.created_at.__format__('%A, %B %d, %Y'))}', pages=pages)
+        thing = str(role.created_at.__format__('%A, %B %d, %Y'))
+
+        p_session = PaginatorSession(ctx, footer=f'Created At: {thing}', pages=pages)
         await p_session.run()
 
 def setup(bot):
