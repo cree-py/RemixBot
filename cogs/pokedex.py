@@ -107,10 +107,10 @@ class Pokedex:
         em.set_thumbnail(url=data['sprites']['back_default'])
         pages.append(em)
 
-        em = discord.Embed(color=discord.Color.green())
-        em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-        em.title=name.title()
-        pages.append(em)
+        em2 = discord.Embed(color=discord.Color.green())
+        em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
+        em2.title=name.title()
+        pages.append(em2)
 
         p_session = PaginatorSession(ctx, pages=pages)
         await p_session.run()
@@ -189,10 +189,10 @@ class Pokedex:
             em.set_thumbnail(url=data['sprites']['back_default'])
             pages.append(em)
 
-            em = discord.Embed(color=discord.Color.green())
-            em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-            em.title=name.title()
-            pages.append(em)
+            em2 = discord.Embed(color=discord.Color.green())
+            em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
+            em2.title=name.title()
+            pages.append(em2)
 
             p_session = PaginatorSession(ctx, pages=pages)
             await p_session.run()
