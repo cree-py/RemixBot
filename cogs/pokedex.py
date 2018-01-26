@@ -42,7 +42,7 @@ class Pokedex:
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
-                name = data['name']
+                pokemonname = data['name']
                 id = data['id']
                 em = discord.Embed(color=discord.Color.green())
                 em.title = data['name'].title()
@@ -107,10 +107,10 @@ class Pokedex:
         em.set_thumbnail(url=data['sprites']['back_default'])
         pages.append(em)
 
-        em2 = discord.Embed(color=discord.Color.green())
-        em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-        em2.title=name.title()
-        await ctx.send(embed=em2)
+        em = discord.Embed(color=discord.Color.green())
+        em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{pokemonname}.gif')
+        em.title=pokemonname.title()
+        pages.append(em)
 
         p_session = PaginatorSession(ctx, pages=pages)
         await p_session.run()
@@ -125,6 +125,7 @@ class Pokedex:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
                     id = data['id']
+                    pokemonname = data['name']
                     em = discord.Embed(color=discord.Color.green())
                     em.title = data['name'].title()
                     em.set_thumbnail(url=data['sprites']['front_default'])
@@ -189,10 +190,10 @@ class Pokedex:
             em.set_thumbnail(url=data['sprites']['back_default'])
             pages.append(em)
 
-            em2 = discord.Embed(color=discord.Color.green())
-            em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-            em2.title=name.title()
-            await ctx.send(embed=em2)
+            em = discord.Embed(color=discord.Color.green())
+            em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{pokemonname}.gif')
+            em.title=pokemonname.title()
+            pages.append(em)
 
             p_session = PaginatorSession(ctx, pages=pages)
             await p_session.run()
