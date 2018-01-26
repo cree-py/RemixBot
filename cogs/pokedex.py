@@ -298,6 +298,41 @@ class Pokedex:
 
         await ctx.send(embed=em)
 
+    @commands.command(aliases=['pitem', 'pokemonitem'])
+    async def pokeitem(self, ctx, item=None):
+        if item is None:
+            return await ctx.send("Please tell me what item you want information about!")
+
+        item = item.lower()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://pokeapi.co/api/v2/item/{item}') as resp:
+                data = await resp.json()
+
+        em = discord.Embed(color=discord.Color.green())
+
+        name = data['name']
+        cost = int(data['cost']) or "N/A"
+
+        for i in range(len(data['flavor_text_entries'])):
+            if data['flavor_text_entries'][i]['language']['name'] == "en":
+                description = data['flavor_text_entries'][i]['text']
+                break
+            else:
+                pass
+        em.description = description
+
+        name = name.replace('-', ' ')
+        name = name.title()
+        em.title = name
+
+        category = data['category']['name']
+        category = category.replace('-', ' ')
+        category = category.title()
+        em.add_field(name="Category", value=category)
+
+        em.add_field(name="Cost", value=str(cost))
+
+        await ctx.send(embed=em)
 
 def setup(bot):
     bot.add_cog(Pokedex(bot))
