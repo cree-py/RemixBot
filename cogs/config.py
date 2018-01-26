@@ -34,22 +34,17 @@ class Config:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('./data/auths.json') as f:
-            auth = json.load(f)
-            mongo_uri = auth.get('MONGODB')
-        mongo = AsyncIOMotorClient(mongo_uri)
-        self.db = mongo.RemixBot
 
     @commands.command()
     @commands.has_permissions(manage_guild=True)
     async def prefix(self, ctx, *, pre):
         '''Set a custom prefix for the guild.'''
-        result = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        result = await self.bot.db.config.find_one({'_id': str(ctx.guild.id)})
         if not result:
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': {'_id': str(ctx.guild.id), 'prefix': str(pre)}})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': {'_id': str(ctx.guild.id), 'prefix': str(pre)}})
             return ctx.send(f'The guild prefix has been set to `{pre}` Use `{pre}prefix <prefix>` to change it again.')
         result['prefix'] = str(pre)
-        await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': result})
+        await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': result})
         await ctx.send(f'The guild prefix has been set to `{pre}` Use `{pre}prefix <prefix>` to change it again.')
 
     @commands.command(aliases=['setwelcome', 'welcomemsg', 'joinmessage', 'welcomeset'], no_pm=True)
@@ -59,13 +54,13 @@ class Config:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        config = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(ctx.guild.id)})
         if not config:
             config = {'_id': str(ctx.guild.id), 'welctype': False}
 
         if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
             config['welctype'] = False
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send('Welcome messages disabled for this guild.')
         else:
             config['welctype'] = True
@@ -78,7 +73,7 @@ class Config:
             await ctx.send('What do you want the message to be?\nUsage:```\n{mention}: Mentions the joining user.\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
             msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
             config['welc'] = str(msg.content).replace('"', '\"')
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send('Your welcome message has been successfully set.')
 
     @commands.command(aliases=['setleave', 'leavemsg', 'leavemessage', 'leaveset'], no_pm=True)
@@ -88,13 +83,13 @@ class Config:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        config = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(ctx.guild.id)})
         if not config:
             config = {'_id': str(ctx.guild.id), 'leavetype': False}
 
         if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
             config['leavetype'] = False
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send('Leave messages disabled for this guild.')
         else:
             config['leavetype'] = True
@@ -107,7 +102,7 @@ class Config:
             await ctx.send('What do you want the message to be?\nUsage:```\n{name}: Replaces this with the user\'s name.\n{server}: Server name.\n{membercount}: Returns the number of members in the guild.\n```')
             msg = await self.bot.wait_for('message', check=pred, timeout=60.0)
             config['leave'] = str(msg.content).replace('"', '\"')
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send('Your leave message has been successfully set.')
 
     @commands.command(aliases=['mod-log'])
@@ -117,13 +112,13 @@ class Config:
         def pred(m):
             return m.author == ctx.author and m.channel == ctx.message.channel
 
-        config = await self.db.config.find_one({'_id': str(ctx.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(ctx.guild.id)})
         if not config:
             config = {'_id': str(ctx.guild.id), 'logtype': False}
 
         if type.lower() in ('n', 'no', 'disabled', 'disable', 'off'):
             config['logtype'] = False
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send('Mod-logs are disabled for this guild.')
         else:
             config['logtype'] = True
@@ -133,13 +128,13 @@ class Config:
             if id == channel.content:
                 return await ctx.send('Please mention a channel.')
             config['logchannel'] = str(id)
-            await self.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
+            await self.bot.db.config.update({'_id': str(ctx.guild.id)}, {'$set': config})
             await ctx.send(f'Mod-logs have been successfully set in <#{id}>')
 
     # ------------Welcome and leave----------------
 
     async def on_member_join(self, m):
-        config = await self.db.config.find_one({'_id': str(m.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(m.guild.id)})
         if not config:
             return
         try:
@@ -165,7 +160,7 @@ class Config:
                 success = True
 
     async def on_member_remove(self, m):
-        config = await self.db.config.find_one({'_id': str(m.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(m.guild.id)})
         if not config:
             return
         try:
@@ -193,7 +188,7 @@ class Config:
     # ------------Mod-log events below-------------
 
     async def logtype(self, item):
-        config = await self.db.config.find_one({'_id': str(item.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(item.guild.id)})
         if not config:
             return
         try:
@@ -206,7 +201,7 @@ class Config:
             return False
 
     async def logchannel(self, item):
-        config = await self.db.config.find_one({'_id': str(item.guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(item.guild.id)})
         if not config:
             return
         try:
@@ -257,7 +252,7 @@ class Config:
         await channel.send(embed=em)
 
     async def on_member_unban(self, guild, user):
-        config = await self.db.config.find_one({'_id': str(guild.id)})
+        config = await self.bot.db.config.find_one({'_id': str(guild.id)})
         if not config:
             return
         try:
