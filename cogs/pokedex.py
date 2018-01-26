@@ -257,7 +257,8 @@ class Pokedex:
 
         em = discord.Embed(color=discord.Color.green())
         em.title = data['name'].title()
-        em.set_thumbnail(url=f'https://raw.githubusercontent.com/cree-py/remixweb/master/assets/{type}.png')
+        ptypename = data['name']
+        em.set_thumbnail(url=f'https://raw.githubusercontent.com/cree-py/remixweb/master/assets/{ptypename}.png')
 
         if data['damage_relations']['half_damage_from']:
             halfdamagefrom = ""
