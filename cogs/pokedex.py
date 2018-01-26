@@ -42,6 +42,7 @@ class Pokedex:
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
+                name = data['name']
                 id = data['id']
                 em = discord.Embed(color=discord.Color.green())
                 em.title = data['name'].title()
@@ -104,6 +105,11 @@ class Pokedex:
         em = discord.Embed(color=discord.Color.green())
         em.add_field(name="Learnable Moves", value=moves)
         em.set_thumbnail(url=data['sprites']['back_default'])
+        pages.append(em)
+
+        em = discord.Embed(color=discord.Color.green())
+        em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
+        em.title=name.title()
         pages.append(em)
 
         p_session = PaginatorSession(ctx, pages=pages)
@@ -181,6 +187,11 @@ class Pokedex:
 
             em.add_field(name="Learnable Moves", value=moves)
             em.set_thumbnail(url=data['sprites']['back_default'])
+            pages.append(em)
+
+            em = discord.Embed(color=discord.Color.green())
+            em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
+            em.title=name.title()
             pages.append(em)
 
             p_session = PaginatorSession(ctx, pages=pages)
