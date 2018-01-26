@@ -99,38 +99,6 @@ class Pokedex:
                 em.add_field(name="Egg Group", value=str(egg))
                 evochain = data['evolution_chain']['url']
 
-        async with aiohttp.ClientSession() as session:
-            async with session.get(evochain) as resp:
-                data = await resp.json()
-                evolution = data['chain']['species']['name'] + " -> "
-                if data['chain']['evolves_to']:
-                    j = 1
-                    for i in range(len(data['chain']['evolves_to'])):
-                        evolution += data['chain']['evolves_to'][i]['species']['name']
-                        if j == len(data['chain']['evolves_to']):
-                            evolution += " -> "
-                        else:
-                            evolution += " | "
-                        j += 1
-                    hasthird = False
-                    for l in range(length(data['chain']['evolves_to'])):
-                        if data['chain']['evolves_to'][i]['evolves_to']:
-                            hasThird = True
-                            break
-                        else:
-                            hasThird = False
-                    if hasThird:
-                        k = 1
-                        for i in range(len(data['chain']['evolves_to'])):
-                            for j in range(len(data['chain']['evolves_to'][i]['evolves_to'])):
-                                evolution += data['chain']['evolves_to'][i]['evolves_to'][j]['species']['name']
-                                if k == len(data['chain']['evolves_to'][i]['evolves_to']):
-                                    evolution += " -> "
-                                else:
-                                    evolution += " | "
-                else:
-                    evolution = evolution.strip(" -> ")
-                em.add_field(name="Evolution Chain", value=evolution)
 
 
         pages.append(em)
