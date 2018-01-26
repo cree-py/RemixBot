@@ -110,7 +110,7 @@ class Pokedex:
         em2 = discord.Embed(color=discord.Color.green())
         em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
         em2.title=name.title()
-        pages.append(em2)
+        await ctx.send(embed=em2)
 
         p_session = PaginatorSession(ctx, pages=pages)
         await p_session.run()
@@ -192,7 +192,7 @@ class Pokedex:
             em2 = discord.Embed(color=discord.Color.green())
             em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
             em2.title=name.title()
-            pages.append(em2)
+            await ctx.send(embed=em2)
 
             p_session = PaginatorSession(ctx, pages=pages)
             await p_session.run()
