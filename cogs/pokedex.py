@@ -249,14 +249,11 @@ class Pokedex:
         '''Get information about a type.'''
         if ptype is None:
             return await ctx.send("Specify a type to get information about!")
-        else:
-            ptype = ptype.lower()
-            try:
-                async with aiohttp.ClientSession() as session:
-                    async with session.get(f'https://pokeapi.co/api/v2/type/{ptype}') as resp:
-                        data = await resp.json()
-            except:
-                return await ctx.send("Type could not be found.")
+
+        ptype = ptype.lower()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://pokeapi.co/api/v2/type/{ptype}') as resp:
+                data = await resp.json()
 
         em = discord.Embed(color=discord.Color.green())
         em.title = data['name'].title()
