@@ -268,13 +268,13 @@ class Pokedex:
         if data['damage_relations']['double_damage_from']:
             doubledamagefrom = ""
             for i in range(len(data['damage_relations']['double_damage_from'])):
-                halfdamage += data['damage_relations']['double_damage_from'][i]['name'].title() + '\n'
+                doubledamagefrom += data['damage_relations']['double_damage_from'][i]['name'].title() + '\n'
             em.add_field(name="Double Damage From", value=doubledamagefrom)
 
         if data['damage_relations']['no_damage_from']:
             nodamagefrom = ""
             for i in range(len(data['damage_relations']['no_damage_from'])):
-                halfdamage += data['damage_relations']['no_damage_from'][i]['name'].title() + '\n'
+                nodamagefrom += data['damage_relations']['no_damage_from'][i]['name'].title() + '\n'
             em.add_field(name="No Damage From", value=nodamagefrom)
 
         if data['damage_relations']['half_damage_to']:
