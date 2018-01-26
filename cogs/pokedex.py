@@ -299,11 +299,11 @@ class Pokedex:
         await ctx.send(embed=em)
 
     @commands.command(aliases=['pitem', 'pokemonitem'])
-    async def pokeitem(self, ctx, item=None):
+    async def pokeitem(self, ctx, *, item=None):
         if item is None:
             return await ctx.send("Please tell me what item you want information about!")
 
-        item = item.lower()
+        item = item.replace(' ', '-').lower()
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://pokeapi.co/api/v2/item/{item}') as resp:
                 data = await resp.json()
@@ -331,6 +331,8 @@ class Pokedex:
         em.add_field(name="Category", value=category)
 
         em.add_field(name="Cost", value=str(cost))
+
+        em.set_thumbnail(url=f"https://raw.githubusercontent.com/110Percent/beheeyem-data/master/sprites/items/{item}.png")
 
         await ctx.send(embed=em)
 
