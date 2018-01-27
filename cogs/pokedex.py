@@ -332,7 +332,10 @@ class Pokedex:
 
         em.add_field(name="Cost", value=str(cost))
 
-        em.set_thumbnail(url=f"https://raw.githubusercontent.com/110Percent/beheeyem-data/master/sprites/items/{item}.png")
+        name = name.replace(' ', '-')
+        name = name.lower()
+
+        em.set_thumbnail(url=f"https://raw.githubusercontent.com/110Percent/beheeyem-data/master/sprites/items/{name}.png")
 
         await ctx.send(embed=em)
 
