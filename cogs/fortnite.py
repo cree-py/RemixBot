@@ -26,6 +26,7 @@ import discord
 from discord.ext import commands
 import pynite
 from ext.paginator import PaginatorSession
+import json
 
 class Fortnite:
     '''Base class for Fortnite commands.'''
