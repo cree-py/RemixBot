@@ -65,7 +65,7 @@ class Fortnite:
         await self.save_info(str(ctx.author.id), plat, name)
         await ctx.send(f'Your information (Platform: {plat} | Name: {name}) has been successfully saved.')
         
-    @commands.command(aliases['fprofile', 'fortniteprofile']):
+    @commands.command(aliases=['fprofile', 'fortniteprofile']):
     async def fnprofile(self, ctx, plat=None, name=None):
         '''Get your fortnite stats.'''
         await ctx.trigger_typing()
