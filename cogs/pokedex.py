@@ -339,5 +339,27 @@ class Pokedex:
 
         await ctx.send(embed=em)
 
+    @commands.command(aliases=['pability', 'pokemonability'])
+    async def pokeability(self, ctx, ability=None):
+        if ability is None:
+            return await ctx.send("Please tell me what item you want information about!")
+        ability = ability.replace(' ', '-').lower()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://pokeapi.co/api/v2/ability/{ability}') as resp:
+                data = await resp.json()
+
+        em = discord.Embed(color=discord.Color.green())
+        name = data['name'].replace('-', ' ').title()
+
+        for i in range(len(data['flavor_text_entries'])):
+            if data['flavor_text_entries'][i]['language']['name'] == "en":
+                description = data['flavor_text_entries'][i]['flavor_text']
+                break
+            else:
+                pass
+        em.description = description
+        em.title = name
+        await ctx.send(embed=em)
+
 def setup(bot):
     bot.add_cog(Pokedex(bot))
