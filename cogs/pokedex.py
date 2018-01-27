@@ -110,14 +110,8 @@ class Pokedex:
 
         em = discord.Embed(color=discord.Color.green())
 
-
-<< << << < HEAD
-        em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-        em.title = name.title()
-== == == =
         em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{pokemonname}.gif')
         em.title = pokemonname.title()
->>>>>> > cf82649b632ff49d6e8f821eefe0a4cc59a21d00
         pages.append(em)
 
         p_session = PaginatorSession(ctx, pages=pages)
@@ -362,6 +356,7 @@ class Pokedex:
         em.description = description
         em.title = name
         await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Pokedex(bot))
