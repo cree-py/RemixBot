@@ -108,7 +108,7 @@ class Fortnite:
 
         if hasSolos:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle
+            em.title = player.epicUserHandle + '- Solos'
             em.description = f'Platform: {player.platformNameLong}'
             em.add_field(name="Victory Royales", value=solos.top1.value)
             em.add_field(name='Top 10', value=solos.top10.value)
@@ -129,7 +129,7 @@ class Fortnite:
 
         if hasDuos:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle
+            em.title = player.epicUserHandle + '- Duos'
             em.description = f'Platform: {player.platformNameLong}'
             em.add_field(name="Victory Royales", value=duos.top1.value)
             em.add_field(name='Top 5', value=duos.top5.value)
@@ -150,7 +150,7 @@ class Fortnite:
 
         if hasSquads:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle
+            em.title = player.epicUserHandle + '- Squads'
             em.description = f'Platform: {player.platformNameLong}'
             em.add_field(name="Victory Royales", value=squads.top1.value)
             em.add_field(name='Top 3', value=squads.top3.value)
