@@ -175,3 +175,5 @@ class Fortnite:
         p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by pynite', pages=pages)
         await p_session.run()
 
+def setup(bot):
+    bot.add_cog(Fortnite(bot))
