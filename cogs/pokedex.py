@@ -340,7 +340,7 @@ class Pokedex:
         await ctx.send(embed=em)
 
     @commands.command(aliases=['pability', 'pokemonability'])
-    async def pokeability(self, ctx, ability=None):
+    async def pokeability(self, ctx, *, ability=None):
         if ability is None:
             return await ctx.send("Please tell me what item you want information about!")
         ability = ability.replace(' ', '-').lower()
