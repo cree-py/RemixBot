@@ -69,7 +69,7 @@ class Fortnite:
     async def fnprofile(self, ctx, plat=None, name=None):
         '''Get your fortnite stats.'''
         await ctx.trigger_typing()
-        if not plat and name:
+        if not plat and not name:
             # connect to db
             try:
                 plat = await self.get_plat(str(ctx.author.id))
@@ -77,7 +77,7 @@ class Fortnite:
             except Exception as e:
                 return await ctx.send(e)
         else:
-            if not plat or name:
+            if not plat or not name:
                 return await ctx.send("Please specify a username as well as the platform.")
 
         hasSolos = True
