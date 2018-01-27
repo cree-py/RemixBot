@@ -92,25 +92,22 @@ class Pokedex:
             async with session.get(f'https://pokeapi.co/api/v2/pokemon/{num}/') as resp:
                 data = await resp.json()
                 moves = ""
-                tooMany = False
                 for i in range(len(data['moves'])):
                     if not i == 0:
                         moves += ", "
                     if len(moves) < 1024:
                         moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
                     else:
-                        tooMany = True
-        if tooMany:
-            moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
+                        moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
         em = discord.Embed(color=discord.Color.green())
         em.add_field(name="Learnable Moves", value=moves)
         em.set_thumbnail(url=data['sprites']['back_default'])
         pages.append(em)
 
-        em2 = discord.Embed(color=discord.Color.green())
-        em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-        em2.title=name.title()
-        pages.append(em2)
+        em = discord.Embed(color=discord.Color.green())
+        em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
+        em.title = name.title()
+        pages.append(em)
 
         p_session = PaginatorSession(ctx, pages=pages)
         await p_session.run()
@@ -153,7 +150,7 @@ class Pokedex:
                         if name == "Hp":
                             name = "HP"
                         em.add_field(name=name, value=data['stats'][i]['base_stat'])
-                        
+
             async with aiohttp.ClientSession() as session:
                 async with session.get('https://pokeapi.co/api/v2/pokedex/national/') as resp:
                     data = await resp.json()
@@ -165,34 +162,29 @@ class Pokedex:
                         if data['flavor_text_entries'][i]['language']['name'] == "en":
                             description = data['flavor_text_entries'][i]['flavor_text']
                             break
-                        else:
-                            pass
                     em.description = description
             pages.append(em)
             async with aiohttp.ClientSession() as session:
                 async with session.get(f'https://pokeapi.co/api/v2/pokemon/{pokemon}/') as resp:
                     data = await resp.json()
                     moves = ""
-                    tooMany = False
                     for i in range(len(data['moves'])):
                         if not i == 0:
                             moves += ", "
                         if len(moves) < 1024:
                             moves += data['moves'][i]['move']['name'].title().replace('-', ' ')
                         else:
-                            tooMany = True
-            if tooMany:
-                moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
+                            moves = "Sorry, this pokemon knows too many moves to be displayed within this embed."
             em = discord.Embed(color=discord.Color.green())
 
             em.add_field(name="Learnable Moves", value=moves)
             em.set_thumbnail(url=data['sprites']['back_default'])
             pages.append(em)
 
-            em2 = discord.Embed(color=discord.Color.green())
-            em2.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
-            em2.title=name.title()
-            pages.append(em2)
+            em = discord.Embed(color=discord.Color.green())
+            em.set_image(url=f'https://raw.githubusercontent.com/110Percent/beheeyem-data/master/gifs/{name}.gif')
+            em.title = name.title()
+            pages.append(em)
 
             p_session = PaginatorSession(ctx, pages=pages)
             await p_session.run()

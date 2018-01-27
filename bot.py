@@ -434,6 +434,7 @@ async def reload(ctx, cog):
 @utils.developer()
 async def update(ctx):
     """Pulls from github and updates bot"""
+    await ctx.trigger_typing()
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
     for cog in extensions:
         bot.unload_extension(f'{path}{cog}')
