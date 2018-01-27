@@ -275,6 +275,8 @@ class Utility:
     @math.command(aliases=['^', '**'])
     async def power(self, ctx, a: int, b: int):
         '''Raise A to the power of B'''
+        if a > 100 or b > 100:
+            return await ctx.send("Numbers are too large.")
         em = discord.Embed(color=discord.Color.green())
         em.title = "Result"
         em.description = f'❓ Problem: `{a}^{b}`\n✅ Solution: `{a ** b}`'
