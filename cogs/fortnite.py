@@ -69,7 +69,7 @@ class Fortnite:
     async def fnprofile(self, ctx, plat=None, name=None):
         '''Get your fortnite stats.'''
         await ctx.trigger_typing()
-        if not plat and not name:
+        if plat is None and name is None:
             # connect to db
             try:
                 plat = await self.get_plat(str(ctx.author.id))
@@ -77,7 +77,7 @@ class Fortnite:
             except Exception as e:
                 return await ctx.send(e)
         else:
-            if not plat or not name:
+            if plat is None or name is None:
                 return await ctx.send("Please specify a username as well as the platform.")
 
         hasSolos = True
@@ -86,19 +86,19 @@ class Fortnite:
 
         try:
             player = await self.client.get_player(plat, name)
-        except pynite.errors.NotFound as e:
+        except Exception as e:
             return await ctx.send(f'Error {e.code}: {e.error}')
         try:
             solos = await player.get_solos()
-        except pynite.errors.NoGames as e:
+        except Exception as e:
             hasSolos = False
         try:
             duos = await player.get_duos()
-        except pynite.errors.NoGames as e:
+        except Exception as e:
             hasDuos = False
         try:
             squads = await player.get_squads()
-        except pynite.errors.NoGames as e:
+        except Exception as e:
             hasSquads = False
 
         pages = []
