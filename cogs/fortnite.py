@@ -53,15 +53,12 @@ class Fortnite:
         await self.bot.db.fortnite.update_one({'_id': userid}, {'$set': {'_id': userid, 'platform': plat, 'name': name}}, upsert=True)
 
     @commands.command(aliases=['fsave', 'fortnitesave'])
-    async def fnsave(self, ctx, plat=None, name=None):
-        ''' Save your fortnite information.'''
-        if plat is None:
-            return await ctx.send("Usage: `-fnsave [psn|pc|xbl] [username]`")
+    async def fnsave(self, ctx, plat, name):
+        ''' Save your fortnite information.
+        Usage: {p}fnsave <pc|psn|xbl> <username>'''
         plat = plat.lower()
-        if plat not in ['psn', 'pc', 'xbl']:
+        if plat not in ('psn', 'pc', 'xbl'):
             return await ctx.send("Invalid platform. Accepted platforms: `xbl, psn, pc`")
-        if name is None:
-            return await ctx.send("You must provide a username to save.")
 
         await self.save_info(str(ctx.author.id), plat, name)
         await ctx.send(f'Your information (Platform: {plat} | Name: {name}) has been successfully saved.')
@@ -70,28 +67,16 @@ class Fortnite:
     async def fnprofile(self, ctx, plat=None, name=None):
         '''Get your fortnite stats.'''
         await ctx.trigger_typing()
-        if plat is None:
-            if name is None:
-                # connect to db
-                try:
-                    plat = await self.get_plat(str(ctx.author.id))
-                    name = await self.get_name(str(ctx.author.id))
-                except Exception as e:
-                    return await ctx.send(e)
-                if plat is None:
-                    return await ctx.send("Please specify a platform and username.")
-                else:
-                    if name is None:
-                        return await ctx.send("Please specify a platform and username.")
-                    else:
-                        pass # Connected to DB and everything works
-            else:
-                return # shouldn't happen
+        if not plat and name:
+            # connect to db
+            try:
+                plat = await self.get_plat(str(ctx.author.id))
+                name = await self.get_name(str(ctx.author.id))
+            except Exception as e:
+                return await ctx.send(e)
         else:
-            if name is None:
+            if not plat or name:
                 return await ctx.send("Please specify a username as well as the platform.")
-            else:
-                pass
 
         hasSolos = True
         hasDuos = True
@@ -99,7 +84,7 @@ class Fortnite:
 
         try:
             player = await self.client.get_player(platform, name)
-        except (NotFound, NoKeyError) as e:
+        except pynite.errors.NotFound as e:
             return await ctx.send(f'Error {e.code}: {e.error}')
         try:
             solos = await player.get_solos()
@@ -117,26 +102,24 @@ class Fortnite:
         pages = []
 
         if hasSolos:
-            solos = await player.get_solos()
-            em1 = discord.Embed(color=discord.Color.green())
-            em1.title = player.epicUserHandle
-            em1.description = f'Platform: {player.platformNameLong}'
-            em1.add_field(name="TRN Rating", value=solos.trn_rating.display_value)
-            em1.add_field(name="Score", value=solos.score.display_value)
-            em1.add_field(name="Victory Royales", value=solos.top1.display_value)
-            em1.add_field(name="K/D", value=solos.kd.display_value)
-            em1.add_field(name="Matches Played", value=solos.matches.display_value)
-            em1.add_field(name="Kills", value=solos.kills.display_value)
-            em1.add_field(name="Minutes Played", value=solos.minutes_played.display_value)
-            em1.add_field(name="Kills per Minute", value=solos.kpm.display_value)
-            em1.add_field(name="Kills per Match", value=solos.kpg.display_value)
-            em1.add_field(name="Average Match Time", value=solos.avg_time_played.display_value)
-            em1.add_field(name="Score per Match", value=solos.score_per_match.display_value)
-            em1.add_field(name="Score per Minute", value=solos.score_per_minute.display_value)
-            pages.append(em1)
+            em = discord.Embed(color=discord.Color.green())
+            em.title = player.epicUserHandle
+            em.description = f'Platform: {player.platformNameLong}'
+            em.add_field(name="Victory Royales", value=solos.top1.display_value)
+            em.add_field(name='Top 10', value=solos.top10.value)
+            em.add_field(name='Top 25', value=solos.top25.value)
+            em.add_field(name="Score", value=solos.score.value)
+            em.add_field(name="TRN Rating", value=duos.trn_rating.display_value)
+            em.add_field(name="K/D", value=solos.kd.value)
+            em.add_field(name="Matches Played", value=solos.matches.value)
+            em.add_field(name="Kills", value=solos.kills.value)
+            em.add_field(name="Minutes Played", value=solos.minutes_played.display_value)
+            em.add_field(name="Kills per Minute", value=solos.kpm.value)
+            em.add_field(name="Kills per Match", value=solos.kpg.value)
+            em.add_field(name="Average Match Time", value=solos.avg_time_played.display_value)
+            pages.append(em)
 
         if hasDuos:
-            duos = await player.get_duos()
             em2 = discord.Embed(color=discord.Color.green())
             em2.title = player.epicUserHandle
             em2.description = f'Platform: {player.platformNameLong}'
@@ -155,7 +138,6 @@ class Fortnite:
             pages.append(em2)
 
         if hasSquads:
-            squads = await player.get_squads()
             em3 = discord.Embed(color=discord.Color.green())
             em3.title = player.epicUserHandle
             em3.description = f'Platform: {player.platformNameLong}'
