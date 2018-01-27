@@ -98,7 +98,7 @@ class Fortnite:
 
         try:
             player = await self.client.get_player(platform, name)
-        except NotFound, NoKeyError as e:
+        except (NotFound, NoKeyError) as e:
             return await ctx.send(f'Error {e.code}: {e.error}')
         try:
             solos = await player.get_solos()
