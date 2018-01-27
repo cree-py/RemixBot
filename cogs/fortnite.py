@@ -80,6 +80,9 @@ class Fortnite:
             if plat is None or name is None:
                 return await ctx.send("Please specify a username as well as the platform.")
 
+        if plat not in ['psn', 'xbl', 'pc']:
+            return await ctx.send("Invalid platform.")
+
         hasSolos = True
         hasDuos = True
         hasSquads = True
