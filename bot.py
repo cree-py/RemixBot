@@ -424,7 +424,7 @@ async def reload(ctx, cog):
     try:
         bot.unload_extension(f"cogs.{cog}")
         await asyncio.sleep(1)
-        bot.load_extension(f"cogs.{cog}")
+        load_extension(cog)
         await ctx.send(f"Reloaded the {cog} cog successfully :white_check_mark:")
     except Exception as e:
         await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
@@ -438,7 +438,7 @@ async def update(ctx):
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
     for cog in extensions:
         bot.unload_extension(f'{path}{cog}')
-        bot.load_extension(f'{path}{cog}')
+    load_extensions(extensions)
     await ctx.send('All cogs reloaded :white_check_mark:')
 
 
