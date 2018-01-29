@@ -42,13 +42,13 @@ class Fortnite:
     async def get_name(self, userid):
         result = await self.bot.db.fortnite.find_one({'_id': userid})
         if not result:
-            return 'None'
+            return None
         return result['name']
 
     async def get_plat(self, userid):
         result = await self.bot.db.fortnite.find_one({'_id': userid})
         if not result:
-            return 'None'
+            return None
         return result['platform']
 
     async def save_info(self, userid, plat, name):
@@ -71,11 +71,10 @@ class Fortnite:
         await ctx.trigger_typing()
         if plat is None and name is None:
             # connect to db
-            try:
-                plat = await self.get_plat(str(ctx.author.id))
-                name = await self.get_name(str(ctx.author.id))
-            except Exception as e:
-                return await ctx.send(e)
+            plat = await self.get_plat(str(ctx.author.id))
+            name = await self.get_name(str(ctx.author.id))
+            if plat is None or name is None:
+                return await ctx.send(f'Use `{ctx.prefix}fnsave <plat> <name>` to save a profile.')
         else:
             if plat is None or name is None:
                 return await ctx.send("Please specify a username as well as the platform.")
