@@ -69,7 +69,7 @@ class Fortnite:
     async def fnprofile(self, ctx, plat=None, name=None):
         '''Get your fortnite stats.'''
         await ctx.trigger_typing()
-        if not plat and not name:
+        if plat is None and name is None:
             # connect to db
             try:
                 plat = await self.get_plat(str(ctx.author.id))
@@ -77,8 +77,11 @@ class Fortnite:
             except Exception as e:
                 return await ctx.send(e)
         else:
-            if not plat or not name:
+            if plat is None or name is None:
                 return await ctx.send("Please specify a username as well as the platform.")
+
+        if plat not in ['psn', 'xbl', 'pc']:
+            return await ctx.send("Invalid platform.")
 
         hasSolos = True
         hasDuos = True
@@ -86,26 +89,26 @@ class Fortnite:
 
         try:
             player = await self.client.get_player(plat, name)
-        except pynite.errors.NotFound as e:
+        except Exception as e:
             return await ctx.send(f'Error {e.code}: {e.error}')
         try:
             solos = await player.get_solos()
-        except pynite.errors.NoGames as e:
+        except Exception as e:
             hasSolos = False
         try:
             duos = await player.get_duos()
-        except pynite.errors.NoGames as e:
+        except Exception as e:
             hasDuos = False
         try:
             squads = await player.get_squads()
-        except pynite.errors.NoGames as e:
+        except Exception as e:
             hasSquads = False
 
         pages = []
 
         if hasSolos:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle
+            em.title = player.epicUserHandle + '- Solos'
             em.description = f'Platform: {player.platformNameLong}'
             em.add_field(name="Victory Royales", value=solos.top1.value)
             em.add_field(name='Top 10', value=solos.top10.value)
@@ -126,7 +129,7 @@ class Fortnite:
 
         if hasDuos:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle
+            em.title = player.epicUserHandle + '- Duos'
             em.description = f'Platform: {player.platformNameLong}'
             em.add_field(name="Victory Royales", value=duos.top1.value)
             em.add_field(name='Top 5', value=duos.top5.value)
@@ -147,7 +150,7 @@ class Fortnite:
 
         if hasSquads:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle
+            em.title = player.epicUserHandle + '- Squads'
             em.description = f'Platform: {player.platformNameLong}'
             em.add_field(name="Victory Royales", value=squads.top1.value)
             em.add_field(name='Top 3', value=squads.top3.value)
