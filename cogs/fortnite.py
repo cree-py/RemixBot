@@ -102,8 +102,23 @@ class Fortnite:
             squads = await player.get_squads()
         except Exception as e:
             hasSquads = False
+        # lifetime = await player.get_lifetime_stats()
 
         pages = []
+
+        # em = discord.Embed(color=discord.Color.green())
+        # em.title = player.epicUserHandle + '-Lifetime Stats'
+        # em.description = 'Platform: ' + player.platformNameLong
+        # em.add_field(name='Wins (%)', value=f'{lifetime.wins} ({lifetime.wins%})')
+        # em.add_field(name='Top 5', value=lifetime.top_5s)
+        # em.add_field(name='Top 12', value=lifetime.top_12s)
+
+        # em.add_field(name='Score', value=lifetime.score)
+        # em.add_field(name='Matches Played', value=lifetime.matches_played)
+        # em.add_field(name='Time Played', value=lifetime.time_played)
+
+        # em.add_field(name='Kills', value=lifetime.kills)
+        # em.add_field(name='K/d', value=f'{lifetime.k/d}')
 
         if hasSolos:
             em = discord.Embed(color=discord.Color.green())
