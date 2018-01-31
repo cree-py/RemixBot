@@ -129,7 +129,7 @@ class Fortnite:
             em.add_field(name='Top 25', value=solos.top25.value)
 
             em.add_field(name="Score", value=solos.score.value)
-            em.add_field(name="TRN Rating", value=duos.trn_rating.value)
+            em.add_field(name="[TRN Rating](https://fortnitetracker.com/article/23/trn-rating-you)", value=duos.trn_rating.value)
             em.add_field(name="K/D", value=solos.kd.value)
 
             em.add_field(name="Kills", value=solos.kills.value)
@@ -150,7 +150,7 @@ class Fortnite:
             em.add_field(name='Top 10', value=duos.top10.value)
 
             em.add_field(name="Score", value=duos.score.value)
-            em.add_field(name="TRN Rating", value=duos.trn_rating.display_value)
+            em.add_field(name="[TRN Rating](https://fortnitetracker.com/article/23/trn-rating-you)", value=duos.trn_rating.display_value)
             em.add_field(name="K/D", value=duos.kd.value)
 
             em.add_field(name="Kills", value=duos.kills.value)
@@ -171,7 +171,7 @@ class Fortnite:
             em.add_field(name='Top 6', value=squads.top6.value)
 
             em.add_field(name="Score", value=squads.score.value)
-            em.add_field(name="TRN Rating", value=squads.trn_rating.display_value)
+            em.add_field(name="[TRN Rating](https://fortnitetracker.com/article/23/trn-rating-you)", value=squads.trn_rating.display_value)
             em.add_field(name="K/D", value=squads.kd.value)
 
             em.add_field(name="Kills", value=squads.kills.value)
