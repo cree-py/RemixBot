@@ -64,6 +64,9 @@ async def get_pre(bot, message):
 
 bot = commands.Bot(command_prefix=get_pre)
 bot.db = mongo.RemixBot
+with open('./data/auths.json') as f:
+    bot.auth = json.load(f)
+
 dbltoken = load_json('token.json', 'DBLTOKEN')
 path = 'cogs.'
 extensions = [x.replace('.py', '') for x in os.listdir('cogs.') if x.endswith('.py')]
@@ -282,7 +285,6 @@ async def help(ctx, *, command: str=None):
     '''Shows this message'''
 
     if command is not None:
-        command = command.title()
         aliases = {
             'clash of clans': 'Clash_of_Clans',
             'coc': 'Clash_of_Clans',
@@ -294,7 +296,7 @@ async def help(ctx, *, command: str=None):
         if command.lower() in aliases.keys():
             command = aliases[command]
 
-        cog = bot.get_cog(command.replace(' ', '_'))
+        cog = bot.get_cog(command.replace(' ', '_').title())
         cmd = bot.get_command(command)
         if cog is not None:
             em = format_cog_help(ctx, cog)
