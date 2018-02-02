@@ -36,8 +36,8 @@ If you need support with the bot or would like to *contribute to RemixBot*, join
 - [x] Custom prefix
 - [x] Moderator commands
 - [x] Fun commands (8ball, Roll dice, etc.)
-- [x] Clash Royale Stats
-- [x] Clash of Clans Stats
+- [x] Fortnite Battle Royale Stats
+- [x] Mobile Game Stats
 - [x] Utility (Embed, Urban Dictionary, Wikipedia)
 - [x] Mod-log
 
