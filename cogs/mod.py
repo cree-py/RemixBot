@@ -36,20 +36,20 @@ class Mod:
 
     @commands.command()
     @commands.has_permissions(kick_members=True)
-    async def kick(self, ctx, user: discord.Member):
+    async def kick(self, ctx, user: discord.Member, *, reason='No reason.'):
         '''Kick a member from the guild'''
         try:
-            await ctx.guild.kick(user)
+            await ctx.guild.kick(user, reason=reason)
             await ctx.send(f"Kicked {user.name} from the server.")
         except discord.Forbidden:
             await ctx.send("I could not kick the user. Make sure I have the kick members permission.")
 
     @commands.command()
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx, user: discord.Member):
+    async def ban(self, ctx, user: discord.Member, *, reason='No reason.'):
         '''Ban a member from the guild'''
         try:
-            await ctx.guild.ban(user)
+            await ctx.guild.ban(user, reason=reason)
             await ctx.send(f"Banned {user.name} from the server.")
         except discord.Forbidden:
             await ctx.send("I could not ban the user. Make sure I have the ban members permission.")
