@@ -24,9 +24,8 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
-import pynite
 from ext.paginator import PaginatorSession
-import json
+import pynite
 
 
 class Fortnite:
@@ -34,22 +33,20 @@ class Fortnite:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('./data/auths.json') as f:
-            auth = json.load(f)
-            self.token = auth.get('TRN-Api-Key')
+        self.token = bot.auth.get('TRN-Api-Key')
         self.client = pynite.Client(self.token, timeout=5)
 
     async def get_name(self, userid):
         result = await self.bot.db.fortnite.find_one({'_id': userid})
         if not result:
             return None
-        return result['name']
+        return result.get('name')
 
     async def get_plat(self, userid):
         result = await self.bot.db.fortnite.find_one({'_id': userid})
         if not result:
             return None
-        return result['platform']
+        return result.get('platform')
 
     async def save_info(self, userid, plat, name):
         await self.bot.db.fortnite.update_one({'_id': userid}, {'$set': {'_id': userid, 'platform': plat, 'name': name}}, upsert=True)
@@ -63,7 +60,7 @@ class Fortnite:
             return await ctx.send("Invalid platform. Accepted platforms: `xbl, psn, pc`")
 
         await self.save_info(str(ctx.author.id), plat, name)
-        await ctx.send(f'Your information (Platform: {plat} | Name: {name}) has been successfully saved.')
+        await ctx.send(f'Your information (Platform: `{plat}` | Name: `{name}`) has been successfully saved.')
 
     @commands.command(aliases=['fprofile', 'fortniteprofile'])
     async def fnprofile(self, ctx, plat=None, name=None):
@@ -85,6 +82,7 @@ class Fortnite:
         hasSolos = True
         hasDuos = True
         hasSquads = True
+        hasLifetime = True
 
         try:
             player = await self.client.get_player(plat, name)
@@ -102,28 +100,35 @@ class Fortnite:
             squads = await player.get_squads()
         except Exception as e:
             hasSquads = False
-        # lifetime = await player.get_lifetime_stats()
+        try:
+            lifetime = await player.get_lifetime_stats()
+        except Exception as e:
+            hasLifetime = False
 
         pages = []
 
-        # em = discord.Embed(color=discord.Color.green())
-        # em.title = player.epicUserHandle + '-Lifetime Stats'
-        # em.description = 'Platform: ' + player.platformNameLong
-        # em.add_field(name='Wins (%)', value=f'{lifetime.wins} ({lifetime.wins%})')
-        # em.add_field(name='Top 5', value=lifetime.top_5s)
-        # em.add_field(name='Top 12', value=lifetime.top_12s)
+        if hasLifetime:
+            em = discord.Embed(color=discord.Color.green())
+            em.title = player.epic_user_handle + '-Lifetime Stats'
+            em.description = 'Platform: ' + player.platform_name_long
+            em.add_field(name='Wins (%)', value=f'{lifetime[8].value} ({lifetime[9] .value})')
+            em.add_field(name='Top 5', value=lifetime[1].value)
+            em.add_field(name='Top 12', value=lifetime[4].value)
 
-        # em.add_field(name='Score', value=lifetime.score)
-        # em.add_field(name='Matches Played', value=lifetime.matches_played)
-        # em.add_field(name='Time Played', value=lifetime.time_played)
+            em.add_field(name='Score', value=lifetime[6].value)
+            em.add_field(name='Matches Played', value=lifetime[7].value)
+            em.add_field(name='Time Played', value=lifetime[13].value)
 
-        # em.add_field(name='Kills', value=lifetime.kills)
-        # em.add_field(name='K/d', value=f'{lifetime.k/d}')
+            em.add_field(name='Kills', value=lifetime[10].value)
+            em.add_field(name='K/d', value=lifetime[11].value)
+            em.add_field(name='Kills/min', value=lifetime[12].value)
+
+            pages.append(em)
 
         if hasSolos:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle + '- Solos'
-            em.description = f'Platform: {player.platformNameLong}'
+            em.title = player.epic_user_handle + '- Solos'
+            em.description = f'Platform: {player.platform_name_long}'
             em.add_field(name="Victory Royales", value=solos.top1.value)
             em.add_field(name='Top 10', value=solos.top10.value)
             em.add_field(name='Top 25', value=solos.top25.value)
@@ -143,8 +148,8 @@ class Fortnite:
 
         if hasDuos:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle + '- Duos'
-            em.description = f'Platform: {player.platformNameLong}'
+            em.title = player.epic_user_handle + '- Duos'
+            em.description = f'Platform: {player.platform_name_long}'
             em.add_field(name="Victory Royales", value=duos.top1.value)
             em.add_field(name='Top 5', value=duos.top5.value)
             em.add_field(name='Top 10', value=duos.top10.value)
@@ -164,8 +169,8 @@ class Fortnite:
 
         if hasSquads:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epicUserHandle + '- Squads'
-            em.description = f'Platform: {player.platformNameLong}'
+            em.title = player.epic_user_handle + '- Squads'
+            em.description = f'Platform: {player.platform_name_long}'
             em.add_field(name="Victory Royales", value=squads.top1.value)
             em.add_field(name='Top 3', value=squads.top3.value)
             em.add_field(name='Top 6', value=squads.top6.value)
@@ -183,7 +188,7 @@ class Fortnite:
             em.add_field(name="Average Match Time", value=squads.avg_time_played.display_value)
             pages.append(em)
 
-        p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by pynite', pages=pages)
+        p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by fortnitetracker.com', pages=pages)
         await p_session.run()
 
 
