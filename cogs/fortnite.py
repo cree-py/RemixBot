@@ -109,7 +109,7 @@ class Fortnite:
 
         if hasLifetime:
             em = discord.Embed(color=discord.Color.green())
-            em.title = player.epic_user_handle + '-Lifetime Stats'
+            em.title = player.epic_user_handle + '- Lifetime Stats'
             em.description = 'Platform: ' + player.platform_name_long
             em.add_field(name='Wins (%)', value=f'{lifetime[8].value} ({lifetime[9] .value})')
             em.add_field(name='Top 5', value=lifetime[1].value)
@@ -120,8 +120,8 @@ class Fortnite:
             em.add_field(name='Time Played', value=lifetime[13].value)
 
             em.add_field(name='Kills', value=lifetime[10].value)
-            em.add_field(name='K/d', value=lifetime[11].value)
-            em.add_field(name='Kills/min', value=lifetime[12].value)
+            em.add_field(name='Kill/Death Ratio', value=lifetime[11].value)
+            em.add_field(name='Kills/Min', value=lifetime[12].value)
 
             pages.append(em)
 
