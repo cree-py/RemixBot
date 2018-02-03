@@ -230,6 +230,7 @@ class Fortnite:
             em = discord.Embed(color=discord.Color.green())
             em.title = f'{player.epic_user_handle}- Match {index + 1}'
             em.description = 'Platform: ' + player.platform_name_long
+            em.set_thumbnail(url='https://pbs.twimg.com/profile_images/872808170225270784/_ccP8lTm_400x400.jpg')
 
             em.add_field(name='Match ID', value=str(match.id))
             em.add_field(name='Mode', value=modes[match.playlist])
