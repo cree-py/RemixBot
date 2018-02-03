@@ -322,7 +322,7 @@ async def ping(ctx):
     '''Pong! Get the bot's response time'''
     em = discord.Embed(color=discord.Color.green())
     em.title = "Pong!"
-    em.description = f'{bot.latency * 1000:.4f} ms'
+    em.description = f'{bot.latency * 1000:.0f} ms'
     await ctx.send(embed=em)
 
 
