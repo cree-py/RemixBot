@@ -218,28 +218,27 @@ class Fortnite:
         except Exception as e:
             return await ctx.send('This player has no recent matches.')
 
-        em = discord.Embed(color=discord.Color.green())
-        em.title = player.epic_user_handle + '- Recent Matches'
-        em.description = 'Platform: ' + player.platform_name_long
-
         modes = {
             'p2': 'Solos',
             'p10': 'Duos',
             'p9': 'Squads'
         }
 
-        for index, match in enumerate(matches):
-            if index != len(matches) - 1:
-                fmt = f'Match ID: {match.id}\n'
-                fmt += f'Mode: {modes[match.playlist]}\n'
-                fmt += f'Kills: {match.kills}\n'
-                fmt += f'Minutes Played: {match.minutes_played}'
-            else:
-                fmt = f'Match ID: {match.id}\tMode: {modes[match.playlist]}\tKills: {match.kills}\tMinutes Played: {match.minutes_played}'
-            em.add_field(name=f'Match {index + 1}', value=fmt)
-        em.set_footer(text='Stats made by Cree-Py | Powered by fortnitetracker.com')
+        pages = []
 
-        await ctx.send(embed=em)
+        for index, match in enumerate(matches):
+            em = discord.Embed(color=discord.Color.green())
+            em.title = f'{player.epic_user_handle}- Match {index + 1}'
+            em.description = 'Platform: ' + player.platform_name_long
+
+            em.add_field(name='Match ID', value=str(match.id))
+            em.add_field(name='Mode', value=modes[match.playlist])
+            em.add_field(name='Kills', value=str(match.kills))
+            em.add_field(name='Minutes Played', value=str(match.minutes_played))
+            pages.append(em)
+
+        p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by fortnitetracker.com', pages=pages)
+        await p_session.run()
 
 
 def setup(bot):
