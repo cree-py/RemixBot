@@ -191,6 +191,56 @@ class Fortnite:
         p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by fortnitetracker.com', pages=pages)
         await p_session.run()
 
+    @commands.command(aliases=['fmatches', 'fortnitematches'])
+    async def fnmatches(self, ctx, plat=None, name=None):
+        '''Get a player's most recent matches.'''
+        await ctx.trigger_typing()
+        if plat is None and name is None:
+            # connect to db
+            plat = await self.get_plat(str(ctx.author.id))
+            name = await self.get_name(str(ctx.author.id))
+            if plat is None or name is None:
+                return await ctx.send(f'Use `{ctx.prefix}fnsave <plat> <name>` to save a profile.')
+        else:
+            if plat is None or name is None:
+                return await ctx.send("Please specify a username as well as the platform.")
+
+        if plat not in ['psn', 'xbl', 'pc']:
+            return await ctx.send("Invalid platform.")
+
+        try:
+            player = await self.client.get_player(plat, name)
+        except Exception as e:
+            return await ctx.send(f'Error {e.code}: {e.error}')
+
+        try:
+            matches = player.recent_matches
+        except Exception as e:
+            return await ctx.send('This player has no recent matches.')
+
+        em = discord.Embed(color=discord.Color.green())
+        em.title = player.epic_user_handle + '- Recent Matches'
+        em.description = 'Platform: ' + player.platform_name_long
+
+        modes = {
+            'p2': 'Solos',
+            'p10': 'Duos',
+            'p9': 'Squads'
+        }
+
+        for index, match in enumerate(matches):
+            if index != len(matches) - 1:
+                fmt = f'Match ID: {match.id}\n'
+                fmt += f'Mode: {modes[match.playlist]}\n'
+                fmt += f'Kills: {match.kills}\n'
+                fmt += f'Minutes Played: {match.minutes_played}'
+            else:
+                fmt = f'Match ID: {match.id}\tMode: {modes[match.playlist]}\tKills: {match.kills}\tMinutes Played: {match.minutes_played}'
+            em.add_field(name=f'Match {index + 1}', value=fmt)
+        em.set_footer(text='Stats made by Cree-Py | Powered by fortnitetracker.com')
+
+        await ctx.send(embed=em)
+
 
 def setup(bot):
     bot.add_cog(Fortnite(bot))
