@@ -234,8 +234,9 @@ class Fortnite:
 
             em.add_field(name='Match ID', value=str(match.id))
             em.add_field(name='Mode', value=modes[match.playlist])
-            em.add_field(name='Kills', value=str(match.kills))
             em.add_field(name='Minutes Played', value=str(match.minutes_played))
+            em.add_field(name='Kills', value=str(match.kills))
+
             pages.append(em)
 
         p_session = PaginatorSession(ctx, footer=f'Stats made by Cree-Py | Powered by fortnitetracker.com', pages=pages)
