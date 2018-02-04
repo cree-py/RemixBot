@@ -87,7 +87,7 @@ class Fortnite:
         try:
             player = await self.client.get_player(plat, name)
         except Exception as e:
-            return await ctx.send(f'Error {e.code}: {e.error}')
+            return await ctx.send(f'```py\nError {e.code}: {e.error}\n```')
         try:
             solos = await player.get_solos()
         except Exception as e:
