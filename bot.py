@@ -123,21 +123,24 @@ async def on_ready():
 
     print('Bot is Online.')
 
-
 @bot.event
 async def on_message(message):
-    channel = message.channel
-
+    channel = bot.get_channel(410137178610335744)
+    channel1 = message.channel
+    em = discord.Embed(color=discord.Color(value=0x00ff00))
+    em.title = "Bot log"
+    em.description = f"{message.author} wrote a message in {message.guild} in #{message.channel}"
+    em.add_field(name="Message: ", value=message.content)
+    await channel.send(embed=em)
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
         result = await bot.db.config.find_one({'_id': str(message.guild.id)})
-        if not result:
-            prefix = '-'
-        try:
-            prefix = result['prefix']
-        except KeyError:
-            prefix = '-'
-        await channel.send(f'The guild prefix is `{prefix}`')
-
+    if not result:
+        prefix = '-'
+    try:
+        prefix = result['prefix']
+    except KeyError:
+        prefix = '-'
+    await channel1.send(f'The guild prefix is `{prefix}`')
     await bot.process_commands(message)
 
 
