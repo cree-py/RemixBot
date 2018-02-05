@@ -36,9 +36,7 @@ class Clash_of_Clans:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('data/auths.json') as f:
-            coc = json.load(f)
-            self.apikey = coc.get('COC-API')
+        self.apikey = bot.auth.get('COC-API')
         self.client = cocasync.Client(token=self.apikey)
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
