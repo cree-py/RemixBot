@@ -123,9 +123,9 @@ class Clash_of_Clans:
                 'leader': 'Leader'
             }
             em.add_field(name="Clan Name", value=f"{player.clan.name}{self.emoji('cc')}")
-                    em.add_field(name="Clan Role", value=types[player.role])
-                    em.add_field(name="Donations", value=f"{player.donations}")
-                    em.add_field(name="Donations Received", value=player.donationsReceived)
+            em.add_field(name="Clan Role", value=types[player.role])
+            em.add_field(name="Donations", value=f"{player.donations}")
+            em.add_field(name="Donations Received", value=player.donationsReceived)
         except KeyError:
             em.add_field(name='Clan', value=f"No clan {self.emoji('cc')}")
         try:
