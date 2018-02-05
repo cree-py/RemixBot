@@ -423,13 +423,16 @@ async def reload(ctx, cog):
                 await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
         load_extensions(extensions)
         return await ctx.send('All cogs updated successfully :white_check_mark:')
+    if cog not in extensions:
+        return await ctx.send(f'Cog {cog} does not exist.')
     try:
         bot.unload_extension(f"cogs.{cog}")
         await asyncio.sleep(1)
         load_extension(cog)
-        await ctx.send(f"Reloaded the {cog} cog successfully :white_check_mark:")
     except Exception as e:
         await ctx.send(f"An error occured while reloading {cog}, error details: \n ```{e}```")
+    else:
+        await ctx.send(f"Reloaded the {cog} cog successfully :white_check_mark:")
 
 
 @bot.command(hidden=True)
@@ -440,7 +443,15 @@ async def update(ctx):
     await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
     for cog in extensions:
         bot.unload_extension(f'{path}{cog}')
-    load_extensions(extensions)
+    for cog in extensions:
+        members = inspect.getmembers(cog)
+        for name, member in members:
+            if name.startswith('on_'):
+                bot.add_listener(member, name)
+        try:
+            bot.load_extension(f'{path}{cog}')
+        except Exception as e:
+            await ctx.send(f'LoadError: {cog}\n{type(e).__name__}: {e}')
     await ctx.send('All cogs reloaded :white_check_mark:')
 
 
@@ -462,3 +473,7 @@ if __name__ == "main":
     print('Online.')
 else:
     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
+
+# if __name__ == '__main__':
+#     bot.run(load_json('token.json', 'TOKEN'))
+#     print('Bot is online.')
