@@ -123,20 +123,18 @@ async def on_ready():
 
     print('Bot is Online.')
 
-
 @bot.event
 async def on_message(message):
     channel = message.channel
-
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
         result = await bot.db.config.find_one({'_id': str(message.guild.id)})
-        if not result:
-            prefix = '-'
-        try:
-            prefix = result['prefix']
-        except KeyError:
-            prefix = '-'
-        await channel.send(f'The guild prefix is `{prefix}`')
+    if not result:
+        prefix = '-'
+    try:
+        prefix = result['prefix']
+    except KeyError:
+        prefix = '-'
+    await channel.send(f'The guild prefix is `{prefix}`')
 
     await bot.process_commands(message)
 

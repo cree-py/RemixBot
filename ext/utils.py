@@ -4,7 +4,7 @@ import random
 import json
 
 
-class DeveloperError(Exception):
+class DeveloperError(commands.CommandError):
     pass
 
 

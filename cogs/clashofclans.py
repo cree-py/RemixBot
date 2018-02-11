@@ -1,18 +1,14 @@
 '''
 MIT License
-
 Copyright (c) 2017-2018 Cree-py
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -28,7 +24,6 @@ from discord.ext import commands
 import aiohttp
 import json
 import re
-import cocasync
 
 
 class Clash_of_Clans:
@@ -36,8 +31,10 @@ class Clash_of_Clans:
 
     def __init__(self, bot):
         self.bot = bot
-        self.apikey = bot.auth.get('COC-API')
-        self.client = cocasync.Client(token=self.apikey)
+        with open('data/auths.json') as f:
+            coc = json.load(f)
+            apikey = coc.get('COC-API')
+        self.headers = {'Authorization': apikey}
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
@@ -94,51 +91,52 @@ class Clash_of_Clans:
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
             tag = tag.strip('#')
 
-        player = await self.client.getPlayer(tag)
-       
-        name = player.name
-        em.title = "CoC Profile"
-        em.description = "Clash of Clans Stats"
-        try:
-            em.set_thumbnail(url=player.league.iconUrls.medium)
-        except:
-            em.set_thumbnail(url='http://clash-wiki.com/images/progress/leagues/no_league.png')
-        try:
-            em.set_author(name=player.tag, icon_url=player.clan.badgeUrls.large)
-        except:
-            em.set_author(name=player.tag, icon_url='http://clash-wiki.com/images/progress/leagues/no_league.png')
-        em.add_field(name="Player Name", value=f"{name} {self.emoji('clan')}")
-        em.add_field(name="Exp", value=f"{player.expLevel} {self.emoji('cocexp')}")
-        em.add_field(name="Townhall", value=player.townHallLevel)
-        em.add_field(name="Trophies", value=f"{player.trophies} {self.emoji('coctrophy')}")
-        em.add_field(name="All Time Best", value=f"{player.bestTrophies} {self.emoji('cocpb')}")
-        em.add_field(name="Attacks Won", value=f"{player.attackWins} {self.emoji('sword')}")
-        em.add_field(name="Defenses Won", value=f"{player.defenseWins} {self.emoji('cocshield')}")
-        em.add_field(name="War Stars", value=f"{player.warStars} {self.emoji('cocstar')}")
-        try:
-            types = {
-                'member': 'Member',
-                'admin': 'Elder',
-                'coLeader': 'Co-Leader',
-                'leader': 'Leader'
-            }
-            em.add_field(name="Clan Name", value=f"{player.clan.name}{self.emoji('cc')}")
-            em.add_field(name="Clan Role", value=types[player.role])
-            em.add_field(name="Donations", value=f"{player.donations}")
-            em.add_field(name="Donations Received", value=player.donationsReceived)
-        except KeyError:
-            em.add_field(name='Clan', value=f"No clan {self.emoji('cc')}")
-        try:
-            em.add_field(name="BH Level", value=f"{player.builderHallLevel} {self.emoji('builderhall')}")
-            em.add_field(name="BH Trophies", value=f"{player.versusTrophies} {self.emoji('coctrophy')}")
-            em.add_field(name="BH Highest Trophies", value=f"{player.bestVersusTrophies} {self.emoji('cocpb')}")
-            em.add_field(name="BH Attacks Won", value=f"{player.versusBattleWins} {self.emoji('sword')}")
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as response:
+                resp = await response.json()
+                name = resp['name']
+                em.title = "CoC Profile"
+                em.description = "Clash of Clans Stats"
+                try:
+                    em.set_thumbnail(url=resp['league']['iconUrls']['medium'])
+                except KeyError:
+                    em.set_thumbnail(url='http://clash-wiki.com/images/progress/leagues/no_league.png')
+                try:
+                    em.set_author(name=f"{resp['tag']}", icon_url=resp['clan']['badgeUrls']['large'])
+                except KeyError:
+                    em.set_author(name=f"{resp['tag']}", icon_url='http://clash-wiki.com/images/progress/leagues/no_league.png')
+                em.add_field(name="Player Name", value=f"{name} {self.emoji('clan')}")
+                em.add_field(name="Exp", value=f"{resp['expLevel']} {self.emoji('cocexp')}")
+                em.add_field(name="Townhall", value=resp['townHallLevel'])
+                em.add_field(name="Trophies", value=f"{resp['trophies']} {self.emoji('coctrophy')}")
+                em.add_field(name="All Time Best", value=f"{resp['bestTrophies']} {self.emoji('cocpb')}")
+                em.add_field(name="Attacks Won", value=f"{resp['attackWins']} {self.emoji('sword')}")
+                em.add_field(name="Defenses Won", value=f"{resp['defenseWins']} {self.emoji('cocshield')}")
+                em.add_field(name="War Stars", value=f"{resp['warStars']} {self.emoji('cocstar')}")
+                try:
+                    types = {
+                        'member': 'Member',
+                        'admin': 'Elder',
+                        'coLeader': 'Co-Leader',
+                        'leader': 'Leader'
+                    }
+                    em.add_field(name="Clan Name", value=f"{resp['clan']['name']}{self.emoji('cc')}")
+                    em.add_field(name="Clan Role", value=types[resp['role']])
+                    em.add_field(name="Donations", value=f"{resp['donations']}")
+                    em.add_field(name="Donations Received", value=resp['donationsReceived'])
+                except KeyError:
+                    em.add_field(name='Clan', value=f"No clan {self.emoji('cc')}")
+                try:
+                    em.add_field(name="BH Level", value=f"{resp['builderHallLevel']} {self.emoji('builderhall')}")
+                    em.add_field(name="BH Trophies", value=f"{resp['versusTrophies']} {self.emoji('coctrophy')}")
+                    em.add_field(name="BH Highest Trophies", value=f"{resp['bestVersusTrophies']} {self.emoji('cocpb')}")
+                    em.add_field(name="BH Attacks Won", value=f"{resp['versusBattleWins']} {self.emoji('sword')}")
 
-        except KeyError:
-            em.add_field(name='Builder Base', value=f"Not unlocked yet {self.emoji('builderhall')}")
+                except KeyError:
+                    em.add_field(name='Builder Base', value=f"Not unlocked yet {self.emoji('builderhall')}")
 
-        em.set_footer(text="Stats by Cree-Py | Powered by the cocasync")
-        await ctx.send(embed=em)
+                em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
+                await ctx.send(embed=em)
 
     @commands.command()
     async def cocclan(self, ctx, tag=None):
@@ -154,32 +152,29 @@ class Clash_of_Clans:
                 return await ctx.send('`Invalid Tag. Please make sure your tag is correct.`')
             tag = tag.strip('#')
 
-        tag = tag.strip('#')
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://api.clashofclans.com/v1/players/%23{tag}', headers=self.headers) as resp:
+                response = await resp.json()
+                try:
+                    clantag = response['clan']['tag'].strip('#')
+                except KeyError:
+                    em.title = "Error"
+                    em.description = "You are not in a clan"
+                    return await ctx.send(embed=em)
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://api.clashofclans.com/v1/clans/%23{clantag}', headers=self.headers) as clan:
+                resp = await clan.json()
+                em.title = "Clan Info"
+                em.description = f"{resp['description']}"
+                em.set_author(name=f"{resp['name']} (#{clantag})", icon_url=resp['badgeUrls']['large'])
+                em.set_thumbnail(url=resp['badgeUrls']['large'])
+                em.add_field(name="Clan Level", value=f"{resp['clanLevel']} {self.emoji('cocexp')}")
+                em.add_field(name="Location", value=f"{resp['location']['name']} :earth_americas:")
+                em.add_field(name="Type", value=f"{self._to_snake_case(resp['type'])} :envelope_with_arrow:")
+                em.add_field(name='Required Trophies', value=f"{resp['requiredTrophies']} {self.emoji('coctrophy')}")
+                em.set_footer(text="Stats by Cree-Py | Powered by the CoC API")
 
-        try:
-            player = await self.client.getPlayer(tag)
-        except:
-            try:
-                clan = await self.client.getClan(tag)
-            except:
-                return await ctx.send('Invalid tag.')
-        else:
-            try:
-                clan = await player.getClan()
-            except:
-                return await ctx.send('You are not in a clan.')
-
-        em.title = "Clan Info"
-        em.description = f"{clan.description}"
-        em.set_author(name=f"{clan.name} (#{clan.tag})", icon_url=clan.badgeUrls.large)
-        em.set_thumbnail(url=clan.badgeUrls.large)
-        em.add_field(name="Clan Level", value=f"{clan.clanLevel} {self.emoji('cocexp')}")
-        em.add_field(name="Location", value=f"{clan.location.name} :earth_americas:")
-        em.add_field(name="Type", value=f"{self._to_snake_case(clan.type)} :envelope_with_arrow:")
-        em.add_field(name='Required Trophies', value=f"{clan.requiredTrophies} {self.emoji('coctrophy')}")
-        em.set_footer(text="Stats by Cree-Py | Powered by cocasync")
-
-        await ctx.send(embed=em)
+                await ctx.send(embed=em)
 
 
 def setup(bot):
