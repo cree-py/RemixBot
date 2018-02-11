@@ -4,17 +4,13 @@ import random
 import json
 
 
-class DeveloperError(commands.CommandError):
-    pass
-
-
 def developer():
     def wrapper(ctx):
         with open('data/devs.json') as f:
             devs = json.load(f)
         if ctx.author.id in devs:
             return True
-        raise DeveloperError('You cannot use this command because you are not a developer.')
+        raise commands.MissingPermissions('You cannot use this command because you are not a developer.')
     return commands.check(wrapper)
 
 
