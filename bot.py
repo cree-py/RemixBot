@@ -218,7 +218,7 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingPermissions):
         await ctx.send('You do not have the permissions to use this command.')
 
-    elif isinstance(error, utils.DeveloperError):
+    elif isinstance(error, commands.DeveloperError):
         await ctx.send(error)
     # If any other error occurs, prints to console.
 
