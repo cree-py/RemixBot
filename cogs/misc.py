@@ -27,6 +27,7 @@ import discord
 from discord.ext import commands
 import random
 import aiohttp
+import json
 
 
 class Misc:
@@ -34,11 +35,25 @@ class Misc:
 
     def __init__(self, bot):
         self.bot = bot
+        with open('./data/token.json') as f:
+            config = json.load(f)
+            self.dbltoken = config.get('DBLTOKEN')
+        self.base_url = 'https://discordbots.org/api/bots/'
+
+    async def upvoted(self, id):
+        async with self.bot.session.get(f'{self.base_url + self.bot.user.id}/votes', headers={'Authorization': self.dbltoken}) as resp:
+            data = await resp.json()
+        for user in data:
+            if id == int(user['id']):
+                return True
+        return False
 
     @commands.command()
-    @commands.has_permissions(manage_messages=True)
     async def say(self, ctx, *, message: str):
         '''Say something as the bot'''
+        voted = await self.upvoted(ctx.author.id)
+        if not voted:
+            return await ctx.send('To use this command, you must upvote RemixBot on [DBL](https://discordbots.org/bot/384044025298026496)!')
         try:
             await ctx.message.delete()
         except discord.Forbidden:
