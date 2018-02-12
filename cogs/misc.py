@@ -56,7 +56,7 @@ class Misc:
         '''Say something as the bot'''
         voted = await self.upvoted(ctx.author.id)
         if not voted:
-            return await ctx.send('To use this command, you must upvote RemixBot on [DBL](https://discordbots.org/bot/384044025298026496)!')
+            return await ctx.send(f'To use this command, you must upvote RemixBot here: https://discordbots.org/bot/{self.bot.user.id}')
         try:
             await ctx.message.delete()
         except discord.Forbidden:
