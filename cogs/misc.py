@@ -25,6 +25,7 @@ SOFTWARE.
 
 import discord
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
 import random
 import aiohttp
 import json
@@ -41,14 +42,16 @@ class Misc:
         self.base_url = 'https://discordbots.org/api/bots/'
 
     async def upvoted(self, id):
-        async with self.bot.session.get(f'{self.base_url + self.bot.user.id}/votes', headers={'Authorization': self.dbltoken}) as resp:
-            data = await resp.json()
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'{self.base_url}{self.bot.user.id}/votes', headers={'Authorization': self.dbltoken}) as resp:
+                data = await resp.json()
         for user in data:
             if id == int(user['id']):
                 return True
         return False
 
     @commands.command()
+    @commands.cooldown(1, 5, BucketType.user)
     async def say(self, ctx, *, message: str):
         '''Say something as the bot'''
         voted = await self.upvoted(ctx.author.id)

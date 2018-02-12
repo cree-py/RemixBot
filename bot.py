@@ -62,7 +62,7 @@ async def get_pre(bot, message):
         return '-'
 
 
-bot = commands.Bot(command_prefix=get_pre)
+bot = commands.Bot(command_prefix=',.')
 bot.db = mongo.RemixBot
 with open('./data/auths.json') as f:
     bot.auth = json.load(f)
@@ -213,6 +213,9 @@ async def on_command_error(ctx, error):
     elif isinstance(error, send_help):
         _help = await send_cmd_help(ctx)
         await ctx.send(embed=_help)
+
+    elif isinstance(error, commands.CommandOnCooldown):
+        await ctx.send(f'This command is on cooldown. Please wait {error.retry_after:.2f}s')
 
     elif isinstance(error, commands.MissingPermissions):
         await ctx.send('You do not have the permissions to use this command.')
@@ -469,7 +472,3 @@ if __name__ == "main":
     print('Online.')
 else:
     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
-
-# if __name__ == '__main__':
-#     bot.run(load_json('token.json', 'TOKEN'))
-#     print('Bot is online.')
