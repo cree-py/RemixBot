@@ -62,7 +62,7 @@ async def get_pre(bot, message):
         return '-'
 
 
-bot = commands.Bot(command_prefix=',.')
+bot = commands.Bot(command_prefix=get_pre)
 bot.db = mongo.RemixBot
 with open('./data/auths.json') as f:
     bot.auth = json.load(f)
@@ -472,3 +472,7 @@ if __name__ == "main":
     print('Online.')
 else:
     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
+
+# if __name__ == '__main__':
+#     bot.run(load_json('token.json', 'TOKEN'))
+#     print('Bot is online.')
