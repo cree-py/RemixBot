@@ -127,6 +127,16 @@ async def on_ready():
 @bot.event
 async def on_message(message):
     channel = message.channel
+    if message.author.bot:
+        return
+
+    blacklisted = bot.db.blacklist.find_one({'_id': message.author.id})
+    if blacklisted is None:
+        pass
+    else:
+        if blacklisted['type'] is True:
+            return
+
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
         result = await bot.db.config.find_one({'_id': str(message.guild.id)})
         if not result:
@@ -344,6 +354,22 @@ async def _bot(ctx):
 
     em.set_footer(text="RemixBot | Powered by discord.py")
     await ctx.send(embed=em)
+
+
+@bot.command(hidden=True)
+@utils.developer()
+async def blacklist(ctx, user_or_id, type='enable'):
+    '''Blacklists a user from using the bot.'''
+    if isinstance(user_or_id, discord.Member):
+        user_id = user_or_id.id
+    else:
+        user_id = user_or_id
+    if type == 'enable':
+        type = True
+    else:
+        type = False
+    await bot.db.blacklist.update({'_id': user_id}, {'$set': {'_id': user_id, 'type': type}})
+    await ctx.send('User successfully ' + 'blacklisted.' if type is True else 'whitelisted.')
 
 
 @bot.command(name='eval', hidden=True)
