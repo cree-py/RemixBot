@@ -334,7 +334,7 @@ async def _bot(ctx):
     em = discord.Embed(color=discord.Color.green())
     em.title = 'Bot Info'
     em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
-    em.description = 'A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)' if not bot.psa else bot.psa
+    em.description = bot.psa
     em.add_field(name="Servers", value=len(bot.guilds))
     em.add_field(name="Online Users", value=str(len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})))
     em.add_field(name='Total Users', value=len(bot.users))
