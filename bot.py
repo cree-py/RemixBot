@@ -336,7 +336,7 @@ async def _bot(ctx):
     em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
     try:
         em.description = bot.psa + '\n[Support Server](https://discord.gg/RzsYQ9f)'
-    except KeyError:
+    except AttributeError:
         em.description = 'A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)'
     em.add_field(name="Servers", value=len(bot.guilds))
     em.add_field(name="Online Users", value=str(len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})))
