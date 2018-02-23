@@ -337,7 +337,7 @@ async def _bot(ctx):
     try:
         em.description = bot.psa + '\n[Support Server](https://discord.gg/RzsYQ9f)'
     except AttributeError:
-        em.description = 'A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)'
+        em.description = 'A multipurpose bot made by SharpBit, Victini, AntonyJoseph03, Free TNT and Sleedyak.\n[Support Server](https://discord.gg/RzsYQ9f)'
     em.add_field(name="Servers", value=len(bot.guilds))
     em.add_field(name="Online Users", value=str(len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})))
     em.add_field(name='Total Users', value=len(bot.users))
