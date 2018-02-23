@@ -32,14 +32,14 @@ If you need support with the bot or would like to *contribute to RemixBot*, join
 
 ### Features
 - [x] Evalulate python code and more commands for creators!
-- [x] Get info about a user, server, or role
-- [x] Custom prefix
+- [x] Information about a user, server, or server role
+- [x] Customization and Configuration
 - [x] Moderator commands
 - [x] Fun commands (8ball, Roll dice, etc.)
 - [x] Fortnite Battle Royale Stats
-- [x] Mobile Game Stats
+- [x] Mobile Game Stats (Clash Royale, Brawl Stars, Clash of Cland)
 - [x] Utility (Embed, Urban Dictionary, Wikipedia)
-- [x] Mod-log
+- [x] Mod-logs
 
 ### Official Release
 This bot has finished the stages of it where there will be lots of bugs, and we have decided to release an early official version. It will still be actively worked on, but there will be less bugs. If you spot any, open an issue on this repo or use the suggest command.
