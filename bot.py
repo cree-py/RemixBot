@@ -130,13 +130,6 @@ async def on_message(message):
     if message.author.bot:
         return
 
-    blacklisted = bot.db.blacklist.find_one({'_id': message.author.id})
-    if blacklisted is None:
-        pass
-    else:
-        if blacklisted['type'] is True:
-            return
-
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
         result = await bot.db.config.find_one({'_id': str(message.guild.id)})
         if not result:
@@ -331,7 +324,7 @@ async def ping(ctx):
     '''Pong! Get the bot's response time'''
     em = discord.Embed(color=discord.Color.green())
     em.title = "Pong!"
-    em.description = f'{bot.latency * 1000:.0f} ms'
+    em.description = f'{bot.ws.latency * 1000:.0f} ms'
     await ctx.send(embed=em)
 
 
@@ -339,17 +332,17 @@ async def ping(ctx):
 async def _bot(ctx):
     '''Shows info about bot'''
     em = discord.Embed(color=discord.Color.green())
-    em.title = "Bot Info"
-    em.set_author(name=ctx.message.author.name, icon_url=ctx.message.author.avatar_url)
-    em.description = "A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)"
+    em.title = 'Bot Info'
+    em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+    em.description = 'A multipurpose bot made by AntonyJoseph03, Free TNT, SharpBit, Sleedyak and Victini.\n[Support Server](https://discord.gg/RzsYQ9f)' if not bot.psa else bot.psa
     em.add_field(name="Servers", value=len(bot.guilds))
     em.add_field(name="Online Users", value=str(len({m.id for m in bot.get_all_members() if m.status is not discord.Status.offline})))
     em.add_field(name='Total Users', value=len(bot.users))
     em.add_field(name='Channels', value=f"{sum(1 for g in bot.guilds for _ in g.channels)}")
     em.add_field(name="Library", value=f"discord.py")
-    em.add_field(name="Bot Latency", value=f"{bot.ws.latency * 1000:.3f} ms")
+    em.add_field(name="Bot Latency", value=f"{bot.ws.latency * 1000:.0f} ms")
     em.add_field(name="Invite", value=f"[Click Here](https://discordapp.com/oauth2/authorize?client_id={bot.user.id}&scope=bot&permissions=268905542)")
-    em.add_field(name='GitHub', value='[Click here](https://github.com/cree-py/creepy.py)')
+    em.add_field(name='GitHub', value='[Click here](https://github.com/cree-py/RemixBot)')
     em.add_field(name="Upvote this bot!", value=f"[Click here](https://discordbots.org/bot/{bot.user.id}) :reminder_ribbon:")
 
     em.set_footer(text="RemixBot | Powered by discord.py")
@@ -358,18 +351,10 @@ async def _bot(ctx):
 
 @bot.command(hidden=True)
 @utils.developer()
-async def blacklist(ctx, user_or_id, type='enable'):
-    '''Blacklists a user from using the bot.'''
-    if isinstance(user_or_id, discord.Member):
-        user_id = user_or_id.id
-    else:
-        user_id = user_or_id
-    if type == 'enable':
-        type = True
-    else:
-        type = False
-    await bot.db.blacklist.update({'_id': user_id}, {'$set': {'_id': user_id, 'type': type}})
-    await ctx.send('User successfully ' + 'blacklisted.' if type is True else 'whitelisted.')
+async def psa(ctx, message):
+    '''Tells everyone an announcement in the bot info command.'''
+    bot.psa = None if message == 'reset' else message
+    await ctx.send('PSA successfully set.')
 
 
 @bot.command(name='eval', hidden=True)
@@ -465,7 +450,7 @@ async def reload(ctx, cog):
 async def update(ctx):
     """Pulls from github and updates bot"""
     await ctx.trigger_typing()
-    await ctx.send(f"```{subprocess.run('git pull',stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
+    await ctx.send(f"```{subprocess.run('git pull', stdout=subprocess.PIPE).stdout.decode('utf-8')}```")
     for cog in extensions:
         bot.unload_extension(f'{path}{cog}')
     for cog in extensions:
