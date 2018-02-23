@@ -351,7 +351,7 @@ async def _bot(ctx):
 
 @bot.command(hidden=True)
 @utils.developer()
-async def psa(ctx, message):
+async def psa(ctx, *, message):
     '''Tells everyone an announcement in the bot info command.'''
     bot.psa = None if message == 'reset' else message
     await ctx.send('PSA successfully set.')
