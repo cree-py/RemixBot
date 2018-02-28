@@ -4,5 +4,5 @@ clashroyale
 pytz
 urbandictionary
 wikipedia
-pynite
+git+https://github.com/cree-py/pynite
 motor
