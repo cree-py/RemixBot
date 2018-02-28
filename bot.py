@@ -38,6 +38,7 @@ import subprocess
 import asyncio
 from ext import utils
 from ext.paginator import PaginatorSession
+import pynite
 
 
 # def load_json(path, key):
@@ -490,3 +491,4 @@ async def shutdown(ctx):
 if __name__ == '__main__':
     bot.run(os.environ.get('token'))
     print('Bot is online.')
+    print(pynite.__version__)
