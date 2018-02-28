@@ -51,9 +51,10 @@ mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
 
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
-    if not message.guild:
+    try:
+        result = await bot.db.config.find_one({'_id': str(message.guild.id)})
+    except AttributeError:
         return '-'
-    result = await bot.db.config.find_one({'_id': str(message.guild.id)})
     if not result:
         return '-'
     try:
