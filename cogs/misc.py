@@ -28,7 +28,6 @@ from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 import random
 import aiohttp
-import json
 
 
 class Misc:
@@ -36,9 +35,7 @@ class Misc:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('./data/token.json') as f:
-            config = json.load(f)
-            self.dbltoken = config.get('DBLTOKEN')
+        elf.dbltoken = os.environ.get('dbltoken')
         self.base_url = 'https://discordbots.org/api/bots/'
 
     async def upvoted(self, id):
