@@ -40,13 +40,13 @@ from ext import utils
 from ext.paginator import PaginatorSession
 
 
-def load_json(path, key):
-    with open(f'./data/{path}') as f:
-        config = json.load(f)
-    return config.get(key)
+# def load_json(path, key):
+#     with open(f'./data/{path}') as f:
+#         config = json.load(f)
+#     return config.get(key)
 
 
-mongo = AsyncIOMotorClient(load_json('auths.json', 'MONGODB'))
+mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
 
 
 async def get_pre(bot, message):
@@ -64,10 +64,10 @@ async def get_pre(bot, message):
 
 bot = commands.Bot(command_prefix=get_pre)
 bot.db = mongo.RemixBot
-with open('./data/auths.json') as f:
-    bot.auth = json.load(f)
+# with open('./data/auths.json') as f:
+#     bot.auth = json.load(f)
 
-dbltoken = load_json('token.json', 'DBLTOKEN')
+dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
 extensions = [x.replace('.py', '') for x in os.listdir('cogs.') if x.endswith('.py')]
 
@@ -482,11 +482,11 @@ async def shutdown(ctx):
     await bot.logout()
 
 
-if __name__ == "main":
-    print('Online.')
-else:
-    print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
+# if __name__ == "main":
+#     print('Online.')
+# else:
+#     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
 
-# if __name__ == '__main__':
-#     bot.run(load_json('token.json', 'TOKEN'))
-#     print('Bot is online.')
+if __name__ == '__main__':
+    bot.run(os.environ.get('token'))
+    print('Bot is online.')

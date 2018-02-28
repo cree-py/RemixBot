@@ -27,6 +27,7 @@ import discord
 from discord.ext import commands
 import clashroyale
 import json
+import os
 import re
 
 
@@ -35,10 +36,11 @@ class Clash_Royale:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('./data/auths.json') as f:
-            auth = json.load(f)
-            self.token = auth.get('CR-API')
-        self.client = clashroyale.Client(token=self.token, is_async=True, cache_fp='cache.db')
+        self.client = clashroyale.Client(
+            token=os.environ.get('cr-api'),
+            is_async=True,
+            cache_fp='cache.db'
+        )
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')

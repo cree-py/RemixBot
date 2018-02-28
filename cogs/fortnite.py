@@ -26,6 +26,7 @@ import discord
 from discord.ext import commands
 from ext.paginator import PaginatorSession
 import pynite
+import os
 
 
 class Fortnite:
@@ -34,7 +35,12 @@ class Fortnite:
     def __init__(self, bot):
         self.bot = bot
         self.token = bot.auth.get('TRN-Api-Key')
-        self.client = pynite.Client(self.token, timeout=5)
+        self.client = pynite.Client(
+            os.environ.get('TRN-Api-Key'),
+            timeout=3,
+            session=self.bot.session,
+            loop=self.bot.loop
+        )
 
     async def get_name(self, userid):
         result = await self.bot.db.fortnite.find_one({'_id': userid})

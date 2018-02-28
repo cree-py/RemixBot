@@ -23,6 +23,7 @@ import discord
 from discord.ext import commands
 import aiohttp
 import json
+import os
 import re
 
 
@@ -31,10 +32,7 @@ class Clash_of_Clans:
 
     def __init__(self, bot):
         self.bot = bot
-        with open('data/auths.json') as f:
-            coc = json.load(f)
-            apikey = coc.get('COC-API')
-        self.headers = {'Authorization': apikey}
+        self.headers = {'Authorization': os.environ.get('coc-api')}
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')
