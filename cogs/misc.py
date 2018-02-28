@@ -36,7 +36,7 @@ class Misc:
 
     def __init__(self, bot):
         self.bot = bot
-        elf.dbltoken = os.environ.get('dbltoken')
+        self.dbltoken = os.environ.get('dbltoken')
         self.base_url = 'https://discordbots.org/api/bots/'
 
     async def upvoted(self, id):

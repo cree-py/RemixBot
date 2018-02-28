@@ -26,6 +26,7 @@ import discord
 from discord.ext import commands
 from ext.paginator import PaginatorSession
 
+
 class Info:
     '''Get info for a user, server, or role.'''
 
@@ -33,7 +34,6 @@ class Info:
         self.bot = bot
 
     @commands.command(aliases=['si', 'server'])
-    @commands.guild_only()
     async def serverinfo(self, ctx):
         '''Get server info'''
         guild = ctx.guild
@@ -82,7 +82,6 @@ class Info:
         await ctx.send(embed=em)
 
     @commands.command(aliases=['role'])
-    @commands.guild_only()
     async def roleinfo(self, ctx, *, rolename):
         '''Get information about a role. Case Sensitive!'''
         try:
@@ -91,7 +90,7 @@ class Info:
             return await ctx.send(f"Role could not be found. The system IS case sensitive!")
 
         em = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
-        em.title=role.name
+        em.title = role.name
         perms = ""
         if role.permissions.administrator:
             perms += "Administrator, "
@@ -155,7 +154,6 @@ class Info:
         else:
             perms = perms.strip(", ")
 
-
         em.add_field(name='Hoisted', value=str(role.hoist))
         em.add_field(name='Position from bottom', value=str(role.position))
         em.add_field(name='Managed by Integration', value=str(role.managed))
@@ -166,7 +164,7 @@ class Info:
         pages.append(em)
 
         em2 = discord.Embed(description=f'Role ID: {str(role.id)}', color=role.color or discord.Color.green())
-        em2.title=role.name
+        em2.title = role.name
         em2.add_field(name='Permissions', value=perms)
 
         pages.append(em2)
@@ -175,6 +173,7 @@ class Info:
 
         p_session = PaginatorSession(ctx, footer=f'Created At: {thing}', pages=pages)
         await p_session.run()
+
 
 def setup(bot):
     bot.add_cog(Info(bot))
