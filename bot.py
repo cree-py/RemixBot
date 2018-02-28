@@ -69,7 +69,7 @@ bot.db = mongo.RemixBot
 
 dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
-extensions = [x.replace('.py', '') for x in os.listdir('cogs.') if x.endswith('.py')]
+extensions = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
 
 def load_extension(cog, path='cogs.'):
