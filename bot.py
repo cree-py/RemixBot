@@ -105,7 +105,7 @@ version = "v2.0.0"
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
+    await bot.change_presence(game=discord.Game(name=f"{len(bot.servers)} servers | -help | {version}", type=3), afk=True)
 
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
     headers = {

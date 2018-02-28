@@ -132,7 +132,7 @@ class Config:
     # ------------Welcome and leave----------------
 
     async def on_member_join(self, m):
-        config = await self.bot.db.config.find_one({'_id': str(m.server.id)})
+        config = await self.bot.db.config.find_one({'_id': str(m.guild.id)})
         if not config:
             return
         try:
