@@ -63,7 +63,7 @@ async def get_pre(bot, message):
         return '-'
 
 
-bot = commands.Bot(command_prefix=get_pre)
+bot = commands.Bot(command_prefix='-')
 bot.db = mongo.RemixBot
 # with open('./data/auths.json') as f:
 #     bot.auth = json.load(f)
