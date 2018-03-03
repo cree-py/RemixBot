@@ -46,9 +46,6 @@ from ext.paginator import PaginatorSession
 #     return config.get(key)
 
 
-mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
-
-
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
     try:
@@ -64,7 +61,6 @@ async def get_pre(bot, message):
 
 
 bot = commands.Bot(command_prefix='-')
-bot.db = mongo.RemixBot
 # with open('./data/auths.json') as f:
 #     bot.auth = json.load(f)
 
@@ -122,6 +118,10 @@ async def on_ready():
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
 
+    
+    mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
+    bot.db = mongo.RemixBot
+ 
     print('Bot is Online.')
 
 
