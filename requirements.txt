@@ -5,3 +5,4 @@ urbandictionary
 wikipedia
 git+https://github.com/cree-py/pynite
 motor
+git+https://github.com/freetnt5852/idioticapi
