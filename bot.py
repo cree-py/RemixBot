@@ -38,6 +38,7 @@ import subprocess
 import asyncio
 from ext import utils
 from ext.paginator import PaginatorSession
+import idioticapi
 
 
 # def load_json(path, key):
@@ -63,6 +64,7 @@ async def get_pre(bot, message):
 bot = commands.Bot(command_prefix='-')
 # with open('./data/auths.json') as f:
 #     bot.auth = json.load(f)
+bot.api = idioticapi.Client(os.environ.get("idiotickey"))
 
 dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
