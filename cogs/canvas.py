@@ -3,7 +3,7 @@ from discord.ext import commands
 
 class Canvas:
     '''Some fun canvas/images commands'''
-    def __init__(self, bot);
+    def __init__(self, bot):
         self.bot = bot
     
     @commands.command()
