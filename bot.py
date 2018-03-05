@@ -48,7 +48,6 @@ from ext.paginator import PaginatorSession
 
 mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
 
-
 async def get_pre(bot, message):
     '''Gets the prefix for the guild'''
     try:
@@ -62,7 +61,6 @@ async def get_pre(bot, message):
     except KeyError:
         return '-'
 
-
 bot = commands.Bot(command_prefix='-')
 bot.db = mongo.RemixBot
 # with open('./data/auths.json') as f:
@@ -71,7 +69,6 @@ bot.db = mongo.RemixBot
 dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
 extensions = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
-
 
 def load_extension(cog, path='cogs.'):
     members = inspect.getmembers(cog)
@@ -82,7 +79,6 @@ def load_extension(cog, path='cogs.'):
         bot.load_extension(f'{path}{cog}')
     except Exception as e:
         print(f'LoadError: {cog}\n{type(e).__name__}: {e}')
-
 
 def load_extensions(cogs, path='cogs.'):
     for cog in cogs:
@@ -95,13 +91,9 @@ def load_extensions(cogs, path='cogs.'):
         except Exception as e:
             print(f'LoadError: {cog}\n{type(e).__name__}: {e}')
 
-
 load_extensions(extensions)
-
-
 bot.remove_command('help')
 version = "v2.0.0"
-
 
 @bot.event
 async def on_ready():
@@ -124,7 +116,6 @@ async def on_ready():
 
     print('Bot is Online.')
 
-
 @bot.event
 async def on_message(message):
     channel = message.channel
@@ -143,13 +134,11 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
-
 # Listener for :pushpin: command
 @bot.event
 async def on_reaction_add(reaction, user):
     if reaction.emoji == "\U0001f4cc":
         await user.send(f"Here's the message you pinned :pushpin: ```{reaction.message.author.name}: {reaction.message.content}```")
-
 
 @bot.event
 async def on_guild_join(g):
@@ -180,7 +169,6 @@ async def on_guild_join(g):
 
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
-
 @bot.event
 async def on_guild_remove(g):
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
@@ -197,14 +185,12 @@ async def on_guild_remove(g):
 
     await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
 
-
 async def send_cmd_help(ctx):
     cmd = ctx.command
     em = discord.Embed(title=f'Usage: {ctx.prefix + cmd.signature}')
     em.color = discord.Color.green()
     em.description = cmd.help
     return em
-
 
 @bot.event
 async def on_command_error(ctx, error):
@@ -225,7 +211,6 @@ async def on_command_error(ctx, error):
         await ctx.send('You do not have the permissions to use this command.')
     # If any other error occurs, prints to console.
 
-
 def format_command_help(ctx, cmd):
     '''Format help for a command'''
     color = discord.Color.green()
@@ -237,7 +222,6 @@ def format_command_help(ctx, cmd):
         em.title = f'`{ctx.prefix}{cmd.signature}`'
 
     return em
-
 
 def format_cog_help(ctx, cog):
     '''Format help for a cog'''
@@ -261,7 +245,6 @@ def format_cog_help(ctx, cog):
 
     return em
 
-
 def format_bot_help(ctx):
     signatures = []
     fmt = ''
@@ -281,7 +264,6 @@ def format_bot_help(ctx):
     em.add_field(name='Commands', value=fmt)
 
     return em
-
 
 @bot.command()
 async def help(ctx, *, command: str=None):
@@ -319,7 +301,6 @@ async def help(ctx, *, command: str=None):
     p_session = PaginatorSession(ctx, footer=f'Type {ctx.prefix}help command for more info on a command.', pages=pages)
     await p_session.run()
 
-
 @bot.command()
 async def ping(ctx):
     '''Pong! Get the bot's response time'''
@@ -327,7 +308,6 @@ async def ping(ctx):
     em.title = "Pong!"
     em.description = f'{bot.ws.latency * 1000:.0f} ms'
     await ctx.send(embed=em)
-
 
 @bot.command(name='bot')
 async def _bot(ctx):
@@ -352,14 +332,12 @@ async def _bot(ctx):
     em.set_footer(text="RemixBot | Powered by discord.py")
     await ctx.send(embed=em)
 
-
 @bot.command(hidden=True)
 @utils.developer()
 async def psa(ctx, *, message):
     '''Tells everyone an announcement in the bot info command.'''
     bot.psa = None if message == 'reset' else message
     await ctx.send('PSA successfully set.')
-
 
 @bot.command(name='eval', hidden=True)
 @utils.developer()
@@ -424,7 +402,6 @@ async def _eval(ctx, *, body):
     else:
         await ctx.message.add_reaction('\u2705')
 
-
 @bot.command(hidden=True)
 @utils.developer()
 async def reload(ctx, cog):
@@ -448,7 +425,6 @@ async def reload(ctx, cog):
     else:
         await ctx.send(f"Reloaded the {cog} cog successfully :white_check_mark:")
 
-
 @bot.command(hidden=True)
 @utils.developer()
 async def update(ctx):
@@ -468,12 +444,10 @@ async def update(ctx):
             await ctx.send(f'LoadError: {cog}\n{type(e).__name__}: {e}')
     await ctx.send('All cogs reloaded :white_check_mark:')
 
-
 @bot.command()
 async def invite(ctx):
     '''Invite the bot to your server'''
     await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542")
-
 
 @bot.command(hidden=True)
 @utils.developer()
@@ -482,11 +456,11 @@ async def shutdown(ctx):
     await ctx.send("Shutting down....")
     await bot.logout()
 
-
 # if __name__ == "main":
 #     print('Online.')
 # else:
 #     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
+# rip this it was fun while it lasted
 
 if __name__ == '__main__':
     bot.run(os.environ.get('token'))
