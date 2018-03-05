@@ -64,7 +64,7 @@ async def get_pre(bot, message):
 bot = commands.Bot(command_prefix='-')
 # with open('./data/auths.json') as f:
 #     bot.auth = json.load(f)
-bot.api = idioticapi.Client(os.environ.get("idiotickey"), dev=True)
+
 
 dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
