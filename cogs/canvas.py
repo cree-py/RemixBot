@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import idioticapi
+import os
 
 class Canvas:
     '''Some fun canvas/images commands'''
