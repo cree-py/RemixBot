@@ -11,7 +11,7 @@ class Canvas:
         '''Somebody is triggered'''
         if user is None:
             user = ctx.author
-        av = user.avatar_url + "?size=2048" if user.avatar_url.endswith(".gif") else user.avatar_url
+        av = user.avatar_url + "?size=2048" if user.avatar_url.endswith(".gif") else user.avatar_url.replace("webp","png")
         await ctx.send(file=discord.File(await self.bot.api.triggered(av), "triggered.gif"))
         
         
