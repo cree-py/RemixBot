@@ -472,9 +472,10 @@ class Clash_Royale:
                 return await ctx.send('Invalid Tag. Please make sure your tag is correct.')
             tag = tag.strip('#').replace('O', '0')
 
-        em.url = f'http://cr-api.com/profile/{tag}'
+        em.add_field(name='Royale API', value=f'http://royaleapi.com/player/{tag}')
+        em.add_field(name='Stats Royale', value=f'https://statsroyale.com/profile/{tag}')
+        em.add_field(name='Deck Shop Spy', value=f'https://spy.deckshop.pro/player/{tag}')
         em.title = ctx.author.name
-        em.add_field(name='URL', value=f'http://cr-api.com/profile/{tag}')
         em.set_footer(text='Stats made by Cree-Py | Powered by cr-api',
                       icon_url='http://cr-api.com/static/img/branding/cr-api-logo.png')
 
