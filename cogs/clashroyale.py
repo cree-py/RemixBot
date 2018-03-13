@@ -37,7 +37,7 @@ class Clash_Royale:
     def __init__(self, bot):
         self.bot = bot
         self.client = clashroyale.Client(
-            token=os.environ.get('cr-api'),
+            token=bot.auth.get('CR-API'),
             is_async=True,
             cache_fp='cache.db'
         )

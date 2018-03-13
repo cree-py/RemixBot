@@ -35,7 +35,7 @@ class Fortnite:
     def __init__(self, bot):
         self.bot = bot
         self.client = pynite.Client(
-            os.environ.get('TRN-Api-Key'),
+            bot.auth.get('TRN-Api-Key'),
             timeout=3
         )
 

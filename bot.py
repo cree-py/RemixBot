@@ -38,13 +38,12 @@ import subprocess
 import asyncio
 from ext import utils
 from ext.paginator import PaginatorSession
-import idioticapi
 
 
-# def load_json(path, key):
-#     with open(f'./data/{path}') as f:
-#         config = json.load(f)
-#     return config.get(key)
+def load_json(path, key):
+    with open(f'./data/{path}') as f:
+        config = json.load(f)
+    return config.get(key)
 
 
 async def get_pre(bot, message):
@@ -61,11 +60,11 @@ async def get_pre(bot, message):
         return '-'
 
 bot = commands.Bot(command_prefix='-')
-# with open('./data/auths.json') as f:
-#     bot.auth = json.load(f)
+with open('./data/auths.json') as f:
+    bot.auth = json.load(f)
 
 
-dbltoken = os.environ.get('dbltoken')
+dbltoken = load_json('token.json', 'DBLTOKEN')
 path = 'cogs.'
 extensions = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
@@ -117,10 +116,9 @@ async def on_ready():
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
 
-    
     mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
     bot.db = mongo.RemixBot
- 
+
     print('Bot is Online.')
 
 
@@ -142,9 +140,8 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+
 # Listener for :pushpin: command
-
-
 @bot.event
 async def on_reaction_add(reaction, user):
     if reaction.emoji == "\U0001f4cc":
@@ -484,12 +481,11 @@ async def shutdown(ctx):
     await ctx.send("Shutting down....")
     await bot.logout()
 
-# if __name__ == "main":
-#     print('Online.')
-# else:
-#     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
-# rip this it was fun while it lasted
+if __name__ == "main":
+    print('Online.')
+else:
+    print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
 
-if __name__ == '__main__':
-    bot.run(os.environ.get('token'))
-    print('Bot is online.')
+# if __name__ == '__main__':
+#     bot.run(load_json('token.json', 'TOKEN'))
+#     print('Bot is online.')
