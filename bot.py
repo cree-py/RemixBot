@@ -38,15 +38,13 @@ import subprocess
 import asyncio
 from ext import utils
 from ext.paginator import PaginatorSession
+import idioticapi
 
 
 # def load_json(path, key):
 #     with open(f'./data/{path}') as f:
 #         config = json.load(f)
 #     return config.get(key)
-
-
-mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
 
 
 async def get_pre(bot, message):
@@ -63,9 +61,9 @@ async def get_pre(bot, message):
         return '-'
 
 bot = commands.Bot(command_prefix='-')
-bot.db = mongo.RemixBot
 # with open('./data/auths.json') as f:
 #     bot.auth = json.load(f)
+
 
 dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
@@ -119,6 +117,10 @@ async def on_ready():
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
 
+    
+    mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
+    bot.db = mongo.RemixBot
+ 
     print('Bot is Online.')
 
 
@@ -222,6 +224,8 @@ async def on_command_error(ctx, error):
     elif isinstance(error, commands.MissingPermissions):
         await ctx.send('You do not have the permissions to use this command.')
     # If any other error occurs, prints to console.
+    else:
+        print(error)
 
 
 def format_command_help(ctx, cmd):

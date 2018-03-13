@@ -3,5 +3,8 @@ clashroyale
 pytz
 urbandictionary
 wikipedia
-git+https://github.com/cree-py/pynite
+pynite
 motor
+idioticapi
+brawlstars
+cocasync
