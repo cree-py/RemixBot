@@ -59,6 +59,7 @@ class Misc:
             await ctx.message.delete()
         except discord.Forbidden:
             pass
+        msg = message.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
         await ctx.send(message)
 
     @commands.command(aliases=['8ball'])
