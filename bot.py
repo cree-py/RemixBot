@@ -222,7 +222,7 @@ async def on_command_error(ctx, error):
         await ctx.send('You do not have the permissions to use this command.')
     # If any other error occurs, prints to console.
     else:
-        print(error)
+        print(error.__class__ + ': ' + error)
 
 
 def format_command_help(ctx, cmd):
