@@ -36,7 +36,9 @@ class Fortnite:
         self.bot = bot
         self.client = pynite.Client(
             bot.auth.get('TRN-Api-Key'),
-            timeout=3
+            timeout=3,
+            session=bot.session,
+            loop=bot.loop
         )
 
     async def get_name(self, userid):

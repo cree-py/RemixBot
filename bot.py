@@ -118,6 +118,7 @@ async def on_ready():
 
     mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
     bot.db = mongo.RemixBot
+    bot.session = aiohttp.ClientSession()
 
     print('Bot is Online.')
 
