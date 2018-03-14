@@ -9,7 +9,7 @@ class Canvas:
 
     def __init__(self, bot):
         self.bot = bot
-        self.api = idioticapi.Client(token=bot.auth.get("idioticapi"), dev=True, session=bot.session)
+        self.api = idioticapi.Client(token=bot.auth.get("idioticapi"), dev=True)
 
     def format_avatar(self, avatar_url):
         if avatar_url.endswith(".gif"):
