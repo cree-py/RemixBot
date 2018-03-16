@@ -32,7 +32,8 @@ class Clash_of_Clans:
 
     def __init__(self, bot):
         self.bot = bot
-        self.headers = {'Authorization': bot.auth.get('COC-API')}
+        # self.headers = {'Authorization': bot.auth.get('COC-API')}
+        self.headers = {'Authorization': os.environ.get('coc-api')}
 
     # The following lines of code are taken from the clashroyale wrapper for cr-api by kyber
     first_cap_re = re.compile('(.)([A-Z][a-z]+)')

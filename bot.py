@@ -40,10 +40,10 @@ from ext import utils
 from ext.paginator import PaginatorSession
 
 
-def load_json(path, key):
-    with open(f'./data/{path}') as f:
-        config = json.load(f)
-    return config.get(key)
+# def load_json(path, key):
+#     with open(f'./data/{path}') as f:
+#         config = json.load(f)
+#     return config.get(key)
 
 
 async def get_pre(bot, message):
@@ -52,19 +52,16 @@ async def get_pre(bot, message):
         result = await bot.db.config.find_one({'_id': str(message.guild.id)})
     except AttributeError:
         return '-'
-    if not result:
-        return '-'
-    try:
-        return result['prefix']
-    except KeyError:
+    if not result or not result.get('prefix'):
         return '-'
 
-bot = commands.Bot(command_prefix='-')
-with open('./data/auths.json') as f:
-    bot.auth = json.load(f)
+bot = commands.Bot(command_prefix=get_pre)
+# with open('./data/auths.json') as f:
+#     bot.auth = json.load(f)
 
 
-dbltoken = load_json('token.json', 'DBLTOKEN')
+# dbltoken = load_json('token.json', 'DBLTOKEN')
+dbltoken = os.environ.get('dbltoken')
 path = 'cogs.'
 extensions = [x.replace('.py', '') for x in os.listdir('cogs') if x.endswith('.py')]
 
@@ -116,6 +113,7 @@ async def on_ready():
     bot._last_result = None
     bot.session = aiohttp.ClientSession()
 
+    # mongo = AsyncIOMotorClient(bot.auth.get('MONGODB'))
     mongo = AsyncIOMotorClient(os.environ.get('mongodb'))
     bot.db = mongo.RemixBot
     bot.session = aiohttp.ClientSession()
@@ -465,7 +463,16 @@ async def update(ctx):
 @bot.command()
 async def invite(ctx):
     '''Invite the bot to your server'''
-    await ctx.send(f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542")
+    await ctx.send(
+        f"Invite me to your server: https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542"
+    )
+
+
+@bot.command()
+async def exec(ctx, *, command):
+    '''Use shell commands.'''
+    ret = subprocess.run(command, stdout=subprocess.PIPE).stdout.decode('utf-8')
+    await ctx.send(f'```\n{ret}\n```')
 
 
 @bot.command(hidden=True)
@@ -475,11 +482,12 @@ async def shutdown(ctx):
     await ctx.send("Shutting down....")
     await bot.logout()
 
-if __name__ == "main":
-    print('Online.')
-else:
-    print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
+# if __name__ == "main":
+#     print('Online.')
+# else:
+#     print('GET THE FUCK OUT CODING COPIER AND NOOB XDDDDDD')
 
-# if __name__ == '__main__':
-#     bot.run(load_json('token.json', 'TOKEN'))
-#     print('Bot is online.')
+if __name__ == '__main__':
+    # bot.run(load_json('token.json', 'TOKEN'))
+    # print('Bot is online.')
+    bot.run(os.environ.get('token'))
