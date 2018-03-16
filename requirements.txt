@@ -1,10 +1,9 @@
 git+https://github.com/Rapptz/discord.py@rewrite#egg=discord.py
+git+https://github.com/freetnt5852/idioticapi
+git+https://github.com/cree-py/pynite
 clashroyale
 pytz
 urbandictionary
 wikipedia
-pynite
 motor
-idioticapi
-brawlstars
 cocasync
