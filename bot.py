@@ -492,3 +492,4 @@ if __name__ == '__main__':
     # bot.run(load_json('token.json', 'TOKEN'))
     # print('Bot is online.')
     bot.run(os.environ.get('token'))
+    print('RemixBot is online!')
