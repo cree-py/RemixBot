@@ -142,13 +142,6 @@ async def on_message(message):
     await bot.process_commands(message)
 
 
-# Listener for :pushpin: command
-@bot.event
-async def on_reaction_add(reaction, user):
-    if reaction.emoji == "\U0001f4cc":
-        await user.send(f"Here's the message you pinned :pushpin: ```{reaction.message.author.name}: {reaction.message.content}```")
-
-
 @bot.event
 async def on_guild_join(g):
     success = False
