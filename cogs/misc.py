@@ -50,7 +50,7 @@ class Misc:
 
     @commands.command()
     @commands.cooldown(1, 5, BucketType.user)
-    async def say(self, ctx, *, message: str):
+    async def say(self, ctx, *, message: commands.clean_content()):
         '''Say something as the bot'''
         voted = await self.upvoted(ctx.author.id)
         if not voted:
@@ -59,7 +59,6 @@ class Misc:
             await ctx.message.delete()
         except discord.Forbidden:
             pass
-        msg = message.replace('@everyone', '@\u200beveryone').replace('@here', '@\u200bhere')
         await ctx.send(message)
 
     @commands.command(aliases=['8ball'])
