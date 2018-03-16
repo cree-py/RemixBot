@@ -54,7 +54,7 @@ async def get_pre(bot, message):
         return '-'
     if not result or not result.get('prefix'):
         return '-'
-    return '-'
+    return result
 
 bot = commands.Bot(command_prefix=get_pre)
 # with open('./data/auths.json') as f:
