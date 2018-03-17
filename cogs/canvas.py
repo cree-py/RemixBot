@@ -25,11 +25,9 @@ class Canvas:
         await ctx.send(file=discord.File(await self.api.triggered(self.format_avatar(user.avatar_url)), "triggered.gif"))
 
     @commands.command()
-    async def blame(self, ctx, user: discord.Member=None):
+    async def blame(self, ctx, text):
         '''Blame someone'''
-        if not user:
-            user = ctx.author
-        await ctx.send(file=discord.File(await self.api.blame(user.name), "blame.png"))
+        await ctx.send(file=discord.File(await self.api.blame(text), "blame.png"))
 
 
 def setup(bot):
