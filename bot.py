@@ -97,7 +97,7 @@ version = "v2.0.0"
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
+    await bot.change_presence(activity=discord.Game(f"with {len(bot.guilds)} servers | -help | {version}"), afk=True)
 
     url = f"https://discordbots.org/api/bots/{bot.user.id}/stats"
     headers = {
@@ -166,7 +166,7 @@ async def on_guild_join(g):
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
 
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
+    await bot.change_presence(activity=discord.Game(f"with {len(bot.guilds)} servers | -help | {version}"), afk=True)
 
 
 @bot.event
@@ -183,7 +183,7 @@ async def on_guild_remove(g):
         async with session.post(url, data=json.dumps(payload), headers=headers) as dblpost:
             print(dblpost.status)
 
-    await bot.change_presence(game=discord.Game(name=f"{len(bot.guilds)} servers | -help | {version}", type=3), afk=True)
+    await bot.change_presence(activity=discord.Game(f"with {len(bot.guilds)} servers | -help | {version}"), afk=True)
 
 
 async def send_cmd_help(ctx):
