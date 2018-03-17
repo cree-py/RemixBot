@@ -491,5 +491,6 @@ async def shutdown(ctx):
 if __name__ == '__main__':
     # bot.run(load_json('token.json', 'TOKEN'))
     # print('Bot is online.')
+    print(os.environ.get('token'))
     bot.run(os.environ.get('token'))
     print('RemixBot is online!')
