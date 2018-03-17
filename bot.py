@@ -130,12 +130,10 @@ async def on_message(message):
 
     if message.content.lower() in ('whatistheprefix', 'what is the prefix'):
         result = await bot.db.config.find_one({'_id': str(message.guild.id)})
-        if not result:
+        if not result or not result.get('prefix'):
             prefix = '-'
-        try:
-            prefix = result['prefix']
-        except KeyError:
-            prefix = '-'
+        else:
+            prefix = result.get('prefix')
         await channel.send(f'The guild prefix is `{prefix}`')
 
     await bot.process_commands(message)
@@ -317,7 +315,7 @@ async def ping(ctx):
     '''Pong! Get the bot's response time'''
     em = discord.Embed(color=discord.Color.green())
     em.title = "Pong!"
-    em.description = f'{bot.ws.latency * 1000:.0f} ms'
+    em.description = f'{bot.latency * 1000} ms'
     await ctx.send(embed=em)
 
 
@@ -491,6 +489,4 @@ async def shutdown(ctx):
 if __name__ == '__main__':
     # bot.run(load_json('token.json', 'TOKEN'))
     # print('Bot is online.')
-    print(os.environ.get('token'))
     bot.run(os.environ.get('token'))
-    print('RemixBot is online!')
