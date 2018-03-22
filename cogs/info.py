@@ -140,7 +140,7 @@ class Info:
             perms += "Use Voice Activation, "
         if role.permissions.change_nickname:
             perms += "Change Nickname, "
-        if role.permissions.change_nickname:
+        if role.permissions.manage_nicknames:
             perms += "Manage Nicknames, "
         if role.permissions.manage_roles:
             perms += "Manage Roles, "
