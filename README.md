@@ -12,6 +12,7 @@
 
 # RemixBot
 A multifunctional Discord bot in development that allows you to easily control your discord server.
+NOTE: No one works on this bot anymore
 
 ### Public Service Announcement
 Previously, people have copied code from here and hosted their own instance without permission. We have trusted the public and made it a public repository again. Please do not host your own instance, instead, [invite](https://discordapp.com/oauth2/authorize?client_id=384044025298026496&scope=bot&permissions=268905542) RemixBot here. If you wish to ask about or borrow any small snippets of code, please ask in our [discord server](https://discord.gg/RzsYQ9f) before doing so. Thanks.
